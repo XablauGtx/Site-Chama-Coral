@@ -47,6 +47,8 @@ body {
 .title {
   font: 700 var(--title-font-size) 'Poppins', sans-serif;
   color: var(--title-color);
+  text-align: center;
+  
 }
 
 .button {
@@ -78,13 +80,14 @@ body {
 
 /*====  LAYOUT ============================ */
 .container {
-  margin-left: 1.5rem;
-  margin-right: 0rem;
+ 
 }
 
 .grid {
   display: grid;
   gap: 2rem;
+  justify-content: center;
+  text-align: center;
 }
 
 .section {
@@ -290,6 +293,7 @@ nav {
 .title {
   text-align: center;
   padding: 2rem;
+  
 }
 
 .subtitle {
@@ -493,16 +497,34 @@ footer .social a:hover {
 }
 
 /*====MEDIA QUERIES(Responsividade)====== */
-@media (max-width: 768px) {
-  .container {
-    padding: 0 1rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
+@media (max-width: 480px) {
+  .title {
+      font-size: 1.5rem;
+  }
+
+  .subtitle {
+      font-size: 0.875rem;
   }
 
   .button {
-    background-color: var(--base-color);
-  color: var(--text-color-light);
+      padding: 0.5rem;
+  }
+
+  .card {
+      padding:1rem;
+      font-size: 0.9rem;
+  }
+
+  .text {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .button {
+   background-color: var(--base-color);
+   color: var(--text-color-light);
   height: 4rem;
   display: inline-flex;
   align-items: center;
@@ -511,7 +533,15 @@ footer .social a:hover {
   font: 500 1rem 'DM Sans', sans-serif;
   transition: background 0.3s;
   margin-bottom: 1rem;
-    
+  }
+  
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
   .arrow {
@@ -533,59 +563,19 @@ footer .social a:hover {
     flex-direction: column;
     align-items: center;
   }
+
   .button {
     background-color: var(--base-color);
-  color: var(--text-color-light);
-  height: 4rem;
-  display: inline-flex;
-  align-items: center;
-  padding: 0 2rem;
-  border-radius: 0.25rem;
-  font: 500 1rem 'DM Sans', sans-serif;
-  transition: background 0.3s;
-  margin-bottom: 1rem;
-  
+    color: var(--text-color-light);
+    height: 4rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 2rem;
+    border-radius: 0.25rem;
+    font: 500 1rem 'DM Sans', sans-serif;
+    transition: background 0.3s;
+    margin-bottom: 1rem;
   }
-
-}
-
-@media (max-width: 480px) {
-    .title {
-        font-size: 1.5rem;
-    }
-
-    .subtitle {
-        font-size: 0.875rem;
-    }
-
-    .button {
-        padding: 0.5rem;
-    }
-
-    .card {
-        padding: 1rem;
-        font-size: 0.9rem;
-    }
-
-    .text {
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .button {
-  background-color: var(--base-color);
-  color: var(--text-color-light);
-  height: 4rem;
-  display: inline-flex;
-  align-items: center;
-  padding: 0 2rem;
-  border-radius: 0.25rem;
-  font: 500 1rem 'DM Sans', sans-serif;
-  transition: background 0.3s;
-  margin-bottom: 1rem;
-    }
-    
 }
 
 @media (min-width: 2000px) {
