@@ -235,7 +235,18 @@ nav.show div.icon-close {
   top: 1.5rem;
 }
 
+/* Corrigir rolagem lateral */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
 
+/* Corrigir largura do nav */
+nav {
+  width: 100%;
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+}
 
 /*====Home======  */
 #home {
@@ -478,7 +489,7 @@ footer .social a:hover {
   text-align: center;
 }
 
-/*====MEDIA QUERIES====== */
+/*====MEDIA QUERIES(Responsividade)====== */
 @media (max-width: 768px) {
   .container {
     padding: 0 1rem;
@@ -539,15 +550,4 @@ footer .social a:hover {
     }
 }
 
-/* Corrigir rolagem lateral */
-html, body {
-  max-width: 100%;
-  overflow-x: hidden;
-}
 
-/* Corrigir largura do nav */
-nav {
-  width: 100%;
-  padding: 0 1.5rem;
-  box-sizing: border-box;
-}
