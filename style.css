@@ -501,9 +501,16 @@ footer .social a:hover {
   }
 
   .button {
-    width: 100%;
-    padding: 1rem;
-    font-size: 1.1rem;
+    background-color: var(--base-color);
+  color: var(--text-color-light);
+  height: 4rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 2rem;
+  border-radius: 0.25rem;
+  font: 500 1rem 'DM Sans', sans-serif;
+  transition: background 0.3s;
+  margin-bottom: 1rem;
     
   }
 
@@ -527,11 +534,16 @@ footer .social a:hover {
     align-items: center;
   }
   .button {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: auto;
-    margin-right: auto;
+    background-color: var(--base-color);
+  color: var(--text-color-light);
+  height: 4rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 2rem;
+  border-radius: 0.25rem;
+  font: 500 1rem 'DM Sans', sans-serif;
+  transition: background 0.3s;
+  margin-bottom: 1rem;
   
   }
 
@@ -562,11 +574,16 @@ footer .social a:hover {
       align-items: center;
     }
     .button {
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      margin-left: auto;
-      margin-right: auto;
+  background-color: var(--base-color);
+  color: var(--text-color-light);
+  height: 4rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 2rem;
+  border-radius: 0.25rem;
+  font: 500 1rem 'DM Sans', sans-serif;
+  transition: background 0.3s;
+  margin-bottom: 1rem;
     }
     
 }
