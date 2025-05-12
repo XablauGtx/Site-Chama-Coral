@@ -1,6 +1,6 @@
 * {
   margin: 0;
-  padding: 0%;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -12,7 +12,8 @@ a {
 }
 
 img {
-  width: 100%;
+  max-width: 100%;
+  height: auto;
   overflow: hidden;
 }
 
@@ -20,7 +21,6 @@ img {
 :root {
   --header-heigth: 4.5rem;
   --hue: 159;
-  /* HSL color mode */
   --base-color: hsl(0, 88%, 68%);
   --base-color-second: hsl(var(--hue) 65% 88%);
   --base-color-alt: hsl(var(--hue) 57% 53%);
@@ -29,8 +29,6 @@ img {
   --text-color-light: hsl(0 0% 98%);
   --body-color: hsl(0 0% 98%);
   --chama-color: hsl(35, 100%, 50%);
-
-
   --title-font-size: 1.875rem;
   --subtitle-font-size: 1rem;
 }
@@ -70,25 +68,18 @@ body {
 
 .divider-1 {
   height: 1px;
-  background: linear-gradient(
-    270deg,
-    hsla(var(--hue), 0%, 88%, 68) 0%,
-    hsla(var(--hue), 0%, 88%, 68) 100%
-  );
+  background: linear-gradient(270deg, hsla(var(--hue), 0%, 88%, 68) 0%, hsla(var(--hue), 0%, 88%, 68) 100%);
 }
 
 .divider-2 {
   height: 1px;
-  background: linear-gradient(
-    270deg,
-    hsla(var(--hue), 65%, 88%, 0.34),
-    hsla(var(--hue), 36%, 57%, 1)
-  );
+  background: linear-gradient(270deg, hsla(var(--hue), 65%, 88%, 0.34), hsla(var(--hue), 36%, 57%, 1));
 }
+
 /*====  LAYOUT ============================ */
 .container {
   margin-left: 1.5rem;
-  margin-right:0rem;
+  margin-right: 0rem;
 }
 
 .grid {
@@ -111,12 +102,11 @@ body {
   color: var(--base-color);
 }
 
-.section .subtitle{
+.section .subtitle {
   font-size: var(--subtitle-font-size);
 }
 
 /*====  BARRA SUPERIOR ============================ */
-
 #header {
   border-bottom: 1px solid #e4e4e4;
   margin-bottom: 2rem;
@@ -129,11 +119,10 @@ body {
   left: 0;
 }
 
-
 #header.scroll {
-  background-color: rgba(255, 255, 255, 0.664); /* fundo preto semitransparente */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* sombra sutil opcional */
-  color: white; /* garante que o texto fique visível */
+  background-color: rgba(255, 255, 255, 0.664);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  color: white;
 }
 
 #header.scroll .logo span {
@@ -149,12 +138,12 @@ main {
 }
 
 /*====  LOGO ============================ */
-.logo{
+.logo {
   width: 80px;
-  border-left: 0ch;
 }
 
 /*====  NAVIGATION ============================ */
+
 
 nav {
   height: var(--header-heigth);
@@ -191,6 +180,7 @@ nav ul li a::after {
 nav ul li a:hover::after {
   width: 100%;
 }
+
 nav .menu {
   opacity: 0;
   visibility: hidden;
@@ -244,6 +234,9 @@ nav.show div.icon-close {
   opacity: 1;
   top: 1.5rem;
 }
+
+
+
 /*====Home======  */
 #home {
   overflow: hidden;
@@ -283,12 +276,12 @@ nav.show div.icon-close {
   display: flex;
 }
 
-.title{
+.title {
   text-align: center;
   padding: 2rem;
 }
 
-.subtitle{
+.subtitle {
   text-align: center;
 }
 
@@ -328,7 +321,6 @@ nav.show div.icon-close {
 .card {
   background: white;
   padding: 1.5rem;
-
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -399,6 +391,7 @@ nav.show div.icon-close {
 .swiper-pagination-bullet-active {
   background: var(--base-color);
 }
+
 /*====CONTACT======  */
 #contact .grid {
   gap: 4rem;
@@ -452,7 +445,7 @@ footer .social a {
   display: inline-block;
 }
 
-footer .social a:hover{
+footer .social a:hover {
   transform: translateY(-8px);
 }
 
@@ -463,7 +456,6 @@ footer .social a:hover{
   position: fixed;
   right: 1rem;
   bottom: 1rem;
-  padding: 0.8rem;
   clip-path: circle();
   line-height: 0;
   visibility: hidden;
@@ -472,34 +464,95 @@ footer .social a:hover{
   transform: translateY(100%);
 }
 
-.back-to-top.show{
+.back-to-top.show {
   visibility: visible;
   opacity: 1;
   transform: translateY(0);
 }
 
-.social{
-  text-align: center;
-
-}
-
-.grid{
+.social {
   text-align: center;
 }
 
+.grid {
+  text-align: center;
+}
 
-@media (min-width: 2000px) {
-  :root {
-    --title-font-size: 2.2rem;
-    --subtitle-font-size: 1.125rem;
+/*====MEDIA QUERIES====== */
+@media (max-width: 768px) {
+    .container {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+
+    .button {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1rem;
+    }
+
+    .grid {
+        display: flex;
+        flex-direction: column;
+    }
+
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .title, .subtitle {
+        font-size: 1.5rem;
+    }
+
+    .card {
+        padding: 1.5rem;
+    }
+
+    #home .text {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 1.5rem;
+    }
+
+    .subtitle {
+        font-size: 0.875rem;
+    }
+
+    .button {
+        padding: 0.5rem;
+    }
+
+    .card {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+
+    nav .menu {
+      display: none; /* Oculte o menu por padrão */
   }
   
+  nav.show .menu {
+      display: block; /* Mostre o menu quando a classe 'show' for adicionada */
+  }
+}
+
+@media (min-width: 2000px) {
+    :root {
+        --title-font-size: 2.2rem;
+        --subtitle-font-size: 1.125rem;
+    }
 }
 
 @media (min-width: 2500px) {
-  .container{
-    max-width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
-  }
+    .container {
+        max-width: 1000px;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
