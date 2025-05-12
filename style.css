@@ -490,17 +490,10 @@ footer .social a:hover {
   transform: translateY(0);
 }
 
-.container {
-  display: flex; /* Usando Flexbox */
-  justify-content: center; /* Centraliza horizontalmente */
-  align-items: center; /* Centraliza verticalmente */
-  flex-direction: column; /* Alinha itens em coluna, se necessário */
-}
-
 .social {
   display: flex; /* Usando Flexbox para os links sociais */
   justify-content: center; /* Centraliza os ícones */
-  gap: 1rem; /* Espaçamento entre os ícones */
+  gap: 0.5rem; /* Espaçamento entre os ícones */
 }
 
 /*====MEDIA QUERIES(Responsividade)====== */
