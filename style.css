@@ -480,39 +480,28 @@ footer .social a:hover {
 
 /*====MEDIA QUERIES====== */
 @media (max-width: 768px) {
-    .container {
-        margin-left: 1rem;
-        margin-right: 1rem;
-    }
+  .container {
+    padding: 0 1rem;
+  }
 
-    .button {
-        width: 100%;
-        padding: 1rem;
-        font-size: 1rem;
-    }
+  .button {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+  }
 
-    .grid {
-        display: flex;
-        flex-direction: column;
-    }
+  .arrow {
+    font-size: 2rem;
+    padding: 0 10px;
+  }
 
-    nav {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+  section {
+    margin-bottom: 2rem;
+  }
 
-    .title, .subtitle {
-        font-size: 1.5rem;
-    }
-
-    .card {
-        padding: 1.5rem;
-    }
-
-    #home .text {
-        margin-left: 1rem;
-        margin-right: 1rem;
-    }
+  h2, h3 {
+    text-align: center;
+  }
 }
 
 @media (max-width: 480px) {
@@ -533,13 +522,6 @@ footer .social a:hover {
         font-size: 0.9rem;
     }
 
-    nav .menu {
-      display: none; /* Oculte o menu por padrão */
-  }
-  
-  nav.show .menu {
-      display: block; /* Mostre o menu quando a classe 'show' for adicionada */
-  }
 }
 
 @media (min-width: 2000px) {
@@ -555,4 +537,17 @@ footer .social a:hover {
         margin-left: auto;
         margin-right: auto;
     }
+}
+
+/* Corrigir rolagem lateral */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Corrigir largura do nav */
+nav {
+  width: 100%;
+  padding: 0 1.5rem;
+  box-sizing: border-box;
 }
