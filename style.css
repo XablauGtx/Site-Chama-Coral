@@ -430,6 +430,10 @@ nav {
   color: var(--base-color);
 }
 
+.grid{
+  justify-content: center;
+}
+
 /*====FOOTER======  */
 footer {
   background: var(--base-color);
@@ -515,6 +519,22 @@ footer .social a:hover {
   h2, h3 {
     text-align: center;
   }
+
+  .text {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+  
+  }
+
 }
 
 @media (max-width: 480px) {
@@ -549,8 +569,6 @@ footer .social a:hover {
       margin-right: auto;
     }
     
-    
-
 }
 
 @media (min-width: 2000px) {
