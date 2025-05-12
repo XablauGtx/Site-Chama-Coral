@@ -426,12 +426,14 @@ nav {
   display: flex;
   align-items: center;
 }
+
 #contact ul li i {
   color: var(--base-color);
 }
 
 .grid{
   justify-content: center;
+  text-align: center;
 }
 
 /*====FOOTER======  */
@@ -487,10 +489,7 @@ footer .social a:hover {
 
 .social {
   text-align: center;
-}
-
-.grid {
-  text-align: center;
+  margin-bottom: 0.5rem; 
 }
 
 /*====MEDIA QUERIES(Responsividade)====== */
