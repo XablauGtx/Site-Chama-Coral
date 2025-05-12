@@ -493,6 +493,8 @@ footer .social a:hover {
 @media (max-width: 768px) {
   .container {
     padding: 0 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
   .button {
@@ -532,6 +534,22 @@ footer .social a:hover {
         padding: 1rem;
         font-size: 0.9rem;
     }
+
+    .text {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .button {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    
 
 }
 
