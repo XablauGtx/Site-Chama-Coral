@@ -250,41 +250,86 @@
 
 /*====MODELS======  */
 
-#home .image {
+#home {
+    display: flex;
+    justify-content: center;
+    padding-top: 10rem;
+  }
+  
+  #home .image {
     display: flex;
     justify-content: center; /* Centraliza horizontalmente */
-    align-items: flex-start;     /* Alinha verticalmente (se tiver altura) */
-    gap: 200px;               /* Espaçamento entre as imagens */
-    flex-wrap: wrap;         /* Permite quebrar linha em telas pequenas */
-    padding: 200px;
-}
-
-#home .image-box {
-    text-align: center;
+    align-items: flex-start; /* Alinha verticalmente */
+    gap: 40px; /* Reduzi o espaço entre as imagens */
+    flex-wrap: wrap; /* Permite quebrar linha em telas pequenas */
+    padding: 20px; /* Ajustado para dar espaço */
+    max-width: 100%; /* Garante que o conteúdo não ultrapasse a tela */
   }
-
-#home .image img {
-    max-width: 100%;   /* Garante que a imagem não ultrapasse o contêiner */
-    height: auto;      /* Mantém a proporção */
-    width: 500px;      /* Define uma largura fixa ou relativa, como % */
-    border-radius: 10px; /* Borda arredondada opcional */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra leve opcional */
+  
+  #home .image-box {
+    text-align: center;
+    flex: 1 1 300px; /* Permite que a imagem se ajuste ao tamanho disponível */
+  }
+  
+  #home .image-box img {
+    max-width: 100%; /* Garante que a imagem não ultrapasse o contêiner */
+    height: auto; /* Mantém a proporção */
+    width: 500px; /* Define uma largura fixa ou relativa */
+    border-radius: 10px; /* Borda arredondada */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra leve */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
-}
-
-#home .image img:hover {
+  }
+  
+  #home .image-box img:hover {
     transform: scale(1.1); /* Aplica o zoom */
     box-shadow: 0 10px 20px rgba(0,0,0,0.2); /* Realça com sombra */
-}
-
-#home .image-box p {
+  }
+  
+  #home .image-box p {
     padding-top: 1.5rem;
     margin-top: 10px;
     font-size: 16px;
     color: #333;
     font-weight: 500;
   }
+  
+  /* Estilo do botão */
+  .buy-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: var(--base-color); /* Usando variável de cor */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .buy-button:hover {
+    background-color: var(--chama-color); /* Cor de hover */
+  }
+  
+  /* Responsividade para telas menores */
+  @media (max-width: 768px) {
+    #home .image {
+      flex-direction: column; /* Empilha as imagens no celular */
+      align-items: center; /* Centraliza as imagens */
+      padding: 10px;
+    }
+  
+    #home .image-box img {
+      width: 90%; /* Ajusta a largura das imagens para caberem na tela */
+      max-width: 400px; /* Limita a largura das imagens */
+    }
+  
+    .buy-button {
+      width: 90%; /* Ajusta o botão para o tamanho da tela */
+      max-width: 250px; /* Limita a largura do botão */
+    }
+  }
+  
 
   /*====FOOTER======  */
   footer {
@@ -360,6 +405,8 @@
   }
   
   /*====MEDIA QUERIES(Responsividade)====== */
+
+
   @media (max-width: 480px) {
     .title {
         font-size: 1.5rem;
