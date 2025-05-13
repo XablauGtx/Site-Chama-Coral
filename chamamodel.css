@@ -248,6 +248,44 @@
     box-sizing: border-box; 
 }
 
+/*====MODELS======  */
+
+#home .image {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: flex-start;     /* Alinha verticalmente (se tiver altura) */
+    gap: 200px;               /* Espaçamento entre as imagens */
+    flex-wrap: wrap;         /* Permite quebrar linha em telas pequenas */
+    padding: 200px;
+}
+
+#home .image-box {
+    text-align: center;
+  }
+
+#home .image img {
+    max-width: 100%;   /* Garante que a imagem não ultrapasse o contêiner */
+    height: auto;      /* Mantém a proporção */
+    width: 500px;      /* Define uma largura fixa ou relativa, como % */
+    border-radius: 10px; /* Borda arredondada opcional */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra leve opcional */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+#home .image img:hover {
+    transform: scale(1.1); /* Aplica o zoom */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2); /* Realça com sombra */
+}
+
+#home .image-box p {
+    padding-top: 1.5rem;
+    margin-top: 10px;
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+  }
+
   /*====FOOTER======  */
   footer {
     background: var(--base-color);
