@@ -426,6 +426,7 @@ nav {
 #contact ul li {
   display: flex;
   align-items: center;
+  padding: 2rem;
 }
 
 #contact ul li i {
