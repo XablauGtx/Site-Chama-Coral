@@ -320,25 +320,6 @@
   }
   
   /* Responsividade para telas menores */
-  @media (max-width: 768px) {
-    #home .image {
-      flex-direction: column; /* Empilha as imagens no celular */
-      align-items: center; /* Centraliza as imagens */
-      padding: 10px;
-    }
-  
-    #home .image-box img {
-      width: 90%; /* Ajusta a largura das imagens para caberem na tela */
-      max-width: 400px; /* Limita a largura das imagens */
-    }
-  
-    .buy-button {
-      width: 90%; /* Ajusta o botão para o tamanho da tela */
-      max-width: 250px; /* Limita a largura do botão */
-    }
-  }
-  
-
   /*====FOOTER======  */
   footer {
     background: var(--base-color);
@@ -494,7 +475,23 @@
       transition: background 0.3s;
       margin-bottom: 1rem;
     }
+    #home .image {
+      flex-direction: column; /* Empilha as imagens no celular */
+      align-items: center; /* Centraliza as imagens */
+      padding: 10px;
+    }
+  
+    #home .image-box img {
+      width: 90%; /* Ajusta a largura das imagens para caberem na tela */
+      max-width: 400px; /* Limita a largura das imagens */
+    }
+  
+    .buy-button {
+      width: 90%; /* Ajusta o botão para o tamanho da tela */
+      max-width: 250px; /* Limita a largura do botão */
+    }
   }
+  
   
   @media (min-width: 2000px) {
       :root {
