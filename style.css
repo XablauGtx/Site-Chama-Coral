@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
 * {
   margin: 0;
   padding: 0;
@@ -38,14 +39,14 @@ html {
   scroll-behavior: smooth;
 }
 body {
-  font: 400 1rem 'DM Sans', sans-serif;
+  font: 400 1rem 'Montserrat', sans-serif;
   color: var(--text-color);
   background: var(--body-color);
   -webkit-font-smoothing: antialiased;
 }
 
 .title {
-  font: 700 var(--title-font-size) 'Poppins', sans-serif;
+  font: 700 var(--title-font-size) 'Montserrat', sans-serif;
   color: var(--title-color);
   text-align: center;
   
@@ -59,7 +60,7 @@ body {
   align-items: center;
   padding: 0 2rem;
   border-radius: 0.25rem;
-  font: 500 1rem 'DM Sans', sans-serif;
+  font: 500 1rem 'Montserrat', sans-serif;
   transition: background 0.3s;
   margin-bottom: 1rem;
 }
@@ -531,7 +532,7 @@ footer .social a:hover {
   align-items: center;
   padding: 0 2rem;
   border-radius: 0.25rem;
-  font: 500 1rem 'DM Sans', sans-serif;
+  font: 500 1rem 'Montserrat', sans-serif;
   transition: background 0.3s;
   margin-bottom: 1rem;
   }
@@ -573,7 +574,7 @@ footer .social a:hover {
     align-items: center;
     padding: 0 2rem;
     border-radius: 0.25rem;
-    font: 500 1rem 'DM Sans', sans-serif;
+    font: 500 1rem 'Montserrat', sans-serif;
     transition: background 0.3s;
     margin-bottom: 1rem;
   }
