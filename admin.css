@@ -43,6 +43,7 @@ main {
     margin-top: 0;
     font-size: 1.5rem;
     color: #7c3aed;
+    text-align: center;
 }
 
 input[type="password"], input[type="text"], select {
@@ -77,48 +78,56 @@ button:hover {
     display: none; /* Oculta inicialmente */
 }
 
+/* ------------------------------------------------------------- */
+/* INÍCIO: ESTILOS ATUALIZADOS PARA O RESUMO POR NAIPES (ADMIN) */
+/* ------------------------------------------------------------- */
+
 #resumo-naipes {
-    display: flex;
-    justify-content: space-between;
+    display: flex; /* Habilita Flexbox para alinhar os cards */
+    justify-content: space-between; /* Distribui os itens com espaço entre eles */
+    gap: 15px; /* Espaçamento entre os cards (melhor que margin para flexbox) */
     margin-top: 20px;
+    flex-wrap: wrap; /* Permite que os cards quebrem para a próxima linha em telas menores */
+    align-items: flex-start; /* Alinha os itens ao topo se tiverem alturas diferentes */
 }
 
 #resumo-naipes p {
-    background: #f0f4ff; /* Cor de fundo leve */
+    background: #f0f4ff; /* Cor de fundo leve, será sobrescrita pelas cores específicas dos naipes */
     border-radius: 8px;
-    padding: 40px;
+    padding: 20px; /* Padding interno do card */
     text-align: center;
-    flex: 1; /* Permite que os itens ocupem espaço igual */
-    margin: 0 10px; /* Espaçamento entre os itens */
+    flex: 1; /* Permite que os itens cresçam e encolham */
+    min-width: 150px; /* Largura mínima para cada card antes de quebrar a linha */
+    max-width: 23%; /* Permite que 4 cards caibam em uma linha, considerando o gap */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra leve */
+    box-sizing: border-box; /* Inclui padding e border na largura total */
+    margin: 0; /* Remove margens para usar o gap do pai */
 }
 
 #resumo-naipes p span {
     font-weight: bold; /* Destaca o número de participantes */
+    display: block; /* Garante que o número fique em sua própria linha */
+    font-size: 1.5rem; /* Torna o número maior */
+    color: #333; /* Cor para o número */
+    margin-top: 5px; /* Espaçamento acima do número */
 }
 
-/* Cores dos naipes */
-.soprano {
-    background-color: #f8d4e2; /* Cor para Soprano */
-}
+/* Cores de fundo específicas para os cards de resumo por naipe */
+#resumo-naipes p.soprano { background-color: #f8d4e2; }
+#resumo-naipes p.contralto { background-color: #d0eaff; }
+#resumo-naipes p.tenor { background-color: #ffe0a3; }
+#resumo-naipes p.baixo { background-color: #a8e6cf; }
 
-.contralto {
-    background-color: #d0eaff; /* Cor para Contralto */
-}
+/* ------------------------------------------------------------- */
+/* FIM: ESTILOS ATUALIZADOS PARA O RESUMO POR NAIPES (ADMIN) */
+/* ------------------------------------------------------------- */
 
-.tenor {
-    background-color: #ffe0a3; /* Cor para Tenor */
-}
-
-.baixo {
-    background-color: #a8e6cf; /* Cor para Baixo */
-}
 
 /* Estilo da tabela de participantes */
 #lista-participantes table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 20px; /* Espaçamento da tabela em relação ao resumo */
 }
 
 #lista-participantes th, #lista-participantes td {
@@ -146,6 +155,7 @@ button:hover {
     background-color: #f9f9f9;
 }
 
+/* Estilo para a "caixinha" do naipe dentro da tabela */
 .naipe {
     display: inline-block;
     padding: 2px 8px; /* Menor padding para caixas menores */
@@ -155,19 +165,39 @@ button:hover {
     font-size: 0.9rem; /* Tamanho da fonte menor */
 }
 
-/* Cores dos naipes (mantidas) */
-.soprano {
+/* Cores dos naipes nas caixinhas da tabela (mantidas) */
+.naipe.soprano {
     background-color: #f8d4e2;
 }
 
-.contralto {
+.naipe.contralto {
     background-color: #d0eaff;
 }
 
-.tenor {
+.naipe.tenor {
     background-color: #ffe0a3;
 }
 
-.baixo {
+.naipe.baixo {
     background-color: #a8e6cf;
+}
+
+/* MEDIA QUERIES para responsividade */
+@media (max-width: 768px) {
+    #resumo-naipes p {
+        max-width: 48%; /* Em telas de até 768px, 2 cards por linha */
+    }
+}
+
+@media (max-width: 480px) {
+    #resumo-naipes {
+        flex-direction: column; /* Em telas muito pequenas, empilha os cards verticalmente */
+        align-items: center; /* Centraliza os cards quando empilhados */
+    }
+    #resumo-naipes p {
+        max-width: 90%; /* Cada card ocupa quase toda a largura */
+        width: 100%; /* Garante que ocupe o máximo possível */
+        margin-left: 0; /* Remove margens que poderiam sobrar */
+        margin-right: 0;
+    }
 }
