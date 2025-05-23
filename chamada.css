@@ -67,7 +67,8 @@ main {
 input, select, button {
     padding: 10px;
     margin: 10px 0;
-    width: 98%;
+    width: 100%; /* Ajustado para 100% para ocupar toda a largura disponível */
+    box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura total */
     border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 1rem;
@@ -118,9 +119,12 @@ button:hover {
     background-color: #fff; /* Fundo branco padrão */
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin-bottom: 20px; /* Espaçamento entre os blocos de naipes */
+    padding: 20px; /* Padding geral para o conteúdo dentro do naipe-section */
     text-align: left; /* Garante que o texto esteja alinhado à esquerda dentro do bloco */
+
+    /* REMOVIDO: flex: 1; min-width; max-width; pois os naipes ficarão empilhados */
+    box-sizing: border-box; /* Inclui padding e border na largura total do elemento */
+    width: 100%; /* Garante que ocupe a largura total disponível do pai */
 }
 
 .naipe-section h3 {
@@ -134,12 +138,12 @@ button:hover {
 
 .naipe-section ul {
     list-style: none; /* Remove marcadores de lista padrão */
-    padding: 0;
+    padding: 0 10px; /* Adiciona 10px de padding nas laterais para "desgrudar" os nomes */
     margin: 0;
 }
 
 .naipe-section ul li {
-    padding: 8px 0;
+    padding: 8px 0; /* Mantém o padding vertical */
     border-bottom: 1px dashed #f0f0f0; /* Linha tracejada entre os nomes */
     color: #555;
     font-size: 1rem;
@@ -166,25 +170,49 @@ button:hover {
     background-color: #a8e6cf; /* Cor para Baixo */
 }
 
+
+/* Container principal dos naipes - Flexbox */
+#lista-presencas {
+    display: flex;
+    flex-direction: column; /* FORÇA OS ITENS A FICAREM EMPILHADOS, UM ABAIXO DO OUTRO */
+    /* REMOVIDO: flex-wrap: wrap; pois os itens não vão quebrar para o lado */
+    gap: 20px; /* Espaçamento VERTICAL entre os naipes */
+    justify-content: center; /* Centraliza o BLOCO de naipes (se o width for menor que o container) */
+    align-items: center; /* Centraliza os naipes horizontalmente se eles tiverem largura menor que o container */
+    margin-top: 20px;
+    padding: 0;
+}
+
+
+/* ------------------------------------------------------------- */
+/* INÍCIO: MEDIA QUERIES PARA RESPONSIVIDADE EM CELULARES */
+/* ------------------------------------------------------------- */
+
+/* Para telas até 768px (tablets na vertical e celulares maiores) */
 @media (max-width: 768px) {
     main {
         padding: 15px; /* Reduz o padding do main para melhor aproveitamento do espaço */
     }
-    header {
-        flex-direction: column; /* Empilha o cabeçalho (título e navegação) */
+    header { 
         align-items: flex-start; /* Alinha os itens do cabeçalho à esquerda */
         padding: 10px 15px; /* Ajusta o padding do cabeçalho */
     }
     header h1 {
         margin-bottom: 10px; /* Espaço entre o título e a navegação */
+        width: 100%; /* Garante que o título ocupe a largura total */
     }
     header nav {
-        width: 100%; /* Navegação ocupa a largura total */
-        text-align: center; /* Centraliza os links de navegação */
+        margin-top: 1rem; /* Dá um espaço maior entre o título e a nav */
+        width: 100%; /* Garante que a navegação ocupe a largura total disponível */
+        text-align: right; /* ALINHA O CONTEÚDO DA NAVEGAÇÃO (SEU LINK/BOTÃO ADMIN) À DIREITA */
     }
     header nav a {
-        margin: 0 8px; /* Ajusta a margem entre os links da navegação */
-        font-size: 0.95rem; /* Levemente menor a fonte dos links */
+        margin-left: auto; /* Empurra o link para a direita */
+        margin-right: 0; /* Zera qualquer margem direita existente */
+        display: inline-block; /* Permite que margin-left: auto funcione */
+        padding: 5px 10px; /* Adiciona um pouco de padding para parecer um botão */
+        border: 1px solid #7c3aed; /* Borda para destaque */
+        border-radius: 5px; /* Cantos arredondados */
     }
     .card {
         padding: 15px; /* Reduz o padding interno dos cards */
@@ -196,10 +224,8 @@ button:hover {
     /* Ajustes para os blocos de naipe na página de auto-registro */
     .naipe-section {
         max-width: 100%; /* Em telas menores, cada naipe ocupa a largura total */
-        min-width: unset; /* Remove o min-width para maior flexibilidade */
-        margin-bottom: 15px; /* Adiciona um pequeno espaçamento entre os blocos empilhados */
+        /* min-width: unset; - Já definido em tela grande como width: 100% */
     }
-    /* Se você quiser 2 colunas em tablets, altere o max-width acima para: max-width: calc(50% - 10px); */
 }
 
 /* Para telas muito pequenas (celulares) */
@@ -211,23 +237,21 @@ button:hover {
         padding: 8px 10px; /* Mais ajuste no padding do cabeçalho */
     }
     header h1 {
-        font-size: 1.2rem; /* Título menor para celular */
+        font-size: 1.2rem; /* Reduz o tamanho do título do cabeçalho */
     }
     header nav a {
         font-size: 0.9rem; /* Links de navegação menores */
-        margin: 0 5px; /* Margem reduzida */
+        padding: 3px 8px; /* Padding menor para o botão Admin */
     }
     
-    /* Blocos de naipe em uma única coluna para celulares */
+    /* Blocos de naipe em uma única coluna para celulares (já é o padrão agora) */
     #lista-presencas {
-        flex-direction: column; /* Força a empilhar os blocos de naipe */
-        align-items: stretch; /* Garante que ocupem a largura total */
-        gap: 15px; /* Espaçamento entre os blocos empilhados */
+        gap: 15px; /* Define o espaçamento vertical entre os blocos empilhados para telas menores */
     }
     .naipe-section {
         padding: 15px; /* Reduz o padding interno do bloco de naipe */
-        max-width: 100%; /* Garante que ocupe 100% da largura */
-        margin: 0; /* Remove qualquer margem que possa interferir com o gap */
+        /* max-width: 100%; - Já é o padrão */
+        /* margin: 0; - Já é o padrão, mas mantido para clareza */
     }
     .naipe-section h3 {
         font-size: 1.1rem; /* Reduz o tamanho do título do naipe */
