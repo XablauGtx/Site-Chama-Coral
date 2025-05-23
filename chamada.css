@@ -166,9 +166,77 @@ button:hover {
     background-color: #a8e6cf; /* Cor para Baixo */
 }
 
-/* MEDIA QUERIES para responsividade - MUITO IMPORTANTE! */
 @media (max-width: 768px) {
+    main {
+        padding: 15px; /* Reduz o padding do main para melhor aproveitamento do espaço */
+    }
+    header {
+        flex-direction: column; /* Empilha o cabeçalho (título e navegação) */
+        align-items: flex-start; /* Alinha os itens do cabeçalho à esquerda */
+        padding: 10px 15px; /* Ajusta o padding do cabeçalho */
+    }
+    header h1 {
+        margin-bottom: 10px; /* Espaço entre o título e a navegação */
+    }
+    header nav {
+        width: 100%; /* Navegação ocupa a largura total */
+        text-align: center; /* Centraliza os links de navegação */
+    }
+    header nav a {
+        margin: 0 8px; /* Ajusta a margem entre os links da navegação */
+        font-size: 0.95rem; /* Levemente menor a fonte dos links */
+    }
+    .card {
+        padding: 15px; /* Reduz o padding interno dos cards */
+    }
+    .card h2 {
+        font-size: 1.3rem; /* Reduz o tamanho do título do card */
+    }
+
+    /* Ajustes para os blocos de naipe na página de auto-registro */
     .naipe-section {
         max-width: 100%; /* Em telas menores, cada naipe ocupa a largura total */
+        min-width: unset; /* Remove o min-width para maior flexibilidade */
+        margin-bottom: 15px; /* Adiciona um pequeno espaçamento entre os blocos empilhados */
+    }
+    /* Se você quiser 2 colunas em tablets, altere o max-width acima para: max-width: calc(50% - 10px); */
+}
+
+/* Para telas muito pequenas (celulares) */
+@media (max-width: 480px) {
+    main {
+        padding: 10px; /* Mais ajuste no padding do main para telas muito pequenas */
+    }
+    header {
+        padding: 8px 10px; /* Mais ajuste no padding do cabeçalho */
+    }
+    header h1 {
+        font-size: 1.2rem; /* Título menor para celular */
+    }
+    header nav a {
+        font-size: 0.9rem; /* Links de navegação menores */
+        margin: 0 5px; /* Margem reduzida */
+    }
+    
+    /* Blocos de naipe em uma única coluna para celulares */
+    #lista-presencas {
+        flex-direction: column; /* Força a empilhar os blocos de naipe */
+        align-items: stretch; /* Garante que ocupem a largura total */
+        gap: 15px; /* Espaçamento entre os blocos empilhados */
+    }
+    .naipe-section {
+        padding: 15px; /* Reduz o padding interno do bloco de naipe */
+        max-width: 100%; /* Garante que ocupe 100% da largura */
+        margin: 0; /* Remove qualquer margem que possa interferir com o gap */
+    }
+    .naipe-section h3 {
+        font-size: 1.1rem; /* Reduz o tamanho do título do naipe */
+    }
+    .naipe-section ul li {
+        font-size: 0.95rem; /* Reduz o tamanho da fonte dos nomes */
     }
 }
+
+/* ------------------------------------------------------------- */
+/* FIM: MEDIA QUERIES PARA RESPONSIVIDADE EM CELULARES */
+/* ------------------------------------------------------------- */

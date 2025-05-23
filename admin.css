@@ -15,6 +15,9 @@ header {
 }
 
 header h1 {
+    display: flex; /* Mantém o alinhamento do ícone/texto se houver */
+    align-items: center;
+    gap: 10px;
     font-size: 1.5rem;
 }
 
@@ -27,7 +30,7 @@ header nav a {
 
 main {
     padding: 20px;
-    max-width: 800px;
+    max-width: 800px; /* Mantém a largura máxima para desktop */
     margin: auto;
 }
 
@@ -37,26 +40,45 @@ main {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
     margin-bottom: 20px;
+    text-align: center; /* Centraliza o conteúdo principal do card */
 }
 
 .card h2 {
     margin-top: 0;
     font-size: 1.5rem;
     color: #7c3aed;
-    text-align: center;
 }
 
-input[type="password"], input[type="text"], select {
+/* O .card2 pode ser mesclado com .card se tiver o mesmo estilo */
+/* Se tiver diferenças, mantenha-o separado, mas alinhe o conteúdo */
+.card2 {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center; /* Centraliza o conteúdo principal do card2 */
+}
+
+.card2 h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: #7c3aed;
+}
+
+/* Inputs, Selects e Buttons - Ajustes gerais */
+input, select, button {
     padding: 10px;
     margin: 10px 0;
-    width: 100%;
+    width: 100%; /* Ajustado para 100% para melhor responsividade */
+    box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura */
     border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 1rem;
 }
 
-input[type="password"]:focus, input[type="text"]:focus, select:focus {
-    border-color: #7c3aed;
+input {
+    border: 1px solid #7c3aed;
 }
 
 button {
@@ -64,10 +86,7 @@ button {
     color: white;
     border: none;
     cursor: pointer;
-    padding: 10px;
-    border-radius: 8px;
     transition: background 0.3s;
-    width: 100%;
 }
 
 button:hover {
@@ -79,16 +98,16 @@ button:hover {
 }
 
 /* ------------------------------------------------------------- */
-/* INÍCIO: ESTILOS ATUALIZADOS PARA O RESUMO POR NAIPES (ADMIN) */
+/* INÍCIO: ESTILOS PARA O RESUMO POR NAIPES (ADMIN) */
 /* ------------------------------------------------------------- */
 
 #resumo-naipes {
     display: flex; /* Habilita Flexbox para alinhar os cards */
     justify-content: space-between; /* Distribui os itens com espaço entre eles */
-    gap: 15px; /* Espaçamento entre os cards (melhor que margin para flexbox) */
+    gap: 15px; /* Espaçamento entre os cards */
     margin-top: 20px;
-    flex-wrap: wrap; /* Permite que os cards quebrem para a próxima linha em telas menores */
-    align-items: flex-start; /* Alinha os itens ao topo se tiverem alturas diferentes */
+    flex-wrap: wrap; /* Permite que os cards quebrem para a próxima linha */
+    align-items: flex-start; /* Alinha os itens ao topo */
 }
 
 #resumo-naipes p {
@@ -98,18 +117,19 @@ button:hover {
     text-align: center;
     flex: 1; /* Permite que os itens cresçam e encolham */
     min-width: 150px; /* Largura mínima para cada card antes de quebrar a linha */
-    max-width: 23%; /* Permite que 4 cards caibam em uma linha, considerando o gap */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra leve */
+    max-width: calc(25% - 15px); /* Para tentar 4 por linha, ajustado para o gap */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     box-sizing: border-box; /* Inclui padding e border na largura total */
     margin: 0; /* Remove margens para usar o gap do pai */
+    font-size: 0.9em; /* Ajusta o tamanho da fonte para o texto "Soprano: participantes" */
 }
 
 #resumo-naipes p span {
-    font-weight: bold; /* Destaca o número de participantes */
+    font-weight: bold;
     display: block; /* Garante que o número fique em sua própria linha */
-    font-size: 1.5rem; /* Torna o número maior */
-    color: #333; /* Cor para o número */
-    margin-top: 5px; /* Espaçamento acima do número */
+    font-size: 2.2em; /* Torna o número maior e mais destacado */
+    color: #333;
+    margin-top: 8px; /* Mais espaço acima do número */
 }
 
 /* Cores de fundo específicas para os cards de resumo por naipe */
@@ -119,7 +139,7 @@ button:hover {
 #resumo-naipes p.baixo { background-color: #a8e6cf; }
 
 /* ------------------------------------------------------------- */
-/* FIM: ESTILOS ATUALIZADOS PARA O RESUMO POR NAIPES (ADMIN) */
+/* FIM: ESTILOS PARA O RESUMO POR NAIPES (ADMIN) */
 /* ------------------------------------------------------------- */
 
 
@@ -127,22 +147,22 @@ button:hover {
 #lista-participantes table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px; /* Espaçamento da tabela em relação ao resumo */
+    margin-top: 20px;
 }
 
 #lista-participantes th, #lista-participantes td {
-    padding: 10px; /* Espaçamento interno */
+    padding: 10px;
     border-bottom: 1px solid #ddd;
-    text-align: left; /* Alinhamento padrão para a maioria das colunas */
+    text-align: left;
 }
 
 /* Centraliza o cabeçalho da coluna "Naipe" */
-#lista-participantes th:nth-child(2) { /* Seleciona a segunda célula <th> (Naipe) */
+#lista-participantes th:nth-child(2) {
     text-align: center;
 }
 
 /* Centraliza o conteúdo das células da coluna "Naipe" */
-#lista-participantes td:nth-child(2) { /* Seleciona a segunda célula <td> (Naipe) */
+#lista-participantes td:nth-child(2) {
     text-align: center;
 }
 
@@ -155,49 +175,159 @@ button:hover {
     background-color: #f9f9f9;
 }
 
-/* Estilo para a "caixinha" do naipe dentro da tabela */
 .naipe {
     display: inline-block;
-    padding: 2px 8px; /* Menor padding para caixas menores */
-    border-radius: 12px; /* Cantos arredondados */
+    padding: 2px 8px;
+    border-radius: 12px;
     color: #333;
     font-weight: bold;
-    font-size: 0.9rem; /* Tamanho da fonte menor */
+    font-size: 0.9rem;
 }
 
-/* Cores dos naipes nas caixinhas da tabela (mantidas) */
-.naipe.soprano {
-    background-color: #f8d4e2;
+/* Cores dos naipes nas caixinhas da tabela */
+.naipe.soprano { background-color: #f8d4e2; }
+.naipe.contralto { background-color: #d0eaff; }
+.naipe.tenor { background-color: #ffe0a3; }
+.naipe.baixo { background-color: #a8e6cf; }
+
+.loading {
+    color: #7c3aed;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-style: italic;
 }
 
-.naipe.contralto {
-    background-color: #d0eaff;
+.registro-item { /* Este estilo é mais para a página de auto-registro, mas pode ficar aqui se quiser */
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
 }
 
-.naipe.tenor {
-    background-color: #ffe0a3;
+.registro-item:last-child {
+    border-bottom: none;
 }
 
-.naipe.baixo {
-    background-color: #a8e6cf;
+#data-evento { /* Se este ID for usado em admin.html, deve estar visível */
+    float: right;
+    color: #7c3aed;
+    font-size: 1rem;
 }
 
-/* MEDIA QUERIES para responsividade */
+/* ------------------------------------------------------------- */
+/* MEDIA QUERIES PARA RESPONSIVIDADE (ADMIN) */
+/* ------------------------------------------------------------- */
+
 @media (max-width: 768px) {
+    main {
+        padding: 15px; /* Ajusta o padding do main em telas menores */
+    }
+    header {
+        flex-direction: column; /* Empilha o cabeçalho em telas menores */
+        align-items: flex-start;
+    }
+    header h1 {
+        margin-bottom: 10px;
+    }
+    header nav {
+        width: 100%;
+        text-align: center;
+    }
+    header nav a {
+        margin: 0 10px; /* Ajusta margens entre links na navegação empilhada */
+    }
+    .card {
+        padding: 15px; /* Reduz o padding dos cards */
+    }
+    .card h2 {
+        font-size: 1.3rem; /* Ajusta o tamanho do título */
+    }
+    input, select, button {
+        margin: 8px 0; /* Ajusta margem de inputs/buttons */
+    }
+
+    /* Resumo por naipes em 2 colunas para tablets */
     #resumo-naipes p {
-        max-width: 48%; /* Em telas de até 768px, 2 cards por linha */
+        max-width: calc(50% - 10px); /* 2 cards por linha, ajustado para o gap */
+        min-width: unset; /* Remove min-width para ser mais flexível */
+        font-size: 0.85em; /* Ajusta o tamanho da fonte */
+    }
+    #resumo-naipes p span {
+        font-size: 1.8em; /* Ajusta o tamanho do número */
+    }
+
+    /* Tabela - responsividade básica */
+    #lista-participantes table,
+    #lista-participantes thead,
+    #lista-participantes tbody,
+    #lista-participantes th,
+    #lista-participantes td,
+    #lista-participantes tr {
+        display: block; /* Força a tabela a se comportar como blocos */
+    }
+    #lista-participantes thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px; /* Esconde o cabeçalho da tabela */
+    }
+    #lista-participantes tr {
+        border: 1px solid #ddd;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    #lista-participantes td {
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%; /* Espaço para o "label" */
+        text-align: right; /* Alinha o conteúdo à direita */
+    }
+    #lista-participantes td:before {
+        content: attr(data-label); /* Usa o atributo data-label como "cabeçalho" */
+        position: absolute;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: bold;
+        color: #7c3aed;
+    }
+    /* Mantenha o Naipe centralizado, mesmo com data-label */
+    #lista-participantes td:nth-child(2) {
+        text-align: center;
+    }
+    #lista-participantes td:nth-child(2):before {
+        text-align: left; /* Garante que o label do naipe continue à esquerda */
     }
 }
 
 @media (max-width: 480px) {
+    main {
+        padding: 10px;
+    }
+    /* Resumo por naipes em 1 coluna para celulares */
     #resumo-naipes {
-        flex-direction: column; /* Em telas muito pequenas, empilha os cards verticalmente */
-        align-items: center; /* Centraliza os cards quando empilhados */
+        flex-direction: column; /* Empilha os cards verticalmente */
+        align-items: stretch; /* Estica os cards para a largura total */
     }
     #resumo-naipes p {
-        max-width: 90%; /* Cada card ocupa quase toda a largura */
+        max-width: 100%; /* Ocupa a largura total */
         width: 100%; /* Garante que ocupe o máximo possível */
-        margin-left: 0; /* Remove margens que poderiam sobrar */
-        margin-right: 0;
+        margin: 0; /* Remove margens */
+        padding: 15px; /* Reduz o padding */
+    }
+    #resumo-naipes p:not(:last-child) {
+        margin-bottom: 15px; /* Espaçamento entre os cards empilhados */
+    }
+    #resumo-naipes p span {
+        font-size: 1.5em; /* Reduz o tamanho do número ainda mais */
+    }
+    /* Ajustes para a tabela em telas muito pequenas */
+    #lista-participantes td {
+        padding-left: 45%; /* Ajusta o padding para telas menores */
+    }
+    #lista-participantes td:before {
+        width: 40%; /* Ajusta a largura do label */
     }
 }
