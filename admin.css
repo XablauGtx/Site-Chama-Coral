@@ -1,0 +1,173 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background: #f4f2ff;
+    color: #333;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    font-size: 1.5rem;
+}
+
+header nav a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #7c3aed;
+    font-weight: 500;
+}
+
+main {
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.card h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: #7c3aed;
+}
+
+input[type="password"], input[type="text"], select {
+    padding: 10px;
+    margin: 10px 0;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+input[type="password"]:focus, input[type="text"]:focus, select:focus {
+    border-color: #7c3aed;
+}
+
+button {
+    background: #7c3aed;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background 0.3s;
+    width: 100%;
+}
+
+button:hover {
+    background: #6b21a8;
+}
+
+#relatorio, #dados-relatorio {
+    display: none; /* Oculta inicialmente */
+}
+
+#resumo-naipes {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+#resumo-naipes p {
+    background: #f0f4ff; /* Cor de fundo leve */
+    border-radius: 8px;
+    padding: 40px;
+    text-align: center;
+    flex: 1; /* Permite que os itens ocupem espaço igual */
+    margin: 0 10px; /* Espaçamento entre os itens */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra leve */
+}
+
+#resumo-naipes p span {
+    font-weight: bold; /* Destaca o número de participantes */
+}
+
+/* Cores dos naipes */
+.soprano {
+    background-color: #f8d4e2; /* Cor para Soprano */
+}
+
+.contralto {
+    background-color: #d0eaff; /* Cor para Contralto */
+}
+
+.tenor {
+    background-color: #ffe0a3; /* Cor para Tenor */
+}
+
+.baixo {
+    background-color: #a8e6cf; /* Cor para Baixo */
+}
+
+/* Estilo da tabela de participantes */
+#lista-participantes table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#lista-participantes th, #lista-participantes td {
+    padding: 10px; /* Espaçamento interno */
+    border-bottom: 1px solid #ddd;
+    text-align: left; /* Alinhamento padrão para a maioria das colunas */
+}
+
+/* Centraliza o cabeçalho da coluna "Naipe" */
+#lista-participantes th:nth-child(2) { /* Seleciona a segunda célula <th> (Naipe) */
+    text-align: center;
+}
+
+/* Centraliza o conteúdo das células da coluna "Naipe" */
+#lista-participantes td:nth-child(2) { /* Seleciona a segunda célula <td> (Naipe) */
+    text-align: center;
+}
+
+#lista-participantes th {
+    background-color: #f0f4ff;
+    font-weight: bold;
+}
+
+#lista-participantes tr:hover {
+    background-color: #f9f9f9;
+}
+
+.naipe {
+    display: inline-block;
+    padding: 2px 8px; /* Menor padding para caixas menores */
+    border-radius: 12px; /* Cantos arredondados */
+    color: #333;
+    font-weight: bold;
+    font-size: 0.9rem; /* Tamanho da fonte menor */
+}
+
+/* Cores dos naipes (mantidas) */
+.soprano {
+    background-color: #f8d4e2;
+}
+
+.contralto {
+    background-color: #d0eaff;
+}
+
+.tenor {
+    background-color: #ffe0a3;
+}
+
+.baixo {
+    background-color: #a8e6cf;
+}

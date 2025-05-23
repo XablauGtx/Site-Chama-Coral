@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presença Chama Coral</title>
+    <link rel="stylesheet" href="chamada.css">
+</head>
+<body>
+    <header>
+        <h1>
+            <img src="logo.png" alt="Logo" height="32">
+            Presença Chama Coral
+        </h1>
+        <nav>
+            <a href="Chamada.html">Auto-Registro</a>
+            <a href="adminchamada.html">Admin</a>
+        </nav>
+    </header>
+    <main>
+        <div class="card">
+            <h2>Registro de Presença <span id="data-evento" style="float:right;color:#7c3aed;"></span></h2>
+            <input type="text" id="nome" placeholder="Nome completo">
+            <select id="naipe">
+                <option value="">Selecione seu naipe</option>
+                <option value="Soprano">Soprano</option>
+                <option value="Contralto">Contralto</option>
+                <option value="Tenor">Tenor</option>
+                <option value="Baixo">Baixo</option>
+            </select>
+            <button onclick="registrarPresenca()">Registrar Minha Presença</button>
+        </div>
+
+        <div class="card">
+            <h2>Participantes Presentes Hoje <a href="#" onclick="carregarPresencas()" style="float:right;color:#7c3aed;font-size:0.9rem">🔄 Atualizar</a></h2>
+            <div id="lista-presencas">
+                <div class="loading">⏳ Carregando registros...</div>
+            </div>
+        </div>
+    </main>
+    <script src="chamada.js"></script>
+    <script src="admin.js"></script>
+</html>

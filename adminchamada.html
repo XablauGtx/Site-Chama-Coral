@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Presença Chama Coral</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <header>
+        <h1>Presença Chama Coral</h1>
+        <nav>
+            <a href="index.html">Auto-Registro</a>
+            <a href="admin.html">Admin</a>
+        </nav>
+    </header>
+    <main>
+        <div class="card">
+            <h2>Área Administrativa</h2>
+            <input type="password" id="senha-admin" placeholder="Senha de admin">
+            <button onclick="entrarAdmin()">Entrar</button>
+        </div>
+
+        <div class="card" id="relatorio" style="display: none;">
+            <h2>Selecionar Data</h2>
+            <select id="data-select">
+                <option value="">Selecione uma data</option>
+                <!-- As opções serão adicionadas dinamicamente -->
+            </select>
+            <button onclick="carregarDados()">Carregar Dados</button>
+        </div>
+
+        <div class="card" id="dados-relatorio" style="display: none;">
+            <h2>Ensaios do Chama Coral - <span id="data-ensaio">22/05/2025</span></h2>
+            <p>Total de participantes: <span id="total-participantes">0</span></p>
+            <div id="resumo-naipes">
+                <p class="soprano">Soprano: <span id="soprano-count">0</span> participantes</p>
+                <p class="contralto">Contralto: <span id="contralto-count">0</span> participantes</p>
+                <p class="tenor">Tenor: <span id="tenor-count">0</span> participantes</p>
+                <p class="baixo">Baixo: <span id="baixo-count">0</span> participantes</p>
+            </div>
+            <h3>Lista de Participantes</h3>
+<div id="lista-participantes">
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Naipe</th>
+                <th>Hora de Registro</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Os participantes serão exibidos aqui -->
+        </tbody>
+    </table>
+</div>
+            <button onclick="exportarCSV()">Exportar CSV</button>
+        </div>
+    </main>
+    <script src="admin.js"></script>
+    <script src="chamada.js"></script>
+</body>
+</html>
