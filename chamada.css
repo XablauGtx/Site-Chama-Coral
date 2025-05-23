@@ -202,7 +202,7 @@ button:hover {
         width: 100%; /* Garante que o título ocupe a largura total */
     }
     header nav {
-        margin-top: 1.5rem; /* Dá um espaço maior entre o título e a nav */
+        margin-top: 2rem; /* Dá um espaço maior entre o título e a nav */
         width: 100%; /* Garante que a navegação ocupe a largura total disponível */
         text-align: right; /* ALINHA O CONTEÚDO DA NAVEGAÇÃO (SEU LINK/BOTÃO ADMIN) À DIREITA */
     }
