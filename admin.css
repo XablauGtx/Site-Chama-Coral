@@ -214,127 +214,106 @@ button:hover {
 }
 
 /* ------------------------------------------------------------- */
-/* MEDIA QUERIES PARA RESPONSIVIDADE (ADMIN) */
+/* INÍCIO: MEDIA QUERIES PARA RESPONSIVIDADE GERAL */
 /* ------------------------------------------------------------- */
 
+/* Para telas até 768px (tablets na vertical e celulares maiores) */
 @media (max-width: 768px) {
     main {
-        padding: 15px; /* Ajusta o padding do main em telas menores */
+        padding: 15px;
     }
-    header { 
-        align-items: flex-start; /* Alinha os itens do cabeçalho à esquerda */
-        padding: 10px 15px; /* Ajusta o padding do cabeçalho */
+    header {
+        align-items: flex-start;
+        padding: 10px 15px;
     }
     header h1 {
-        margin-bottom: 10px; /* Espaço entre o título e a navegação */
-        width: 100%; /* Garante que o título ocupe a largura total */
+        margin-bottom: 10px;
+        width: 100%;
     }
     header nav {
-        margin-top: 1rem; /* Dá um espaço maior entre o título e a nav */
-        width: 100%; /* Garante que a navegação ocupe a largura total disponível */
-        text-align: right; /* ALINHA O CONTEÚDO DA NAVEGAÇÃO (SEU LINK/BOTÃO ADMIN) À DIREITA */
+        margin-top: 1rem;
+        width: 100%;
+        text-align: right;
     }
     header nav a {
-        margin-left: auto; /* Empurra o link para a direita */
-        margin-right: 0; /* Zera qualquer margem direita existente */
-        display: inline-block; /* Permite que margin-left: auto funcione */
-        padding: 5px 10px; /* Adiciona um pouco de padding para parecer um botão */
-        border: 1px solid #7c3aed; /* Borda para destaque */
-        border-radius: 5px; /* Cantos arredondados */
+        margin-left: auto;
+        margin-right: 0;
+        display: inline-block;
+        padding: 5px 10px;
+        border: 1px solid #7c3aed;
+        border-radius: 5px;
     }
     .card {
-        padding: 15px; /* Reduz o padding dos cards */
+        padding: 15px;
     }
     .card h2 {
-        font-size: 1.3rem; /* Ajusta o tamanho do título */
+        font-size: 1.3rem;
     }
-    input, select, button {
-        margin: 8px 0; /* Ajusta margem de inputs/buttons */
-    }
-
-    /* Resumo por naipes em 2 colunas para tablets */
-    #resumo-naipes p {
-        max-width: calc(50% - 10px); /* 2 cards por linha, ajustado para o gap */
-        min-width: unset; /* Remove min-width para ser mais flexível */
-        font-size: 0.85em; /* Ajusta o tamanho da fonte */
-    }
-    #resumo-naipes p span {
-        font-size: 1.8em; /* Ajusta o tamanho do número */
+    .naipe-section {
+        max-width: 100%;
     }
 
-    /* Tabela - responsividade básica */
-    #lista-participantes table,
-    #lista-participantes thead,
-    #lista-participantes tbody,
-    #lista-participantes th,
-    #lista-participantes td,
-    #lista-participantes tr {
-        display: block; /* Força a tabela a se comportar como blocos */
+    /* Responsividade para a lista de participantes do Admin */
+    .participante-admin-header,
+    .participante-admin-item {
+        grid-template-columns: 1fr; /* Empilha as colunas */
+        padding: 8px 10px;
+        gap: 5px; /* Espaçamento entre os itens empilhados */
     }
-    #lista-participantes thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px; /* Esconde o cabeçalho da tabela */
+    .participante-admin-header .col-nome,
+    .participante-admin-item .col-nome,
+    .participante-admin-header .col-naipe,
+    .participante-admin-item .col-naipe,
+    .participante-admin-header .col-registro,
+    .participante-admin-item .col-registro {
+        text-align: left; /* Alinha tudo à esquerda quando empilhado */
     }
-    #lista-participantes tr {
-        border: 1px solid #ddd;
-        margin-bottom: 10px;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    #lista-participantes td {
-        border: none;
-        border-bottom: 1px solid #eee;
-        position: relative;
-        padding-left: 50%; /* Espaço para o "label" */
-        text-align: center; 
-    }
-    #lista-participantes td:before {
-        content: attr(data-label); /* Usa o atributo data-label como "cabeçalho" */
-        position: absolute;
-        left: 6px;
-        width: 45%;
-        padding-right: 10px;
-        white-space: nowrap;
-        text-align: left;
-        font-weight: bold;
-        color: #7c3aed;
-    }
-    /* Mantenha o Naipe centralizado, mesmo com data-label */
-    #lista-participantes td:nth-child(2) {
-        text-align: center;
-    }
-    #lista-participantes td:nth-child(2):before {
-        text-align: center; /* Garante que o label do naipe continue à esquerda */
+    .participante-admin-item .col-naipe {
+        text-align: left; /* Garante que a tag também fique à esquerda */
     }
 }
 
+/* Para telas muito pequenas (celulares) */
 @media (max-width: 480px) {
     main {
         padding: 10px;
     }
-    /* Resumo por naipes em 1 coluna para celulares */
-    #resumo-naipes {
-        flex-direction: column; /* Empilha os cards verticalmente */
-        align-items: stretch; /* Estica os cards para a largura total */
+    header {
+        padding: 8px 10px;
     }
-    #resumo-naipes p {
-        max-width: 100%; /* Ocupa a largura total */
-        width: 100%; /* Garante que ocupe o máximo possível */
-        margin: 0; /* Remove margens */
-        padding: 15px; /* Reduz o padding */
+    header h1 {
+        font-size: 1.2rem;
     }
-    #resumo-naipes p:not(:last-child) {
-        margin-bottom: 15px; /* Espaçamento entre os cards empilhados */
+    header nav a {
+        font-size: 0.9rem;
+        padding: 3px 8px;
     }
-    #resumo-naipes p span {
-        font-size: 1.5em; /* Reduz o tamanho do número ainda mais */
+    
+    #lista-presencas {
+        gap: 15px;
     }
-    /* Ajustes para a tabela em telas muito pequenas */
-    #lista-participantes td {
-        padding-left: 45%; /* Ajusta o padding para telas menores */
+    .naipe-section {
+        padding: 15px;
+        margin: 0;
     }
-    #lista-participantes td:before {
-        width: 40%; /* Ajusta a largura do label */
+    .naipe-section h3 {
+        font-size: 1.1rem;
+    }
+    .naipe-section ul li {
+        font-size: 0.95rem;
+    }
+
+    /* Ajustes menores para a tabela de admin em telas muito pequenas */
+    .participante-admin-header .col-nome,
+    .participante-admin-item .col-nome,
+    .participante-admin-header .col-naipe,
+    .participante-admin-item .col-naipe,
+    .participante-admin-header .col-registro,
+    .participante-admin-item .col-registro {
+        font-size: 0.9rem;
     }
 }
+
+/* ------------------------------------------------------------- */
+/* FIM: MEDIA QUERIES PARA RESPONSIVIDADE GERAL */
+/* ------------------------------------------------------------- */
