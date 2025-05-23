@@ -2,7 +2,7 @@
 
 const nomeInput = document.getElementById("nome");
 const naipeSelect = document.getElementById("naipe");
-const listaPresencas = document.getElementById("lista-presencas");
+const listaPresencas = document.getElementById("lista-presencas"); // Este será o container principal
 
 function getDataChave() {
     const hoje = new Date();
@@ -24,16 +24,14 @@ function registrarPresenca() {
 
     const registros = JSON.parse(localStorage.getItem(data) || "[]");
 
-    // --- NOVO: Verificação de duplicidade ---
-    const nomeNormalizado = nome.toLowerCase(); // Normaliza o nome para comparação (ignora maiúsculas/minúsculas)
+    const nomeNormalizado = nome.toLowerCase();
     const jaRegistrado = registros.some(r => r.nome.toLowerCase() === nomeNormalizado);
 
     if (jaRegistrado) {
         alert("Você já registrou sua presença para esta data com este nome!");
-        nomeInput.value = ""; // Opcional: Limpa o campo do nome
-        return; // Sai da função, impedindo o registro
+        nomeInput.value = "";
+        return;
     }
-    // ----------------------------------------
 
     const registro = {
         nome: nome,
@@ -55,19 +53,50 @@ function registrarPresenca() {
 function carregarPresencas() {
     const data = getDataChave();
     const registros = JSON.parse(localStorage.getItem(data) || "[]");
-    listaPresencas.innerHTML = ""; // Limpa antes de adicionar
+    listaPresencas.innerHTML = ""; // Limpa o conteúdo existente
 
     if (registros.length === 0) {
         listaPresencas.innerHTML = '<div class="loading">⚠️ Nenhum registro ainda.</div>';
         return;
     }
 
+    // Organiza os participantes por naipe
+    const naipesAgrupados = {
+        Soprano: [],
+        Contralto: [],
+        Tenor: [],
+        Baixo: []
+    };
+
     registros.forEach(r => {
-        const div = document.createElement("div");
-        div.className = "registro-item";
-        div.textContent = `${r.nome} - ${r.naipe} (Registrado às ${r.horaRegistro || 'Indefinido'})`;
-        listaPresencas.appendChild(div);
+        if (naipesAgrupados[r.naipe]) {
+            naipesAgrupados[r.naipe].push(r);
+        }
     });
+
+    // Percorre os naipes e cria as seções
+    for (const naipe in naipesAgrupados) {
+        const participantesDoNaipe = naipesAgrupados[naipe];
+
+        if (participantesDoNaipe.length > 0) {
+            const sectionNaipe = document.createElement("div");
+            sectionNaipe.className = `naipe-section ${naipe.toLowerCase()}`; // Adiciona classe para estilo
+
+            const headerNaipe = document.createElement("h3");
+            headerNaipe.textContent = `${naipe} (${participantesDoNaipe.length} participantes)`;
+            sectionNaipe.appendChild(headerNaipe);
+
+            const ul = document.createElement("ul"); // Usar uma lista não ordenada para os nomes
+            
+            participantesDoNaipe.forEach(p => {
+                const li = document.createElement("li");
+                li.textContent = `${p.nome} (Registrado às ${p.horaRegistro || 'Indefinido'})`;
+                ul.appendChild(li);
+            });
+            sectionNaipe.appendChild(ul);
+            listaPresencas.appendChild(sectionNaipe);
+        }
+    }
 }
 
 // Chame registrarPresenca() através de um botão no seu HTML

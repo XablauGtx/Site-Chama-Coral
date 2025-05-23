@@ -40,9 +40,25 @@ main {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     padding: 20px;
     margin-bottom: 20px;
+    text-align: center;
 }
 
 .card h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: #7c3aed;
+}
+
+.card2 {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.card2 h2 {
     margin-top: 0;
     font-size: 1.5rem;
     color: #7c3aed;
@@ -94,4 +110,65 @@ button:hover {
     float: right;
     color: #7c3aed;
     font-size: 1rem;
+}
+
+
+/* Estilos para a seção de cada naipe na página de Auto-Registro */
+.naipe-section {
+    background-color: #fff; /* Fundo branco padrão */
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px; /* Espaçamento entre os blocos de naipes */
+    text-align: left; /* Garante que o texto esteja alinhado à esquerda dentro do bloco */
+}
+
+.naipe-section h3 {
+    margin-top: 0;
+    font-size: 1.3rem;
+    color: #7c3aed; /* Cor do título do naipe */
+    border-bottom: 1px solid #eee; /* Linha de separação */
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.naipe-section ul {
+    list-style: none; /* Remove marcadores de lista padrão */
+    padding: 0;
+    margin: 0;
+}
+
+.naipe-section ul li {
+    padding: 8px 0;
+    border-bottom: 1px dashed #f0f0f0; /* Linha tracejada entre os nomes */
+    color: #555;
+    font-size: 1rem;
+}
+
+.naipe-section ul li:last-child {
+    border-bottom: none; /* Remove a linha do último item */
+}
+
+/* Cores de fundo específicas para cada naipe (reaproveitando as que você já tem) */
+.naipe-section.soprano {
+    background-color: #f8d4e2; /* Cor para Soprano */
+}
+
+.naipe-section.contralto {
+    background-color: #d0eaff; /* Cor para Contralto */
+}
+
+.naipe-section.tenor {
+    background-color: #ffe0a3; /* Cor para Tenor */
+}
+
+.naipe-section.baixo {
+    background-color: #a8e6cf; /* Cor para Baixo */
+}
+
+/* MEDIA QUERIES para responsividade - MUITO IMPORTANTE! */
+@media (max-width: 768px) {
+    .naipe-section {
+        max-width: 100%; /* Em telas menores, cada naipe ocupa a largura total */
+    }
 }
