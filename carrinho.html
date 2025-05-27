@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt_BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chama Coral - Meu Carrinho</title>
+    <link rel="stylesheet" href="assets/styles"> 
+    <link rel="stylesheet" href="assets/css/carrinho.css"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+<body>
+    <header id="header" class="scroll">
+        <nav class="container showtoggle ">
+          <a class="logo" href="#"><img src="assets/img/LOGO CHAMA.png" alt="Logo Chama"></a>
+      
+          <div class="menu">
+            <ul class="grid">
+              <li><a class="title" href="#home">Inicio</a></li>
+              <li><a class="title" href="#about">Sobre</a></li>
+              <li><a class="title" href="Chamada.html">Chamada</a></li>
+              <li><a class="title" href="chamamode.html">Moda Chama</a></li>
+              <li><a class="title" href="#contact">Contato</a></li>
+            </ul>
+          </div>
+          <div class="toggle icon-menu"></div>
+          <div class="toggle icon-close"></div>
+      
+        </nav>
+      </header>
+
+    <main>
+        <div class="cart-page-container">
+            <header>
+                <h2 class="title">Meu Carrinho</h2>
+            </header>
+
+            <div id="cart-items-display" class="cart-items">
+                <p style="text-align: center; padding: 2rem;">Seu carrinho está vazio.</p>
+            </div>
+
+            <div id="cart-summary" class="cart-summary">
+                Total: <span id="cart-total">R$ 0,00</span>
+            </div>
+
+            <button id="checkout-button" class="checkout-btn">Finalizar Compra via WhatsApp</button>
+            <a href="partituras.html" class="back-to-shop">Continuar Comprando Partituras</a>
+        </div>
+    </main>
+
+    <footer class="section">
+        <div class="container grid">
+            <div class="brand">
+                </div>
+            <div class="social">
+                <a href="https://www.instagram.com/chamacoral/" target="_blank"><i class="ri-instagram-line"></i></a>
+                <a href="https://open.spotify.com/intl-pt/artist/0TDC1ivOZb4LiNYWYirJ2B?si=uk7sYX4FTaeIdQwNx-JwvA" target="_blank"><i class="ri-spotify-fill"></i></a>
+                <a href="https://www.youtube.com/@chamacoral" target="_blank"><i class="ri-youtube-fill"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <a href="#" class="back-to-top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;"><i class="ri-arrow-up-line"></i></a>
+
+    <script src="assets/js/carrinho-page.js"></script>
+    <script src="assets/js/partituras-cart.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/scrollreveal"></script>
+
+    </body>
+</html>

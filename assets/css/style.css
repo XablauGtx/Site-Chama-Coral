@@ -214,6 +214,148 @@ nav.show ul.grid {
   gap: 4rem;
 }
 
+/* === Cart Styles === */
+#cart {
+  padding-top: 5rem; /* Ajuste conforme necessário */
+  padding-bottom: 5rem; /* Ajuste conforme necessário */
+  background-color: var(--body-color); /* Ou sua cor de fundo preferida */
+}
+
+#cart .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+#cart h2.title {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+#cart-items {
+  width: 100%;
+  max-width: 600px; /* Limita a largura para melhor legibilidade */
+  border: 1px solid var(--base-color); /* Usar var(--base-color) */
+  border-radius: 0.25rem;
+  padding: 1.5rem;
+  background-color: #fff; /* Fundo branco para a área de itens do carrinho */
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px dashed hsl(0 0% 88%); /* Usar um cinza claro */
+}
+
+.cart-item:last-child {
+  border-bottom: none; /* Sem borda para o último item */
+}
+
+.cart-item span {
+  flex-grow: 1;
+  font-weight: 500;
+  color: var(--title-color);
+}
+
+.cart-item input.item-quantity {
+  width: 50px;
+  text-align: center;
+  margin: 0 1rem;
+  padding: 0.3rem;
+  border: 1px solid hsl(0 0% 88%); /* Usar um cinza claro */
+  border-radius: 0.25rem;
+}
+
+.cart-item .remove-from-cart-btn {
+  background-color: var(--base-color); /* Usar sua cor primária */
+  color: #fff;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 0.8em;
+  transition: background 0.3s ease;
+}
+
+.cart-item .remove-from-cart-btn:hover {
+  background-color: var(--chama-color); /* Usar a cor de hover da sua paleta */
+}
+
+#cart-total {
+  width: 100%;
+  max-width: 600px;
+  text-align: right;
+  margin-top: 1.5rem;
+  font-size: 1.25rem;
+  color: var(--title-color);
+}
+
+#cart-total h3 {
+  margin: 0;
+}
+
+#cart-total span {
+  font-weight: bold;
+  color: var(--base-color); /* Usar sua cor primária */
+}
+
+#checkout-btn {
+  margin-top: 2rem;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  background-color: var(--base-color);
+  color: #fff;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#checkout-btn:hover {
+  background-color: var(--chama-color); /* Usar a cor de hover da sua paleta */
+}
+
+/* Estilo para os botões "Adicionar ao Carrinho" */
+.add-to-cart-btn {
+  background-color: var(--base-color);
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-weight: 500;
+  margin-top: 1rem; /* Espaçamento da descrição */
+  transition: background 0.3s ease;
+}
+
+.add-to-cart-btn:hover {
+  background-color: var(--chama-color);
+}
+
+/* Ajustes para o layout do cartão existente, se necessário */
+.swiper-slide.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Empurra o botão para baixo */
+  align-items: center; /* Centraliza o conteúdo horizontalmente */
+  text-align: center;
+  padding: 2rem;
+  background: var(--body-color);
+  border: 1px solid var(--base-color); /* Usar var(--base-color) */
+  border-radius: 0.25rem;
+}
+
+.swiper-slide.card h3 {
+  margin-bottom: 0.5rem;
+}
+
+.swiper-slide.card p {
+  margin-bottom: 1rem;
+}
+
 /*====Troggle menu======  */
 .toggle {
   color: var(--base-color);
