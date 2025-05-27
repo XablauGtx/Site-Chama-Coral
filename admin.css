@@ -34,7 +34,7 @@ main {
     margin: auto;
 }
 
-.card, .card2 { /* Unificado os estilos base para .card e .card2 */
+.card, .card2 {
     background: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -47,27 +47,42 @@ main {
     margin-top: 0;
     font-size: 1.5rem;
     color: #7c3aed;
-    display: flex; /* Para alinhar o título com elementos flutuantes dentro do h2 */
+    display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 /* Inputs, Selects e Buttons - Ajustes gerais */
-input, select, button {
+input[type="text"], input[type="email"], input[type="password"], select, button, input[type="date"] { /* ATUALIZADO */
     padding: 10px;
-    margin: 10px auto; /* Centraliza horizontalmente dentro do card */
-    width: calc(100% - 20px); /* Ajustado para 100% menos o padding do card, para não transbordar */
-    max-width: 400px; /* Limita a largura máxima para campos de formulário */
-    display: block; /* Para que o margin: auto funcione */
+    margin: 10px auto;
+    width: calc(100% - 20px);
+    max-width: 400px;
+    display: block;
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 1rem;
 }
 
-input[type="date"] {
-    width: calc(100% - 20px);
-    max-width: 250px; /* Largura mais adequada para input de data */
+input[type="checkbox"] { /* NOVO: Estilo para checkbox */
+    width: auto !important; /* Sobrescreve a largura padrão */
+    display: inline-block !important; /* Para alinhar com o label */
+    margin-right: 10px;
+    vertical-align: middle; /* Alinha verticalmente com o texto */
+}
+
+label[for="novo-coralista"] { /* Estilo para o label da checkbox */
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0;
+    font-size: 1rem;
+    color: #555;
+}
+
+
+input {
+    border: 1px solid #7c3aed;
 }
 
 button {
@@ -82,7 +97,6 @@ button:hover {
     background: #6b21a8;
 }
 
-/* Oculta as seções de relatório inicialmente no admin.html */
 #relatorio-data-selector, #relatorio-completo {
     display: none;
 }
@@ -91,28 +105,28 @@ button:hover {
 /* INÍCIO: ESTILOS PARA O RESUMO POR NAIPES (ADMIN) */
 /* ------------------------------------------------------------- */
 
-.estatisticas { /* Novo seletor para o container das estatísticas */
+.estatisticas {
     display: flex;
-    justify-content: space-around; /* Distribui os itens uniformemente */
+    justify-content: space-around;
     gap: 15px;
     margin-top: 20px;
-    flex-wrap: wrap; /* Permite que os cards quebrem para a próxima linha */
+    flex-wrap: wrap;
     align-items: flex-start;
 }
 
-.estatisticas p { /* Estilo para cada item de estatística (Soprano, Contralto, etc.) */
-    background: #f0f4ff; /* Cor de fundo padrão */
+.estatisticas p {
+    background: #f0f4ff;
     border-radius: 8px;
-    padding: 15px 10px; /* Padding interno */
+    padding: 15px 10px;
     text-align: center;
-    flex: 1; /* Permite que os itens cresçam */
-    min-width: 120px; /* Largura mínima para cada card antes de quebrar a linha */
-    max-width: 23%; /* Para tentar 4 por linha, ajustado para o gap */
+    flex: 1;
+    min-width: 120px;
+    max-width: 23%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     margin: 0;
     font-size: 0.9em;
-    color: #555; /* Cor de texto mais suave para o rótulo */
+    color: #555;
 }
 
 .estatisticas p span {
@@ -123,7 +137,6 @@ button:hover {
     margin-top: 8px;
 }
 
-/* Cores de fundo específicas para os cards de resumo por naipe */
 .estatisticas p.soprano { background-color: #f8d4e2; }
 .estatisticas p.contralto { background-color: #d0eaff; }
 .estatisticas p.tenor { background-color: #ffe0a3; }
@@ -177,7 +190,6 @@ button:hover {
     border-bottom: none;
 }
 
-/* Cores de fundo para as seções de naipe (página de chamada) */
 .naipe-section.soprano { background-color: #fdf0f5; border-left: 5px solid #f8d4e2; }
 .naipe-section.contralto { background-color: #e6f7ff; border-left: 5px solid #d0eaff; }
 .naipe-section.tenor { background-color: #fff9e6; border-left: 5px solid #ffe0a3; }
@@ -189,13 +201,14 @@ button:hover {
     margin-top: 20px;
     border: 1px solid #eee;
     border-radius: 8px;
-    overflow: hidden; /* Garante que as bordas arredondadas funcionem bem */
+    overflow: hidden;
 }
 
 .participante-admin-header,
 .participante-admin-item {
+    /* NOVO: Adicionado mais uma coluna para 'Novo?' */
     display: grid;
-    grid-template-columns: 2fr 1fr 1.5fr; /* Nome, Naipe, Hora de Registro */
+    grid-template-columns: 2.5fr 1fr 1.5fr 0.8fr; /* Nome, Naipe, Hora, Novo? */
     padding: 12px 15px;
     border-bottom: 1px solid #eee;
     align-items: center;
@@ -211,19 +224,26 @@ button:hover {
 }
 
 .participante-admin-item:nth-child(even) {
-    background-color: #f9f9f9; /* Zebra striping */
+    background-color: #f9f9f9;
 }
 
 .participante-admin-item:last-child {
     border-bottom: none;
 }
 
+
+
 .col-naipe {
-    text-align: center; /* Centraliza a tag do naipe */
+    text-align: center;
 }
 
 .col-registro {
-    text-align: right; /* Alinha a hora de registro à direita */
+    text-align: right;
+}
+
+.col-novo-coralista { /* NOVO: Alinhamento para a nova coluna */
+    text-align: center;
+    font-weight: bold;
 }
 
 /* Tag de naipe na lista de admin */
@@ -234,7 +254,7 @@ button:hover {
     color: #333;
     font-weight: 600;
     font-size: 0.85rem;
-    min-width: 70px; /* Garante que todas as tags tenham uma largura mínima */
+    min-width: 70px;
     text-align: center;
 }
 
@@ -251,11 +271,10 @@ button:hover {
     gap: 10px;
     font-style: italic;
     padding: 20px;
-    justify-content: center; /* Centraliza o texto de carregamento */
+    justify-content: center;
 }
 
 #data-evento {
-    /* Este ID parece ser usado na página de chamada para mostrar a data atual */
     color: #7c3aed;
     font-size: 1rem;
 }
@@ -269,7 +288,6 @@ button:hover {
 /* INÍCIO: MEDIA QUERIES PARA RESPONSIVIDADE GERAL */
 /* ------------------------------------------------------------- */
 
-/* Para telas até 768px (tablets na vertical e celulares maiores) */
 @media (max-width: 768px) {
     main {
         padding: 15px;
@@ -285,12 +303,12 @@ button:hover {
         justify-content: left;
     }
     header nav {
-        margin-top: 10px; /* Espaço entre o h1 e a nav */
+        margin-top: 10px;
         width: 100%;
-        text-align: center; /* Centraliza os links */
+        text-align: center;
     }
     header nav a {
-        margin: 0 10px; /* Espaçamento entre os links */
+        margin: 0 10px;
         display: inline-block;
         padding: 5px 10px;
         border: 1px solid #7c3aed;
@@ -301,49 +319,51 @@ button:hover {
     }
     .card h2 {
         font-size: 1.3rem;
-        flex-direction: column; /* Empilha o título com o span de data */
+        flex-direction: column;
         align-items: center;
         text-align: center;
     }
     .card h2 span {
-        margin-top: 5px; /* Espaço entre o título e a data */
-        float: none; /* Remove float para que flexbox funcione */
+        margin-top: 5px;
+        float: none;
     }
     .naipe-section {
         max-width: 100%;
     }
 
-    /* Responsividade para o resumo por naipes (Admin) */
     .estatisticas p {
-        flex: 1 1 calc(50% - 15px); /* Duas colunas em telas menores */
+        flex: 1 1 calc(50% - 15px);
         max-width: calc(50% - 15px);
     }
 
-    /* Responsividade para a lista de participantes do Admin */
+    /* NOVO: Responsividade para a lista de participantes do Admin */
     .participante-admin-header,
     .participante-admin-item {
-        grid-template-columns: 1fr; /* Empilha as colunas */
+        /* Empilha as colunas, com um layout mais linear */
+        grid-template-columns: 1fr;
         padding: 8px 10px;
         gap: 5px;
-        border-bottom: 1px solid #eee; /* Mantém a linha divisória */
+        border-bottom: 1px solid #eee;
     }
-    .participante-admin-header .col-nome,
-    .participante-admin-item .col-nome,
-    .participante-admin-header .col-naipe,
-    .participante-admin-item .col-naipe,
-    .participante-admin-header .col-registro,
-    .participante-admin-item .col-registro {
-        text-align: center; /* Alinha tudo à esquerda quando empilhado */
+    /* Estilos para exibir cada "coluna" como uma linha separada em telas pequenas */
+    .participante-admin-item div {
+        text-align: left !important; /* Garante alinhamento esquerdo para todas as divs */
     }
-    .participante-admin-item .col-naipe {
-        text-align: center; /* Garante que a tag também fique à esquerda */
+    .participante-admin-item .col-naipe .tag-naipe {
+        margin-left: 0; /* Remove margem extra para alinhar à esquerda */
     }
-    .tag-naipe {
-        min-width: auto; /* Permite que a largura se ajuste ao conteúdo */
+    /* Esconde o cabeçalho original em telas pequenas para evitar repetição visual */
+    .participante-admin-header {
+        display: none;
     }
+    /* Adiciona labels para cada campo nos itens da lista em mobile */
+    .participante-admin-item .col-nome::before { content: "Nome: "; font-weight: bold; color: #7c3aed; }
+    .participante-admin-item .col-naipe::before { content: "Naipe: "; font-weight: bold; color: #7c3aed; }
+    .participante-admin-item .col-registro::before { content: "Registro: "; font-weight: bold; color: #7c3aed; }
+    .participante-admin-item .col-novo-coralista::before { content: "Novo Coralista: "; font-weight: bold; color: #7c3aed; }
+
 }
 
-/* Para telas muito pequenas (celulares) */
 @media (max-width: 480px) {
     main {
         padding: 10px;
@@ -373,18 +393,15 @@ button:hover {
         font-size: 0.95rem;
     }
 
-    /* Ajustes menores para a tabela de admin em telas muito pequenas */
-    .participante-admin-header .col-nome,
-    .participante-admin-item .col-nome,
-    .participante-admin-header .col-naipe,
-    .participante-admin-item .col-naipe,
-    .participante-admin-header .col-registro,
-    .participante-admin-item .col-registro {
-        font-size: 0.9rem;
-    }
-    /* Para telas muito pequenas, o resumo pode ter 1 coluna */
     .estatisticas p {
         flex: 1 1 100%;
         max-width: 100%;
+    }
+    /* Mantém os labels para cada campo em telas menores */
+    .participante-admin-item .col-nome::before,
+    .participante-admin-item .col-naipe::before,
+    .participante-admin-item .col-registro::before,
+    .participante-admin-item .col-novo-coralista::before {
+        font-size: 0.85rem;
     }
 }

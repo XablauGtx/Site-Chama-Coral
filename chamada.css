@@ -107,11 +107,7 @@ button:hover {
     border-bottom: none;
 }
 
-#data-evento {
-    float: right;
-    color: #7c3aed;
-    font-size: 1rem;
-}
+
 
 
 /* Estilos para a seção de cada naipe na página de Auto-Registro */
@@ -120,7 +116,7 @@ button:hover {
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px; /* Padding geral para o conteúdo dentro do naipe-section */
-    text-align: left; /* Garante que o texto esteja alinhado à esquerda dentro do bloco */
+    text-align: center; /* Garante que o texto esteja alinhado à esquerda dentro do bloco */
 
     /* REMOVIDO: flex: 1; min-width; max-width; pois os naipes ficarão empilhados */
     box-sizing: border-box; /* Inclui padding e border na largura total do elemento */
@@ -191,76 +187,120 @@ button:hover {
 /* Para telas até 768px (tablets na vertical e celulares maiores) */
 @media (max-width: 768px) {
     main {
-        padding: 15px; /* Reduz o padding do main para melhor aproveitamento do espaço */
-    }
-    header { 
-        align-items: flex-start; /* Alinha os itens do cabeçalho à esquerda */
-        padding: 10px 15px; /* Ajusta o padding do cabeçalho */
-    }
-    header h1 {
-        margin-bottom: 10px; /* Espaço entre o título e a navegação */
-        width: 100%; /* Garante que o título ocupe a largura total */
-    }
-    header nav {
-        margin-top: 2rem; /* Dá um espaço maior entre o título e a nav */
-        width: 100%; /* Garante que a navegação ocupe a largura total disponível */
-        text-align: right; /* ALINHA O CONTEÚDO DA NAVEGAÇÃO (SEU LINK/BOTÃO ADMIN) À DIREITA */
-    }
-    header nav a {
-        margin-left: auto; /* Empurra o link para a direita */
-        margin-right: 0; /* Zera qualquer margem direita existente */
-        display: inline-block; /* Permite que margin-left: auto funcione */
-        padding: 5px 10px; /* Adiciona um pouco de padding para parecer um botão */
-        border: 1px solid #7c3aed; /* Borda para destaque */
-        border-radius: 5px; /* Cantos arredondados */
-    }
-    .card {
-        padding: 15px; /* Reduz o padding interno dos cards */
-    }
-    .card h2 {
-        font-size: 1.3rem; /* Reduz o tamanho do título do card */
-    }
-
-    /* Ajustes para os blocos de naipe na página de auto-registro */
-    .naipe-section {
-        max-width: 100%; /* Em telas menores, cada naipe ocupa a largura total */
-        /* min-width: unset; - Já definido em tela grande como width: 100% */
-    }
-}
-
-/* Para telas muito pequenas (celulares) */
-@media (max-width: 480px) {
-    main {
-        padding: 10px; /* Mais ajuste no padding do main para telas muito pequenas */
+        padding: 15px;
     }
     header {
-        padding: 8px 10px; /* Mais ajuste no padding do cabeçalho */
+        align-items: center;
+        padding: 10px 15px;
     }
     header h1 {
-        font-size: 1.2rem; /* Reduz o tamanho do título do cabeçalho */
+        margin-bottom: 10px;
+        width: 100%;
+        text-align: center;
+        justify-content: left;
+    }
+    header nav {
+        margin-top: 10px;
+        width: 100%;
+        text-align: right;
     }
     header nav a {
-        font-size: 0.9rem; /* Links de navegação menores */
-        padding: 3px 8px; /* Padding menor para o botão Admin */
+        margin: 0 10px;
+        display: inline-block;
+        padding: 5px 10px;
+        border: 1px solid #7c3aed;
+        border-radius: 5px;
     }
-    
-    /* Blocos de naipe em uma única coluna para celulares (já é o padrão agora) */
-    #lista-presencas {
-        gap: 15px; /* Define o espaçamento vertical entre os blocos empilhados para telas menores */
+    .card {
+        padding: 15px;
+    }
+    .card h2 {
+        font-size: 1.3rem;
+        align-items: center;
+        text-align: center;
+    }
+    .card h2 span {
+        margin-top: 5px;
+        float: none;
     }
     .naipe-section {
-        padding: 15px; /* Reduz o padding interno do bloco de naipe */
-        /* max-width: 100%; - Já é o padrão */
-        /* margin: 0; - Já é o padrão, mas mantido para clareza */
+        max-width: 100%;
     }
-    .naipe-section h3 {
-        font-size: 1.1rem; /* Reduz o tamanho do título do naipe */
+
+    .estatisticas p {
+        flex: 1 1 calc(50% - 15px);
+        max-width: calc(50% - 15px);
     }
-    .naipe-section ul li {
-        font-size: 0.95rem; /* Reduz o tamanho da fonte dos nomes */
+
+    /* NOVO: Responsividade para a lista de participantes do Admin */
+    .participante-admin-header,
+    .participante-admin-item {
+        /* Empilha as colunas, com um layout mais linear */
+        grid-template-columns: 1fr;
+        padding: 8px 10px;
+        gap: 5px;
+        border-bottom: 1px solid #eee;
     }
+    /* Estilos para exibir cada "coluna" como uma linha separada em telas pequenas */
+    .participante-admin-item div {
+        text-align: left !important; /* Garante alinhamento esquerdo para todas as divs */
+    }
+    .participante-admin-item .col-naipe .tag-naipe {
+        margin-left: 0; /* Remove margem extra para alinhar à esquerda */
+    }
+    /* Esconde o cabeçalho original em telas pequenas para evitar repetição visual */
+    .participante-admin-header {
+        display: none;
+    }
+    /* Adiciona labels para cada campo nos itens da lista em mobile */
+    .participante-admin-item .col-nome::before { content: "Nome: "; font-weight: bold; color: #7c3aed; }
+    .participante-admin-item .col-naipe::before { content: "Naipe: "; font-weight: bold; color: #7c3aed; }
+    .participante-admin-item .col-registro::before { content: "Registro: "; font-weight: bold; color: #7c3aed; }
+    .participante-admin-item .col-novo-coralista::before { content: "Novo Coralista: "; font-weight: bold; color: #7c3aed; }
+
 }
 
+@media (max-width: 480px) {
+    main {
+        padding: 10px;
+    }
+    header {
+        padding: 8px 10px;
+    }
+    header h1 {
+        font-size: 1.2rem;
+    }
+    header nav a {
+        font-size: 0.9rem;
+        padding: 3px 8px;
+    }
+    
+    #lista-presencas {
+        gap: 15px;
+    }
+    .naipe-section {
+        padding: 15px;
+        margin: 0;
+    }
+    .naipe-section h3 {
+        font-size: 1.1rem;
+    }
+    .naipe-section ul li {
+        font-size: 0.95rem;
+    }
+
+    .estatisticas p {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+    /* Mantém os labels para cada campo em telas menores */
+    .participante-admin-item .col-nome::before,
+    .participante-admin-item .col-naipe::before,
+    .participante-admin-item .col-registro::before,
+    .participante-admin-item .col-novo-coralista::before {
+        font-size: 0.85rem;
+    }
+}
 /* ------------------------------------------------------------- */
 /* FIM: MEDIA QUERIES PARA RESPONSIVIDADE EM CELULARES */
 /* ------------------------------------------------------------- */

@@ -14,23 +14,26 @@
         </h1>
         <nav>
             <a href="Chamada.html">Chamada</a>
-            <a href="admin.html">Admin</a>
+            <a href="adminchamada.html">Admin</a>
         </nav>
     </header>
 
     <main>
         <div class="card" id="login-card">
             <h2>Acesso Administrador</h2>
-            <input type="email" id="email-admin" placeholder="E-mail do administrador"> <input type="password" id="senha-admin" placeholder="Senha do administrador">
+            <input type="email" id="email-admin" placeholder="E-mail do administrador">
+            <input type="password" id="senha-admin" placeholder="Senha do administrador">
             <button id="btn-login-admin">Entrar</button>
-            <p id="auth-error-message" style="color: red; margin-top: 10px;"></p> </div>
+            <p id="auth-error-message" style="color: red; margin-top: 10px;"></p>
+        </div>
 
         <div class="card" id="relatorio-data-selector" style="display: none;">
             <h2>Buscar Relatório por Data</h2>
             <label for="dataRelatorio">Selecione uma data:</label>
             <input type="date" id="dataRelatorio">
             <button id="btnCarregarRelatorio">Carregar Relatório</button>
-            <button id="btn-logout" style="margin-top: 20px;">Sair</button> </div>
+            <button id="btn-logout" style="margin-top: 20px;">Sair</button>
+        </div>
 
         <div class="card" id="relatorio-completo" style="display: none;">
             <h2>Ensaios do Chama Coral - <span id="data-ensaio"></span></h2>
@@ -45,6 +48,11 @@
 
             <h3>Lista de Participantes</h3>
             <div id="lista-participantes-admin">
+                <div class="participante-admin-header">
+                    <div class="col-nome">Nome</div>
+                    <div class="col-naipe">Naipe</div>
+                    <div class="col-registro">Hora de Registro</div>
+                    <div class="col-novo-coralista">Novo?</div> </div>
                 </div>
 
             <button id="btnExportarCSV">Exportar CSV</button>
@@ -53,9 +61,10 @@
 
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script> <script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script>
       const firebaseConfig = {
-        apiKey: "AIzaSyBs_RnNCRJZm4HJFc73VFQUciyUDQhzOtI", // SUAS CREDENCIAIS AQUI
+        apiKey: "AIzaSyBs_RnNCRJZm4HJFc73VFQUciyUDQhzOtI",
         authDomain: "chamadachama-4621e.firebaseapp.com",
         projectId: "chamadachama-4621e",
         storageBucket: "chamadachama-4621e.firebasestorage.app",
@@ -66,7 +75,7 @@
 
       firebase.initializeApp(firebaseConfig);
       const db = firebase.firestore();
-      const auth = firebase.auth(); // NOVO: Obtenha a instância do Auth
+      const auth = firebase.auth();
     </script>
     <script src="admin.js"></script>
 </body>
