@@ -1,141 +1,185 @@
 // admin.js
 
-function entrarAdmin() {
-    const senha = document.getElementById('senha-admin').value;
-    if (senha === "chama123") {
-        document.getElementById('relatorio').style.display = 'block';
-        document.getElementById('dados-relatorio').style.display = 'block';
-        document.querySelector('.card').style.display = 'none'; // Oculta o card da senha
-    } else {
-        alert("Senha incorreta. Tente novamente.");
+document.addEventListener('DOMContentLoaded', () => {
+    // Referências aos elementos HTML
+    const senhaAdminInput = document.getElementById('senha-admin');
+    const loginCard = document.getElementById('login-card');
+    const btnLoginAdmin = document.getElementById('btn-login-admin'); // NOVO: Referência ao botão de login
+    const relatorioDataSelector = document.getElementById('relatorio-data-selector');
+    const dataRelatorioInput = document.getElementById('dataRelatorio'); // Input type="date"
+    const btnCarregarRelatorio = document.getElementById('btnCarregarRelatorio');
+    const relatorioCompleto = document.getElementById('relatorio-completo');
+    const dataEnsaioSpan = document.getElementById('data-ensaio');
+    const totalParticipantesSpan = document.getElementById('total-participantes');
+    const sopranoCountSpan = document.getElementById('soprano-count');
+    const contraltoCountSpan = document.getElementById('contralto-count');
+    const tenorCountSpan = document.getElementById('tenor-count');
+    const baixoCountSpan = document.getElementById('baixo-count');
+    const listaParticipantesAdmin = document.getElementById('lista-participantes-admin');
+    const btnExportarCSV = document.getElementById('btnExportarCSV');
+
+
+    function entrarAdmin() {
+        if (senhaAdminInput.value === "chama123") {
+            loginCard.style.display = 'none';
+            relatorioDataSelector.style.display = 'block';
+            relatorioCompleto.style.display = 'block';
+
+            // Define a data padrão como a data atual no formato YYYY-MM-DD
+            const hoje = new Date();
+            const dia = String(hoje.getDate()).padStart(2, '0');
+            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+            const ano = hoje.getFullYear();
+            const dataPadrao = `${ano}-${mes}-${dia}`;
+            dataRelatorioInput.value = dataPadrao; // Define o valor do input type="date"
+            
+            carregarDados(dataPadrao); // Carrega os dados para a data atual
+        } else {
+            alert("Senha incorreta. Tente novamente.");
+            senhaAdminInput.value = '';
+        }
     }
-}
 
-function carregarDados() {
-    const dataSelecionada = document.getElementById("data-select").value;
-    document.getElementById("data-ensaio").innerText = dataSelecionada.split('-').reverse().join('/');
+    async function carregarDados(dataDesejada) {
+        // Limpa a lista de participantes e mostra o cabeçalho
+        listaParticipantesAdmin.innerHTML = '';
+        const headerDiv = document.createElement('div');
+        headerDiv.classList.add('participante-admin-header');
+        headerDiv.innerHTML = `
+            <div class="col-nome">Nome</div>
+            <div class="col-naipe">Naipe</div>
+            <div class="col-registro">Hora de Registro</div>
+        `;
+        listaParticipantesAdmin.appendChild(headerDiv);
 
-    // Alterado para usar a data selecionada como a chave para o localStorage
-    const registros = JSON.parse(localStorage.getItem(dataSelecionada) || "[]");
+        // Atualiza a data exibida no relatório
+        dataEnsaioSpan.innerText = dataDesejada.split('-').reverse().join('/'); // Formato DD/MM/YYYY
 
-    if (registros.length === 0) {
-        document.getElementById("total-participantes").innerText = 0;
-        document.getElementById("soprano-count").innerText = 0;
-        document.getElementById("contralto-count").innerText = 0;
-        document.getElementById("tenor-count").innerText = 0;
-        document.getElementById("baixo-count").innerText = 0;
-        // Opcionalmente, limpe o corpo da tabela se não houver registros para a data selecionada
-        document.getElementById("lista-participantes").querySelector("tbody").innerHTML = "";
-        alert("Nenhum registro encontrado para essa data.");
-        return;
+        let registrosDoDia = [];
+        let sopranoCount = 0;
+        let contraltoCount = 0;
+        let tenorCount = 0;
+        let baixoCount = 0;
+
+        try {
+            // A consulta principal: busca registros da data desejada, ordenados por timestamp
+            const snapshot = await db.collection('registrosChamada')
+                                     .where('data', '==', dataDesejada) // dataDesejada deve ser YYYY-MM-DD
+                                     .orderBy('timestamp', 'asc')
+                                     .get();
+
+            if (snapshot.empty) {
+                alert("Nenhum registro encontrado para essa data.");
+                totalParticipantesSpan.innerText = 0;
+                sopranoCountSpan.innerText = 0;
+                contraltoCountSpan.innerText = 0;
+                tenorCountSpan.innerText = 0;
+                baixoCountSpan.innerText = 0;
+                listaParticipantesAdmin.innerHTML += '<p style="text-align: center; padding: 20px; color: #555;">Nenhum participante encontrado para esta data.</p>';
+                return;
+            }
+
+            snapshot.forEach(doc => {
+                const r = doc.data();
+                registrosDoDia.push(r);
+
+                switch (r.naipe) {
+                    case "Soprano":
+                        sopranoCount++;
+                        break;
+                    case "Contralto":
+                        contraltoCount++;
+                        break;
+                    case "Tenor":
+                        tenorCount++;
+                        break;
+                    case "Baixo":
+                        baixoCount++;
+                        break;
+                }
+
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('participante-admin-item');
+                itemDiv.innerHTML = `
+                    <div class="col-nome">${r.nome}</div>
+                    <div class="col-naipe"><span class="tag-naipe ${r.naipe.toLowerCase()}">${r.naipe}</span></div>
+                    <div class="col-registro">${r.horaRegistro || 'Indefinido'}</div>
+                `;
+                listaParticipantesAdmin.appendChild(itemDiv);
+            });
+
+            // Atualiza os contadores na UI
+            totalParticipantesSpan.innerText = registrosDoDia.length;
+            sopranoCountSpan.innerText = sopranoCount;
+            contraltoCountSpan.innerText = contraltoCount;
+            tenorCountSpan.innerText = tenorCount;
+            baixoCountSpan.innerText = baixoCount;
+
+        } catch (error) {
+            console.error("Erro ao carregar dados do Firebase: ", error);
+            alert("Erro ao carregar os dados. Verifique a conexão ou as regras de segurança do Firebase.");
+            // Reseta contadores e exibe mensagem de erro
+            totalParticipantesSpan.innerText = 0;
+            sopranoCountSpan.innerText = 0;
+            contraltoCountSpan.innerText = 0;
+            tenorCountSpan.innerText = 0;
+            baixoCountSpan.innerText = 0;
+            listaParticipantesAdmin.innerHTML = '<p style="text-align: center; padding: 20px; color: #cc0000;">Erro ao carregar dados. Tente novamente.</p>';
+        }
     }
 
-    let sopranoCount = 0;
-    let contraltoCount = 0;
-    let tenorCount = 0;
-    let baixoCount = 0;
-
-    const tbody = document.getElementById("lista-participantes").querySelector("tbody");
-    tbody.innerHTML = ""; // Limpa a tabela antes de adicionar novos registros
-
-    registros.forEach(r => {
-        switch (r.naipe) {
-            case "Soprano":
-                sopranoCount++;
-                break;
-            case "Contralto":
-                contraltoCount++;
-                break;
-            case "Tenor":
-                tenorCount++;
-                break;
-            case "Baixo":
-                baixoCount++;
-                break;
+    async function exportarCSV() {
+        const dataParaExportar = dataRelatorioInput.value; // Obtém a data do input type="date"
+        if (!dataParaExportar) {
+            alert("Por favor, selecione uma data para exportar.");
+            return;
         }
 
-        const tr = document.createElement("tr");
-        // A estrutura HTML gerada pelo seu JS está correta para o CSS funcionar
-        tr.innerHTML = `
-            <td>${r.nome}</td>
-            <td><span class="naipe ${r.naipe.toLowerCase()}">${r.naipe}</span></td>
-            <td>${r.horaRegistro || 'Indefinido'}</td>
-        `;
-        tbody.appendChild(tr);
+        let registrosParaCSV = [];
+        try {
+            const snapshot = await db.collection('registrosChamada')
+                                     .where('data', '==', dataParaExportar)
+                                     .orderBy('timestamp', 'asc')
+                                     .get();
+
+            snapshot.forEach(doc => {
+                registrosParaCSV.push(doc.data());
+            });
+
+        } catch (error) {
+            console.error("Erro ao buscar dados para CSV: ", error);
+            alert("Não foi possível buscar dados para exportar. Verifique sua conexão.");
+            return;
+        }
+
+        if (registrosParaCSV.length === 0) {
+            alert("Não há registros para exportar para a data selecionada.");
+            return;
+        }
+
+        const csvContent = "data:text/csv;charset=utf-8,"
+            + "Nome,Naipe,Hora de Registro\n"
+            + registrosParaCSV.map(r => `${r.nome},${r.naipe},${r.horaRegistro || 'Indefinido'}`).join("\n");
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `presenca_${dataParaExportar}.csv`);
+        document.body.appendChild(link);
+
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    // Adiciona event listeners aos botões
+    btnLoginAdmin.addEventListener('click', entrarAdmin); // Correção para o botão de login
+    btnCarregarRelatorio.addEventListener('click', () => {
+        const dataSelecionada = dataRelatorioInput.value;
+        if (dataSelecionada) {
+            carregarDados(dataSelecionada);
+        } else {
+            alert('Por favor, selecione uma data para carregar o relatório.');
+        }
     });
-
-    document.getElementById("total-participantes").innerText = registros.length;
-    document.getElementById("soprano-count").innerText = sopranoCount;
-    document.getElementById("contralto-count").innerText = contraltoCount;
-    document.getElementById("tenor-count").innerText = tenorCount;
-    document.getElementById("baixo-count").innerText = baixoCount;
-
-    document.getElementById('dados-relatorio').style.display = 'block'; // Mostrar relatório
-}
-
-
-function exportarCSV() {
-    const data = document.getElementById("data-select").value; // Usa a data selecionada
-    const registros = JSON.parse(localStorage.getItem(data) || "[]");
-
-    if (registros.length === 0) {
-        alert("Não há registros para exportar para a data selecionada.");
-        return;
-    }
-
-    // Inclui Hora de Registro no CSV
-    const csvContent = "data:text/csv;charset=utf-8,"
-        + "Nome,Naipe,Hora de Registro\n"
-        + registros.map(r => `${r.nome},${r.naipe},${r.horaRegistro || 'Indefinido'}`).join("\n");
-
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `presenca_${data}.csv`); // Usa a data selecionada no nome do arquivo
-    document.body.appendChild(link);
-
-    link.click();
-    document.body.removeChild(link);
-}
-
-// Função para obter a data atual (considerando a data selecionada como a chave para registros)
-// Esta função não é mais usada diretamente para chaves do localStorage em carregarDados/exportarCSV,
-// pois a data selecionada do dropdown é usada.
-// Ainda é útil para gerar a opção do dia atual no dropdown.
-function getDataChave() {
-    const hoje = new Date();
-    return hoje.toISOString().split('T')[0]; // Data atual no formato YYYY-MM-DD
-}
-
-// Função para preencher o seletor de data automaticamente
-function preencherSelecaoDatas() {
-    const dataSelect = document.getElementById("data-select");
-    const hoje = new Date();
-
-    // Adiciona a data atual
-    const dataAtual = hoje.toISOString().split('T')[0]; // YYYY-MM-DD
-    const optionAtual = document.createElement("option");
-    optionAtual.value = dataAtual;
-    optionAtual.textContent = `Hoje (${dataAtual.split('-').reverse().join('/')})`; // Exibe DD/MM/YYYY
-    dataSelect.appendChild(optionAtual);
-
-    // Adiciona as próximas 6 sextas-feiras
-    for (let i = 1; i <= 6; i++) {
-        const proximaSexta = new Date(hoje);
-        // Calcula a próxima sexta-feira: (5 - diaAtual + 7) % 7 obtém os dias até a próxima sexta (0 para sexta, 1 para quinta, etc.)
-        // + 7 * (i - 1) garante que seja a i-ésima sexta-feira a partir de agora.
-        proximaSexta.setDate(hoje.getDate() + (5 - hoje.getDay() + 7) % 7 + 7 * (i - 1));
-        const option = document.createElement("option");
-        option.value = proximaSexta.toISOString().split('T')[0]; // YYYY-MM-DD
-        option.textContent = `Sexta-feira, ${proximaSexta.toLocaleDateString("pt-BR")}`; // Exibe a data localizada
-        dataSelect.appendChild(option);
-    }
-}
-
-// Chama a função ao carregar a página
-window.onload = function() {
-    preencherSelecaoDatas();
-    // Garanta que se uma data for pré-selecionada (ex: "Hoje"), os dados sejam carregados automaticamente
-    // Você pode chamar carregarDados() aqui se quiser que ele carregue os dados para a data padrão selecionada ao carregar a página.
-    // carregarDados(); // Descomente se quiser carregar dados para a data padrão selecionada ao carregar a página
-};
+    btnExportarCSV.addEventListener('click', exportarCSV);
+});

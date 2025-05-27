@@ -15,7 +15,7 @@ header {
 }
 
 header h1 {
-    display: flex; /* Mantém o alinhamento do ícone/texto se houver */
+    display: flex;
     align-items: center;
     gap: 10px;
     font-size: 1.5rem;
@@ -30,55 +30,44 @@ header nav a {
 
 main {
     padding: 20px;
-    max-width: 800px; /* Mantém a largura máxima para desktop */
+    max-width: 800px;
     margin: auto;
 }
 
-.card {
+.card, .card2 { /* Unificado os estilos base para .card e .card2 */
     background: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
     margin-bottom: 20px;
-    text-align: center; /* Centraliza o conteúdo principal do card */
+    text-align: center;
 }
 
-.card h2 {
+.card h2, .card2 h2 {
     margin-top: 0;
     font-size: 1.5rem;
     color: #7c3aed;
-}
-
-/* O .card2 pode ser mesclado com .card se tiver o mesmo estilo */
-/* Se tiver diferenças, mantenha-o separado, mas alinhe o conteúdo */
-.card2 {
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin-bottom: 20px;
-    text-align: center; /* Centraliza o conteúdo principal do card2 */
-}
-
-.card2 h2 {
-    margin-top: 0;
-    font-size: 1.5rem;
-    color: #7c3aed;
+    display: flex; /* Para alinhar o título com elementos flutuantes dentro do h2 */
+    justify-content: space-between;
+    align-items: center;
 }
 
 /* Inputs, Selects e Buttons - Ajustes gerais */
 input, select, button {
     padding: 10px;
-    margin: 10px 0;
-    width: 100%; /* Ajustado para 100% para melhor responsividade */
-    box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura */
+    margin: 10px auto; /* Centraliza horizontalmente dentro do card */
+    width: calc(100% - 20px); /* Ajustado para 100% menos o padding do card, para não transbordar */
+    max-width: 400px; /* Limita a largura máxima para campos de formulário */
+    display: block; /* Para que o margin: auto funcione */
+    box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 1rem;
 }
 
-input {
-    border: 1px solid #7c3aed;
+input[type="date"] {
+    width: calc(100% - 20px);
+    max-width: 250px; /* Largura mais adequada para input de data */
 }
 
 button {
@@ -93,102 +82,167 @@ button:hover {
     background: #6b21a8;
 }
 
-#relatorio, #dados-relatorio {
-    display: none; /* Oculta inicialmente */
+/* Oculta as seções de relatório inicialmente no admin.html */
+#relatorio-data-selector, #relatorio-completo {
+    display: none;
 }
 
 /* ------------------------------------------------------------- */
 /* INÍCIO: ESTILOS PARA O RESUMO POR NAIPES (ADMIN) */
 /* ------------------------------------------------------------- */
 
-#resumo-naipes {
-    display: flex; /* Habilita Flexbox para alinhar os cards */
-    justify-content: space-between; /* Distribui os itens com espaço entre eles */
-    gap: 15px; /* Espaçamento entre os cards */
+.estatisticas { /* Novo seletor para o container das estatísticas */
+    display: flex;
+    justify-content: space-around; /* Distribui os itens uniformemente */
+    gap: 15px;
     margin-top: 20px;
     flex-wrap: wrap; /* Permite que os cards quebrem para a próxima linha */
-    align-items: flex-start; /* Alinha os itens ao topo */
+    align-items: flex-start;
 }
 
-#resumo-naipes p {
-    background: #f0f4ff; /* Cor de fundo leve, será sobrescrita pelas cores específicas dos naipes */
+.estatisticas p { /* Estilo para cada item de estatística (Soprano, Contralto, etc.) */
+    background: #f0f4ff; /* Cor de fundo padrão */
     border-radius: 8px;
-    padding: 20px; /* Padding interno do card */
+    padding: 15px 10px; /* Padding interno */
     text-align: center;
-    flex: 1; /* Permite que os itens cresçam e encolham */
-    min-width: 150px; /* Largura mínima para cada card antes de quebrar a linha */
-    max-width: calc(25% - 15px); /* Para tentar 4 por linha, ajustado para o gap */
+    flex: 1; /* Permite que os itens cresçam */
+    min-width: 120px; /* Largura mínima para cada card antes de quebrar a linha */
+    max-width: 23%; /* Para tentar 4 por linha, ajustado para o gap */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box; /* Inclui padding e border na largura total */
-    margin: 0; /* Remove margens para usar o gap do pai */
-    font-size: 0.9em; /* Ajusta o tamanho da fonte para o texto "Soprano: participantes" */
+    box-sizing: border-box;
+    margin: 0;
+    font-size: 0.9em;
+    color: #555; /* Cor de texto mais suave para o rótulo */
 }
 
-#resumo-naipes p span {
+.estatisticas p span {
     font-weight: bold;
-    display: block; /* Garante que o número fique em sua própria linha */
-    font-size: 2.2em; /* Torna o número maior e mais destacado */
+    display: block;
+    font-size: 2.2em;
     color: #333;
-    margin-top: 8px; /* Mais espaço acima do número */
+    margin-top: 8px;
 }
 
 /* Cores de fundo específicas para os cards de resumo por naipe */
-#resumo-naipes p.soprano { background-color: #f8d4e2; }
-#resumo-naipes p.contralto { background-color: #d0eaff; }
-#resumo-naipes p.tenor { background-color: #ffe0a3; }
-#resumo-naipes p.baixo { background-color: #a8e6cf; }
+.estatisticas p.soprano { background-color: #f8d4e2; }
+.estatisticas p.contralto { background-color: #d0eaff; }
+.estatisticas p.tenor { background-color: #ffe0a3; }
+.estatisticas p.baixo { background-color: #a8e6cf; }
 
 /* ------------------------------------------------------------- */
 /* FIM: ESTILOS PARA O RESUMO POR NAIPES (ADMIN) */
 /* ------------------------------------------------------------- */
 
 
-/* Estilo da tabela de participantes */
-#lista-participantes table {
-    width: 100%;
-    border-collapse: collapse;
+/* ------------------------------------------------------------- */
+/* INÍCIO: ESTILOS PARA LISTA DE PARTICIPANTES (CHAMADA E ADMIN) */
+/* ------------------------------------------------------------- */
+
+/* Estilos para a lista de presenças na página de CHAMADA */
+#lista-presencas {
     margin-top: 20px;
 }
 
-#lista-participantes th, #lista-participantes td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
+.naipe-section {
+    background: #f8f8f8;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.naipe-section h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #7c3aed;
+    font-size: 1.3rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+}
+
+.naipe-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.naipe-section ul li {
+    padding: 8px 0;
+    border-bottom: 1px dashed #e0e0e0;
+    font-size: 1rem;
+    color: #555;
+}
+
+.naipe-section ul li:last-child {
+    border-bottom: none;
+}
+
+/* Cores de fundo para as seções de naipe (página de chamada) */
+.naipe-section.soprano { background-color: #fdf0f5; border-left: 5px solid #f8d4e2; }
+.naipe-section.contralto { background-color: #e6f7ff; border-left: 5px solid #d0eaff; }
+.naipe-section.tenor { background-color: #fff9e6; border-left: 5px solid #ffe0a3; }
+.naipe-section.baixo { background-color: #e6fff2; border-left: 5px solid #a8e6cf; }
+
+
+/* Estilos para a lista de participantes na página de ADMIN (CSS Grid) */
+#lista-participantes-admin {
+    margin-top: 20px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    overflow: hidden; /* Garante que as bordas arredondadas funcionem bem */
+}
+
+.participante-admin-header,
+.participante-admin-item {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1.5fr; /* Nome, Naipe, Hora de Registro */
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    align-items: center;
     text-align: left;
 }
 
-/* Centraliza o cabeçalho da coluna "Naipe" */
-#lista-participantes th:nth-child(2) {
-    text-align: center;
-}
-
-/* Centraliza o conteúdo das células da coluna "Naipe" */
-#lista-participantes td:nth-child(2) {
-    text-align: center;
-}
-
-#lista-participantes th {
+.participante-admin-header {
     background-color: #f0f4ff;
     font-weight: bold;
-}
-
-#lista-participantes tr:hover {
-    background-color: #f9f9f9;
-}
-
-.naipe {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 12px;
     color: #333;
-    font-weight: bold;
-    font-size: 0.9rem;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
 
-/* Cores dos naipes nas caixinhas da tabela */
-.naipe.soprano { background-color: #f8d4e2; }
-.naipe.contralto { background-color: #d0eaff; }
-.naipe.tenor { background-color: #ffe0a3; }
-.naipe.baixo { background-color: #a8e6cf; }
+.participante-admin-item:nth-child(even) {
+    background-color: #f9f9f9; /* Zebra striping */
+}
+
+.participante-admin-item:last-child {
+    border-bottom: none;
+}
+
+.col-naipe {
+    text-align: center; /* Centraliza a tag do naipe */
+}
+
+.col-registro {
+    text-align: right; /* Alinha a hora de registro à direita */
+}
+
+/* Tag de naipe na lista de admin */
+.tag-naipe {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 15px;
+    color: #333;
+    font-weight: 600;
+    font-size: 0.85rem;
+    min-width: 70px; /* Garante que todas as tags tenham uma largura mínima */
+    text-align: center;
+}
+
+/* Cores das tags de naipe (admin e chamada) */
+.tag-naipe.soprano, .naipe.soprano { background-color: #f8d4e2; }
+.tag-naipe.contralto, .naipe.contralto { background-color: #d0eaff; }
+.tag-naipe.tenor, .naipe.tenor { background-color: #ffe0a3; }
+.tag-naipe.baixo, .naipe.baixo { background-color: #a8e6cf; }
 
 .loading {
     color: #7c3aed;
@@ -196,22 +250,20 @@ button:hover {
     align-items: center;
     gap: 10px;
     font-style: italic;
+    padding: 20px;
+    justify-content: center; /* Centraliza o texto de carregamento */
 }
 
-.registro-item { /* Este estilo é mais para a página de auto-registro, mas pode ficar aqui se quiser */
-    padding: 8px 0;
-    border-bottom: 1px solid #eee;
-}
-
-.registro-item:last-child {
-    border-bottom: none;
-}
-
-#data-evento { /* Se este ID for usado em admin.html, deve estar visível */
-    float: right;
+#data-evento {
+    /* Este ID parece ser usado na página de chamada para mostrar a data atual */
     color: #7c3aed;
     font-size: 1rem;
 }
+
+/* ------------------------------------------------------------- */
+/* FIM: ESTILOS PARA LISTA DE PARTICIPANTES (CHAMADA E ADMIN) */
+/* ------------------------------------------------------------- */
+
 
 /* ------------------------------------------------------------- */
 /* INÍCIO: MEDIA QUERIES PARA RESPONSIVIDADE GERAL */
@@ -223,21 +275,22 @@ button:hover {
         padding: 15px;
     }
     header {
-        align-items: flex-start;
+        align-items: center;
         padding: 10px 15px;
     }
     header h1 {
         margin-bottom: 10px;
         width: 100%;
+        text-align: center;
+        justify-content: left;
     }
     header nav {
-        margin-top: 2rem;
+        margin-top: 10px; /* Espaço entre o h1 e a nav */
         width: 100%;
-        text-align: right;
+        text-align: center; /* Centraliza os links */
     }
     header nav a {
-        margin-left: auto;
-        margin-right: 0;
+        margin: 0 10px; /* Espaçamento entre os links */
         display: inline-block;
         padding: 5px 10px;
         border: 1px solid #7c3aed;
@@ -248,9 +301,22 @@ button:hover {
     }
     .card h2 {
         font-size: 1.3rem;
+        flex-direction: column; /* Empilha o título com o span de data */
+        align-items: center;
+        text-align: center;
+    }
+    .card h2 span {
+        margin-top: 5px; /* Espaço entre o título e a data */
+        float: none; /* Remove float para que flexbox funcione */
     }
     .naipe-section {
         max-width: 100%;
+    }
+
+    /* Responsividade para o resumo por naipes (Admin) */
+    .estatisticas p {
+        flex: 1 1 calc(50% - 15px); /* Duas colunas em telas menores */
+        max-width: calc(50% - 15px);
     }
 
     /* Responsividade para a lista de participantes do Admin */
@@ -258,7 +324,8 @@ button:hover {
     .participante-admin-item {
         grid-template-columns: 1fr; /* Empilha as colunas */
         padding: 8px 10px;
-        gap: 5px; /* Espaçamento entre os itens empilhados */
+        gap: 5px;
+        border-bottom: 1px solid #eee; /* Mantém a linha divisória */
     }
     .participante-admin-header .col-nome,
     .participante-admin-item .col-nome,
@@ -266,10 +333,13 @@ button:hover {
     .participante-admin-item .col-naipe,
     .participante-admin-header .col-registro,
     .participante-admin-item .col-registro {
-        text-align: left; /* Alinha tudo à esquerda quando empilhado */
+        text-align: center; /* Alinha tudo à esquerda quando empilhado */
     }
     .participante-admin-item .col-naipe {
-        text-align: left; /* Garante que a tag também fique à esquerda */
+        text-align: center; /* Garante que a tag também fique à esquerda */
+    }
+    .tag-naipe {
+        min-width: auto; /* Permite que a largura se ajuste ao conteúdo */
     }
 }
 
@@ -312,8 +382,9 @@ button:hover {
     .participante-admin-item .col-registro {
         font-size: 0.9rem;
     }
+    /* Para telas muito pequenas, o resumo pode ter 1 coluna */
+    .estatisticas p {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
 }
-
-/* ------------------------------------------------------------- */
-/* FIM: MEDIA QUERIES PARA RESPONSIVIDADE GERAL */
-/* ------------------------------------------------------------- */

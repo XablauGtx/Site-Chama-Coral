@@ -2,17 +2,21 @@
 
 const nomeInput = document.getElementById("nome");
 const naipeSelect = document.getElementById("naipe");
-const listaPresencas = document.getElementById("lista-presencas"); // Este será o container principal
+const listaPresencas = document.getElementById("lista-presencas");
 
+// CORREÇÃO 1: Formatação correta da data (apenas YYYY-MM-DD)
 function getDataChave() {
     const hoje = new Date();
-    return hoje.toISOString().split('T')[0]; // Data atual (formato YYYY-MM-DD)
+    const ano = hoje.getFullYear();
+    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    const dia = String(hoje.getDate()).padStart(2, '0');
+    return `${ano}-${mes}-${dia}`; // Retorna a data no formato YYYY-MM-DD
 }
 
-function registrarPresenca() {
+async function registrarPresenca() {
     const nome = nomeInput.value.trim();
     const naipe = naipeSelect.value;
-    const data = getDataChave();
+    const dataAtual = getDataChave();
 
     if (!nome || !naipe) {
         alert("Preencha todos os campos!");
@@ -22,85 +26,103 @@ function registrarPresenca() {
     const agora = new Date();
     const horaRegistro = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 
-    const registros = JSON.parse(localStorage.getItem(data) || "[]");
+    try {
+        const snapshot = await db.collection('registrosChamada')
+                                 .where('data', '==', dataAtual)
+                                 .where('nome', '==', nome)
+                                 .get();
 
-    const nomeNormalizado = nome.toLowerCase();
-    const jaRegistrado = registros.some(r => r.nome.toLowerCase() === nomeNormalizado);
+        if (!snapshot.empty) {
+            alert("Você já registrou sua presença para esta data com este nome!");
+            nomeInput.value = "";
+            return;
+        }
 
-    if (jaRegistrado) {
-        alert("Você já registrou sua presença para esta data com este nome!");
+        const registro = {
+            nome: nome,
+            naipe: naipe,
+            horaRegistro: horaRegistro,
+            data: dataAtual,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        await db.collection('registrosChamada').add(registro);
+        alert("Presença registrada com sucesso!");
+
         nomeInput.value = "";
-        return;
+        naipeSelect.value = "";
+
+        carregarPresencas();
+    } catch (error) {
+        console.error("Erro ao registrar presença no Firebase: ", error);
+        alert("Ocorreu um erro ao registrar sua presença. Tente novamente.");
     }
-
-    const registro = {
-        nome: nome,
-        naipe: naipe,
-        horaRegistro: horaRegistro
-    };
-
-    registros.push(registro);
-    localStorage.setItem(data, JSON.stringify(registros));
-
-    alert("Presença registrada com sucesso!");
-
-    nomeInput.value = "";
-    naipeSelect.value = "";
-
-    carregarPresencas(); // Atualiza a lista de presenças
 }
 
-function carregarPresencas() {
-    const data = getDataChave();
-    const registros = JSON.parse(localStorage.getItem(data) || "[]");
+async function carregarPresencas() {
+    const dataAtual = getDataChave();
     listaPresencas.innerHTML = ""; // Limpa o conteúdo existente
 
-    if (registros.length === 0) {
-        listaPresencas.innerHTML = '<div class="loading">⚠️ Nenhum registro ainda.</div>';
-        return;
-    }
+    try {
+        const snapshot = await db.collection('registrosChamada')
+                                 .where('data', '==', dataAtual)
+                                 .orderBy('timestamp', 'asc')
+                                 .get();
 
-    // Organiza os participantes por naipe
-    const naipesAgrupados = {
-        Soprano: [],
-        Contralto: [],
-        Tenor: [],
-        Baixo: []
-    };
-
-    registros.forEach(r => {
-        if (naipesAgrupados[r.naipe]) {
-            naipesAgrupados[r.naipe].push(r);
+        if (snapshot.empty) {
+            listaPresencas.innerHTML = '<div class="loading">⚠️ Nenhum registro ainda para hoje.</div>';
+            return;
         }
-    });
 
-    // Percorre os naipes e cria as seções
-    for (const naipe in naipesAgrupados) {
-        const participantesDoNaipe = naipesAgrupados[naipe];
+        const naipesAgrupados = {
+            Soprano: [],
+            Contralto: [],
+            Tenor: [],
+            Baixo: []
+        };
 
-        if (participantesDoNaipe.length > 0) {
-            const sectionNaipe = document.createElement("div");
-            sectionNaipe.className = `naipe-section ${naipe.toLowerCase()}`; // Adiciona classe para estilo
+        snapshot.forEach(doc => {
+            const r = doc.data();
+            if (naipesAgrupados[r.naipe]) {
+                naipesAgrupados[r.naipe].push(r);
+            }
+        });
 
-            const headerNaipe = document.createElement("h3");
-            headerNaipe.textContent = `${naipe} (${participantesDoNaipe.length} participantes)`;
-            sectionNaipe.appendChild(headerNaipe);
+        for (const naipe in naipesAgrupados) {
+            const participantesDoNaipe = naipesAgrupados[naipe];
 
-            const ul = document.createElement("ul"); // Usar uma lista não ordenada para os nomes
-            
-            participantesDoNaipe.forEach(p => {
-                const li = document.createElement("li");
-                li.textContent = `${p.nome} (Registrado às ${p.horaRegistro || 'Indefinido'})`;
-                ul.appendChild(li);
-            });
-            sectionNaipe.appendChild(ul);
-            listaPresencas.appendChild(sectionNaipe);
+            if (participantesDoNaipe.length > 0) {
+                const sectionNaipe = document.createElement("div");
+                sectionNaipe.className = `naipe-section ${naipe.toLowerCase()}`;
+
+                const headerNaipe = document.createElement("h3");
+                // CORREÇÃO 2: Interpolação correta das variáveis
+                headerNaipe.textContent = `${naipe} (${participantesDoNaipe.length} participantes)`;
+                sectionNaipe.appendChild(headerNaipe);
+
+                const ul = document.createElement("ul");
+
+                participantesDoNaipe.forEach(p => {
+                    const li = document.createElement("li");
+                    li.textContent = `${p.nome} (Registrado às ${p.horaRegistro || 'Indefinido'})`;
+                    ul.appendChild(li);
+                });
+                sectionNaipe.appendChild(ul);
+                listaPresencas.appendChild(sectionNaipe);
+            }
         }
+    } catch (error) {
+        console.error("Erro ao carregar presenças do Firebase: ", error);
+        listaPresencas.innerHTML = '<div class="loading" style="color: #cc0000;">❌ Erro ao carregar registros.</div>';
     }
 }
 
-// Chame registrarPresenca() através de um botão no seu HTML
-// Por exemplo: <button onclick="registrarPresenca()">Registrar Presença</button>
-
-// Chamada para carregar presenças ao inicializar a página
-carregarPresencas();
+document.addEventListener('DOMContentLoaded', () => {
+    // Exibir a data atual no cabeçalho
+    const dataEventoSpan = document.getElementById('data-evento');
+    if (dataEventoSpan) {
+        const hoje = new Date();
+        dataEventoSpan.textContent = hoje.toLocaleDateString('pt-BR');
+    }
+    carregarPresencas(); // Carrega a lista ao carregar a página
+});
