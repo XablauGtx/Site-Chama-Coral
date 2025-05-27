@@ -2,11 +2,13 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     // Referências aos elementos HTML
+    const emailAdminInput = document.getElementById('email-admin'); // NOVO: Campo de e-mail
     const senhaAdminInput = document.getElementById('senha-admin');
     const loginCard = document.getElementById('login-card');
-    const btnLoginAdmin = document.getElementById('btn-login-admin'); // NOVO: Referência ao botão de login
+    const btnLoginAdmin = document.getElementById('btn-login-admin');
+    const authErrorMessage = document.getElementById('auth-error-message'); // Elemento para exibir erros
     const relatorioDataSelector = document.getElementById('relatorio-data-selector');
-    const dataRelatorioInput = document.getElementById('dataRelatorio'); // Input type="date"
+    const dataRelatorioInput = document.getElementById('dataRelatorio');
     const btnCarregarRelatorio = document.getElementById('btnCarregarRelatorio');
     const relatorioCompleto = document.getElementById('relatorio-completo');
     const dataEnsaioSpan = document.getElementById('data-ensaio');
@@ -17,32 +19,87 @@ document.addEventListener('DOMContentLoaded', () => {
     const baixoCountSpan = document.getElementById('baixo-count');
     const listaParticipantesAdmin = document.getElementById('lista-participantes-admin');
     const btnExportarCSV = document.getElementById('btnExportarCSV');
+    const btnLogout = document.getElementById('btn-logout'); // NOVO: Botão de logout
 
-
-    function entrarAdmin() {
-        if (senhaAdminInput.value === "chama123") {
+    // Função para mostrar ou esconder as seções com base no login
+    function toggleAdminPanel(loggedIn) {
+        if (loggedIn) {
             loginCard.style.display = 'none';
             relatorioDataSelector.style.display = 'block';
             relatorioCompleto.style.display = 'block';
 
-            // Define a data padrão como a data atual no formato YYYY-MM-DD
+            // Define a data padrão como a data atual ao logar
             const hoje = new Date();
             const dia = String(hoje.getDate()).padStart(2, '0');
             const mes = String(hoje.getMonth() + 1).padStart(2, '0');
             const ano = hoje.getFullYear();
             const dataPadrao = `${ano}-${mes}-${dia}`;
-            dataRelatorioInput.value = dataPadrao; // Define o valor do input type="date"
-            
-            carregarDados(dataPadrao); // Carrega os dados para a data atual
+            dataRelatorioInput.value = dataPadrao;
+            carregarDados(dataPadrao); // Carrega os dados da data atual
         } else {
-            alert("Senha incorreta. Tente novamente.");
+            loginCard.style.display = 'block';
+            relatorioDataSelector.style.display = 'none';
+            relatorioCompleto.style.display = 'none';
+            authErrorMessage.textContent = ''; // Limpa mensagem de erro
+            emailAdminInput.value = ''; // Limpa campos de login
             senhaAdminInput.value = '';
         }
     }
 
+    // Listener para o estado de autenticação (se o usuário está logado ou não)
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            // Usuário está logado
+            toggleAdminPanel(true);
+        } else {
+            // Usuário não está logado
+            toggleAdminPanel(false);
+        }
+    });
+
+    // Função para tentar fazer login
+    async function entrarAdmin() {
+        const email = emailAdminInput.value.trim();
+        const senha = senhaAdminInput.value.trim();
+
+        if (!email || !senha) {
+            authErrorMessage.textContent = "Por favor, preencha e-mail e senha.";
+            return;
+        }
+
+        try {
+            await auth.signInWithEmailAndPassword(email, senha);
+            // Se o login for bem-sucedido, onAuthStateChanged vai lidar com a exibição do painel
+            authErrorMessage.textContent = ""; // Limpa qualquer mensagem de erro anterior
+        } catch (error) {
+            console.error("Erro no login:", error);
+            // Exibe mensagens de erro amigáveis
+            let errorMessage = "Erro ao fazer login. Verifique suas credenciais.";
+            if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                errorMessage = "E-mail ou senha inválidos.";
+            } else if (error.code === 'auth/invalid-email') {
+                errorMessage = "Formato de e-mail inválido.";
+            }
+            authErrorMessage.textContent = errorMessage;
+        }
+    }
+
+    // Função para fazer logout
+    async function fazerLogout() {
+        try {
+            await auth.signOut();
+            // onAuthStateChanged vai lidar com a ocultação do painel e exibição do login
+        } catch (error) {
+            console.error("Erro ao fazer logout:", error);
+            alert("Ocorreu um erro ao sair. Tente novamente.");
+        }
+    }
+
+    // --- Funções de Carregamento de Dados (permanecem as mesmas) ---
     async function carregarDados(dataDesejada) {
-        // Limpa a lista de participantes e mostra o cabeçalho
         listaParticipantesAdmin.innerHTML = '';
+        dataEnsaioSpan.innerText = dataDesejada.split('-').reverse().join('/');
+
         const headerDiv = document.createElement('div');
         headerDiv.classList.add('participante-admin-header');
         headerDiv.innerHTML = `
@@ -52,9 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         listaParticipantesAdmin.appendChild(headerDiv);
 
-        // Atualiza a data exibida no relatório
-        dataEnsaioSpan.innerText = dataDesejada.split('-').reverse().join('/'); // Formato DD/MM/YYYY
-
         let registrosDoDia = [];
         let sopranoCount = 0;
         let contraltoCount = 0;
@@ -62,9 +116,8 @@ document.addEventListener('DOMContentLoaded', () => {
         let baixoCount = 0;
 
         try {
-            // A consulta principal: busca registros da data desejada, ordenados por timestamp
             const snapshot = await db.collection('registrosChamada')
-                                     .where('data', '==', dataDesejada) // dataDesejada deve ser YYYY-MM-DD
+                                     .where('data', '==', dataDesejada)
                                      .orderBy('timestamp', 'asc')
                                      .get();
 
@@ -108,7 +161,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 listaParticipantesAdmin.appendChild(itemDiv);
             });
 
-            // Atualiza os contadores na UI
             totalParticipantesSpan.innerText = registrosDoDia.length;
             sopranoCountSpan.innerText = sopranoCount;
             contraltoCountSpan.innerText = contraltoCount;
@@ -118,7 +170,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error("Erro ao carregar dados do Firebase: ", error);
             alert("Erro ao carregar os dados. Verifique a conexão ou as regras de segurança do Firebase.");
-            // Reseta contadores e exibe mensagem de erro
             totalParticipantesSpan.innerText = 0;
             sopranoCountSpan.innerText = 0;
             contraltoCountSpan.innerText = 0;
@@ -129,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function exportarCSV() {
-        const dataParaExportar = dataRelatorioInput.value; // Obtém a data do input type="date"
+        const dataParaExportar = dataRelatorioInput.value;
         if (!dataParaExportar) {
             alert("Por favor, selecione uma data para exportar.");
             return;
@@ -170,9 +221,10 @@ document.addEventListener('DOMContentLoaded', () => {
         link.click();
         document.body.removeChild(link);
     }
+    // --- Fim das Funções de Carregamento de Dados ---
 
-    // Adiciona event listeners aos botões
-    btnLoginAdmin.addEventListener('click', entrarAdmin); // Correção para o botão de login
+    // Event Listeners
+    btnLoginAdmin.addEventListener('click', entrarAdmin);
     btnCarregarRelatorio.addEventListener('click', () => {
         const dataSelecionada = dataRelatorioInput.value;
         if (dataSelecionada) {
@@ -182,4 +234,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     btnExportarCSV.addEventListener('click', exportarCSV);
+    btnLogout.addEventListener('click', fazerLogout); // NOVO: Event Listener para logout
 });
