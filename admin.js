@@ -1,7 +1,7 @@
 // admin.js
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Referências aos elementos HTML
+    // Referências aos elementos HTML (sem mudanças aqui)
     const emailAdminInput = document.getElementById('email-admin');
     const senhaAdminInput = document.getElementById('senha-admin');
     const loginCard = document.getElementById('login-card');
@@ -86,15 +86,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function carregarDados(dataDesejada) {
-        // Limpa a lista de participantes e mostra o cabeçalho
-        listaParticipantesAdmin.innerHTML = '';
+        listaParticipantesAdmin.innerHTML = ''; // Limpa antes de adicionar o cabeçalho
         const headerDiv = document.createElement('div');
         headerDiv.classList.add('participante-admin-header');
+        // ATUALIZADO: Adicionado 'col-telefone' ao cabeçalho
         headerDiv.innerHTML = `
             <div class="col-nome">Nome</div>
             <div class="col-naipe">Naipe</div>
-            <div class="col-registro">Hora de Registro</div>
-            <div class="col-novo-coralista">Novo?</div> `;
+            <div class="col-registro">Hora</div>
+            <div class="col-novo-coralista">Novo?</div>
+            <div class="col-telefone">Telefone</div> `;
         listaParticipantesAdmin.appendChild(headerDiv);
 
         dataEnsaioSpan.innerText = dataDesejada.split('-').reverse().join('/');
@@ -143,13 +144,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const itemDiv = document.createElement('div');
                 itemDiv.classList.add('participante-admin-item');
-                // NOVO: Adicionar um div para 'col-novo-coralista'
-                const isNovoCoralista = r.novoCoralista ? 'Sim' : 'Não'; // Exibe 'Sim' ou 'Não'
+                const isNovoCoralista = r.novoCoralista ? 'Sim' : 'Não';
+                // NOVO: Adicionar um div para 'col-telefone'
+                const telefoneDisplay = r.telefone || 'N/A'; // Exibe o telefone ou 'N/A' se não houver
                 itemDiv.innerHTML = `
                     <div class="col-nome">${r.nome}</div>
                     <div class="col-naipe"><span class="tag-naipe ${r.naipe.toLowerCase()}">${r.naipe}</span></div>
                     <div class="col-registro">${r.horaRegistro || 'Indefinido'}</div>
-                    <div class="col-novo-coralista">${isNovoCoralista}</div> `;
+                    <div class="col-novo-coralista">${isNovoCoralista}</div>
+                    <div class="col-telefone">${telefoneDisplay}</div> `;
                 listaParticipantesAdmin.appendChild(itemDiv);
             });
 
@@ -200,12 +203,13 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // NOVO: Adicionar "Novo Coralista" ao cabeçalho do CSV
+        // NOVO: Adicionar "Telefone" ao cabeçalho do CSV
         const csvContent = "data:text/csv;charset=utf-8,"
-            + "Nome,Naipe,Hora de Registro,Novo Coralista\n" // NOVO: Cabeçalho
+            + "Nome,Naipe,Hora de Registro,Novo Coralista,Telefone\n" // NOVO: Cabeçalho
             + registrosParaCSV.map(r => {
                 const isNovoCoralista = r.novoCoralista ? 'Sim' : 'Não';
-                return `${r.nome},${r.naipe},${r.horaRegistro || 'Indefinido'},${isNovoCoralista}`; // NOVO: Dados
+                const telefoneCSV = r.telefone || ''; // Usa string vazia se não houver telefone
+                return `${r.nome},${r.naipe},${r.horaRegistro || 'Indefinido'},${isNovoCoralista},${telefoneCSV}`; // NOVO: Dados
             }).join("\n");
 
         const encodedUri = encodeURI(csvContent);

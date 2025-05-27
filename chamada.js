@@ -2,8 +2,11 @@
 
 const nomeInput = document.getElementById("nome");
 const naipeSelect = document.getElementById("naipe");
-const novoCoralistaCheckbox = document.getElementById("novo-coralista"); // NOVO: Referência à checkbox
+const novoCoralistaCheckbox = document.getElementById("novo-coralista");
+const telefoneContainer = document.getElementById("telefone-container");
+const telefoneInput = document.getElementById("telefone");
 const listaPresencas = document.getElementById("lista-presencas");
+const dataEventoSpan = document.getElementById('data-evento'); // Certifique-se de que está definido
 
 function getDataChave() {
     const hoje = new Date();
@@ -17,7 +20,8 @@ async function registrarPresenca() {
     const nome = nomeInput.value.trim();
     const naipe = naipeSelect.value;
     const dataAtual = getDataChave();
-    const novoCoralista = novoCoralistaCheckbox.checked; // NOVO: Obter o estado da checkbox
+    const novoCoralista = novoCoralistaCheckbox.checked;
+    const telefone = novoCoralista ? telefoneInput.value.trim() : '';
 
     if (!nome || !naipe) {
         alert("Preencha todos os campos!");
@@ -36,7 +40,10 @@ async function registrarPresenca() {
         if (!snapshot.empty) {
             alert("Você já registrou sua presença para esta data com este nome!");
             nomeInput.value = "";
-            novoCoralistaCheckbox.checked = false; // NOVO: Limpar checkbox
+            naipeSelect.value = "";
+            novoCoralistaCheckbox.checked = false;
+            telefoneInput.value = "";
+            telefoneContainer.style.display = 'none';
             return;
         }
 
@@ -46,7 +53,8 @@ async function registrarPresenca() {
             horaRegistro: horaRegistro,
             data: dataAtual,
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            novoCoralista: novoCoralista // NOVO: Adicionar o campo ao registro
+            novoCoralista: novoCoralista,
+            telefone: telefone
         };
 
         await db.collection('registrosChamada').add(registro);
@@ -54,7 +62,9 @@ async function registrarPresenca() {
 
         nomeInput.value = "";
         naipeSelect.value = "";
-        novoCoralistaCheckbox.checked = false; // NOVO: Limpar checkbox
+        novoCoralistaCheckbox.checked = false;
+        telefoneInput.value = "";
+        telefoneContainer.style.display = 'none';
 
         carregarPresencas();
     } catch (error) {
@@ -100,6 +110,7 @@ async function carregarPresencas() {
                 sectionNaipe.className = `naipe-section ${naipe.toLowerCase()}`;
 
                 const headerNaipe = document.createElement("h3");
+                // CORREÇÃO: Usando template literal para o texto.
                 headerNaipe.textContent = `${naipe} (${participantesDoNaipe.length} participantes)`;
                 sectionNaipe.appendChild(headerNaipe);
 
@@ -107,8 +118,8 @@ async function carregarPresencas() {
 
                 participantesDoNaipe.forEach(p => {
                     const li = document.createElement("li");
-                    const isNovoCoralista = p.novoCoralista ? ' (Novo Coralista)' : ''; // NOVO: Texto condicional
-                    li.textContent = `${p.nome} (Registrado às ${p.horaRegistro || 'Indefinido'})${isNovoCoralista}`; // NOVO: Adicionar ao texto
+                    // ATUALIZADO: Exibe apenas o nome
+                    li.textContent = `${p.nome}`;
                     ul.appendChild(li);
                 });
                 sectionNaipe.appendChild(ul);
@@ -122,10 +133,18 @@ async function carregarPresencas() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const dataEventoSpan = document.getElementById('data-evento');
     if (dataEventoSpan) {
         const hoje = new Date();
         dataEventoSpan.textContent = hoje.toLocaleDateString('pt-BR');
     }
     carregarPresencas();
+
+    novoCoralistaCheckbox.addEventListener('change', () => {
+        if (novoCoralistaCheckbox.checked) {
+            telefoneContainer.style.display = 'block';
+        } else {
+            telefoneContainer.style.display = 'none';
+            telefoneInput.value = '';
+        }
+    });
 });

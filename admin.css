@@ -196,6 +196,8 @@ button:hover {
 .naipe-section.baixo { background-color: #e6fff2; border-left: 5px solid #a8e6cf; }
 
 
+/* ... (seu CSS anterior) ... */
+
 /* Estilos para a lista de participantes na página de ADMIN (CSS Grid) */
 #lista-participantes-admin {
     margin-top: 20px;
@@ -206,9 +208,10 @@ button:hover {
 
 .participante-admin-header,
 .participante-admin-item {
-    /* NOVO: Adicionado mais uma coluna para 'Novo?' */
     display: grid;
-    grid-template-columns: 2.5fr 1fr 1.5fr 0.8fr; /* Nome, Naipe, Hora, Novo? */
+    /* ATUALIZADO: Ordem e proporções das colunas para corrigir o layout */
+    /* Nome, Telefone, Naipe, Hora, Novo? */
+    grid-template-columns: 2fr 1.5fr 1fr 0.8fr 0.7fr; /* Ajuste as frações conforme a necessidade */
     padding: 12px 15px;
     border-bottom: 1px solid #eee;
     align-items: center;
@@ -231,18 +234,19 @@ button:hover {
     border-bottom: none;
 }
 
+/* Colunas individuais */
 
-
+.col-telefone {
+    text-align: center; /* Garante que o telefone fique à esquerda */
+}
 .col-naipe {
-    text-align: center;
+    text-align: center; /* Naipe centralizado */
 }
-
 .col-registro {
-    text-align: right;
+    text-align: center; /* Hora centralizada */
 }
-
-.col-novo-coralista { /* NOVO: Alinhamento para a nova coluna */
-    text-align: center;
+.col-novo-coralista {
+    text-align: center; /* Novo? centralizado */
     font-weight: bold;
 }
 
@@ -264,29 +268,7 @@ button:hover {
 .tag-naipe.tenor, .naipe.tenor { background-color: #ffe0a3; }
 .tag-naipe.baixo, .naipe.baixo { background-color: #a8e6cf; }
 
-.loading {
-    color: #7c3aed;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-style: italic;
-    padding: 20px;
-    justify-content: center;
-}
-
-#data-evento {
-    color: #7c3aed;
-    font-size: 1rem;
-}
-
-/* ------------------------------------------------------------- */
-/* FIM: ESTILOS PARA LISTA DE PARTICIPANTES (CHAMADA E ADMIN) */
-/* ------------------------------------------------------------- */
-
-
-/* ------------------------------------------------------------- */
-/* INÍCIO: MEDIA QUERIES PARA RESPONSIVIDADE GERAL */
-/* ------------------------------------------------------------- */
+/* ... (seu CSS anterior) ... */
 
 @media (max-width: 768px) {
     main {
@@ -356,13 +338,14 @@ button:hover {
     .participante-admin-header {
         display: none;
     }
-    /* Adiciona labels para cada campo nos itens da lista em mobile */
+    /* ATUALIZADO: Ordem e labels para cada campo nos itens da lista em mobile */
     .participante-admin-item .col-nome::before { content: "Nome: "; font-weight: bold; color: #7c3aed; }
+    .participante-admin-item .col-telefone::before { content: "Telefone: "; font-weight: bold; color: #7c3aed; }
     .participante-admin-item .col-naipe::before { content: "Naipe: "; font-weight: bold; color: #7c3aed; }
     .participante-admin-item .col-registro::before { content: "Registro: "; font-weight: bold; color: #7c3aed; }
     .participante-admin-item .col-novo-coralista::before { content: "Novo Coralista: "; font-weight: bold; color: #7c3aed; }
-
 }
+
 
 @media (max-width: 480px) {
     main {

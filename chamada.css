@@ -167,6 +167,60 @@ button:hover {
 }
 
 
+/* Estilos para o container da checkbox e label */
+div.card > div[style="display: flex; align-items: center; justify-content: center; margin: 10px 0;"] {
+    /* Pode ser uma classe se preferir, por exemplo: .checkbox-container */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 15px 0; /* Aumenta um pouco a margem */
+    font-size: 1.1rem; /* Aumenta o tamanho da fonte para a label */
+    color: #555;
+}
+
+/* Oculta o checkbox padrão */
+input[type="checkbox"]#novo-coralista {
+    /* Remove a aparência padrão do navegador */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    /* Tamanho e borda do quadrado customizado */
+    width: 22px; /* Aumenta o tamanho do quadrado */
+    height: 22px; /* Aumenta o tamanho do quadrado */
+    border: 2px solid #7c3aed; /* Borda roxa */
+    border-radius: 4px; /* Cantos levemente arredondados */
+    margin-right: 10px; /* Espaço entre o quadrado e o texto */
+    cursor: pointer;
+    position: relative; /* Para posicionar o tick */
+    flex-shrink: 0; /* Impede que o checkbox encolha */
+    transition: background-color 0.2s, border-color 0.2s; /* Transição suave */
+}
+
+/* Estilo para quando o checkbox está marcado */
+input[type="checkbox"]#novo-coralista:checked {
+    background-color: #7c3aed; /* Fundo roxo quando marcado */
+    border-color: #7c3aed; /* Borda roxa quando marcada */
+}
+
+/* Cria o "tick" (marca de seleção) quando o checkbox está marcado */
+input[type="checkbox"]#novo-coralista:checked::after {
+    content: '';
+    position:absolute;
+    top: 0rem; /* Ajuste a posição vertical do tick */
+    left: 6px; /* Ajuste a posição horizontal do tick */
+    width: 6px; /* Largura do tick */
+    height: 12px; /* Altura do tick */
+    border: solid white;
+    border-width: 0 3px 3px 0; /* Apenas as bordas direita e inferior */
+    transform: rotate(45deg); /* Gira para fazer o formato de "V" */
+}
+
+/* Estilo ao passar o mouse */
+input[type="checkbox"]#novo-coralista:hover {
+    border-color: #6b21a8; /* Borda mais escura ao passar o mouse */
+}
+
 /* Container principal dos naipes - Flexbox */
 #lista-presencas {
     display: flex;
