@@ -6,6 +6,7 @@
     <title>Chama Coral - Meu Carrinho</title>
     <link rel="stylesheet" href="assets/icons.css">
     <link rel="stylesheet" href="assets/css/carrinho.css">
+    <link rel="stylesheet" href="assets/Style.css"> 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
@@ -45,7 +46,7 @@
                 Total: <span id="cart-total">R$ 0,00</span>
             </div>
 
-            <button id="checkout-button" class="checkout-btn">Finalizar Compra via WhatsApp</button>
+            <button id="checkout-button" class="checkout-btn">Finalizar Compra</button>
             <a href="partituras.html" class="back-to-shop">Continuar Comprando Partituras</a>
         </div>
     </main>
@@ -64,6 +65,14 @@
 
     <a href="#" class="back-to-top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;"><i class="ri-arrow-up-line"></i></a>
 
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="close-modal">×</span>
+            <h2 class="modal-title">Formas de Pagamento</h2>
+            <div id="payment-options-content">
+                </div>
+        </div>
+    </div>
     <script src="assets/js/carrinho-page.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="https://unpkg.com/scrollreveal"></script>

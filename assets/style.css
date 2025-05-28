@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?uizcdn');
-  src:  url('fonts/icomoon.eot?uizcdn#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?uizcdn') format('truetype'),
-    url('fonts/icomoon.woff?uizcdn') format('woff'),
-    url('fonts/icomoon.svg?uizcdn#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?djasf4');
+  src:  url('fonts/icomoon.eot?djasf4#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?djasf4') format('truetype'),
+    url('fonts/icomoon.woff?djasf4') format('woff'),
+    url('fonts/icomoon.svg?djasf4#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,8 +25,18 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-icons8-boleto-bancrio-64:before {
+  content: "\e90f";
+}
+.icon-icons8-foto-480:before {
+  content: "\e910";
+  color: #4db6ac;
+}
 .icon-icons8-spotify-500:before {
   content: "\e90e";
+}
+.icon-icons8-parte-traseira-de-carto-de-banco-100:before {
+  content: "\e911";
 }
 .icon-partitura:before {
   content: "\e902";

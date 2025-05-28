@@ -250,6 +250,8 @@
     box-sizing: border-box; 
 }
 
+
+
   /*====FOOTER======  */
   footer {
     background: var(--base-color);
@@ -464,6 +466,173 @@
     color: var(--chama-color);
     text-decoration: underline;
 }
+
+/* --- NEW: Modal Styles --- */
+.modal {
+  display: none; /* Hidden by default - ESTA LINHA É ESSENCIAL */
+  position: fixed; /* Stay in place */
+  z-index: 200; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+}
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 2.5rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+  width: 90%;
+  max-width: 600px; /* Max width for larger screens */
+  position: relative;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.close-button {
+  color: #aaa;
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  font-size: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: var(--base-color);
+  text-decoration: none;
+}
+
+.modal-title {
+  font-size: 2rem;
+  color: var(--title-color);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+#payment-options-content p {
+  margin-bottom: 0.8rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+#payment-options-content h3 {
+  text-align: center;
+  color: var(--base-color);
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.payment-option {
+  display: flex;
+  align-items: flex-start; /* Mantém a imagem no topo */
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.payment-option:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.payment-option img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  border-radius: 5px;
+  flex-shrink: 0;
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #ddd;
+}
+
+
+.payment-option > div { /* Este é o <div> que contém h4, p, e buttons */
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column; /* Organiza os itens em coluna */
+  align-items: flex-start; /* Alinha itens à esquerda por padrão para telas maiores */
+  /* text-align: left; /* Remova ou comente esta linha, pois 'align-items' fará o trabalho */
+}
+
+.payment-option h4 {
+  margin-top: 0;
+  color: var(--title-color);
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.payment-option p {
+  margin-bottom: 0.8rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+.payment-option button,
+.payment-option .whatsapp-link {
+  display: inline-block; /* Altere para 'block' se quiser que cada botão ocupe sua própria linha */
+  padding: 0.8rem 1.2rem;
+  margin-top: 0.8rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center; /* Mantém o texto dentro do botão centralizado */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.payment-option .button-group {
+  display: flex;
+  justify-content: flex-start; /* Alinhar à esquerda por padrão em telas maiores */
+  gap: 1rem; /* Espaço entre os botões */
+  flex-wrap: wrap; /* Quebra de linha se os botões não couberem */
+  width: 100%;
+}
+
+.copy-pix-btn {
+  background-color: var(--base-color);
+  color: white;
+  
+}
+.copy-pix-btn:hover {
+  background-color: var(--chama-color);
+}
+
+.generate-boleto-btn {
+  background-color: #007bff; /* A nice blue for boleto */
+  color: white;
+}
+.generate-boleto-btn:hover {
+  background-color: #0056b3;
+}
+
+.whatsapp-link {
+  background-color: #25D366; /* WhatsApp green */
+  color: white;
+  margin-left: 1rem; /* Space between buttons */
+}
+.whatsapp-link:hover {
+  background-color: #1DA851;
+}
+
+/* --- END NEW: Modal Styles --- */
   
 /*==== FOOTER ======*/
 footer {
@@ -573,6 +742,28 @@ footer .social a:hover {
     .remove-item-btn {
         width: 100%;
     }
+    .modal-content {
+      padding: 1.5rem;
+      width: 95%;
+  }
+  .modal-title {
+      font-size: 1.8rem;
+  }
+  .payment-option {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 1rem;
+  }
+  .payment-option img {
+      margin-bottom: 0.5rem;
+  }
+  .payment-option button,
+  .payment-option .whatsapp-link {
+      width: 100%; /* Full width buttons on mobile */
+      margin-left: 0;
+      margin-top: 1rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -613,18 +804,38 @@ transition: background 0.3s;
 margin-bottom: 1rem;
 }
 
-}
-    .partituras-list {
+.partituras-list {
         grid-template-columns: 1fr;
         padding: 0 0.5rem;
     }
-    .card-content {
+.card-content {
         padding: 0.8rem;
     }
-    .image-container {
+.image-container {
         height: 200px;
     }
-    .top-label {
+.top-label {
         padding: 0.2rem 0.4rem;
         font-size: 0.65rem;
     }
+
+  .modal-content {
+      padding: 1rem;
+  }
+  .modal-title {
+      font-size: 1.5rem;
+  }
+  .payment-option h4 {
+      font-size: 1.1rem;
+  }
+  .payment-option p {
+      font-size: 0.9rem;
+  }
+  .payment-option button,
+  .payment-option .whatsapp-link {
+      padding: 0.6rem 1rem;
+      font-size: 0.9rem;
+  }
+
+ }
+

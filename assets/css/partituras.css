@@ -563,9 +563,6 @@ footer {
   .content {
     flex: 1;
   }
-
-  
-
 /*==== MEDIA QUERIES (RESPONSIVIDADE) ======*/
 
 @media (max-width: 1024px) {
