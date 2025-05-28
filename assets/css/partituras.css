@@ -478,7 +478,7 @@ nav.show div.icon-close {
 
 .search-filter button {
     padding: 10px 20px;
-    background-color: #007bff; /* Or your brand's primary color */
+    background-color: var(--base-color); /* Or your brand's primary color */
     color: white;
     border: none;
     border-radius: 5px;
@@ -488,7 +488,7 @@ nav.show div.icon-close {
 }
 
 .search-filter button:hover {
-    background-color: #0056b3; /* Darker shade on hover */
+    background-color: var(--chama-color); /* Darker shade on hover */
 }
 
 /*====FOOTER======  */
