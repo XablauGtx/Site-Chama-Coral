@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
 
 /*==== RESET / BASE ======*/
@@ -54,7 +53,9 @@ body {
     display: flex;
     flex-direction: column;
     max-width: 100vw; /* Garante que não haja scroll horizontal */
-    overflow-x: hidden; /* Evita a barra de rolagem horizontal */
+    overflow-x: hidden; /* Evita a barra de rolagem horizontal - Tenha atenção com isso para elementos posicionados! */
+    overflow-y: auto; /* Garante que o scroll vertical funcione */
+    transform: none !important; /* TESTE: Remove qualquer transformação que possa criar novo contexto de empilhamento */
 }
 
 .title {
@@ -102,6 +103,8 @@ body {
 
 .section {
     padding: 4rem 0;
+    overflow: visible !important; /* TESTE: Garante que a seção não corte o conteúdo */
+    transform: none !important; /* TESTE: Remove qualquer transformação */
 }
 
 .section .title {
@@ -111,6 +114,8 @@ body {
 .section header {
     margin-bottom: 4rem;
     text-align: center;
+    overflow: visible !important; /* TESTE: Garante que o header da seção não corte o conteúdo */
+    transform: none !important; /* TESTE: Remove qualquer transformação */
 }
 
 .section header strong {
@@ -121,18 +126,26 @@ body {
     font-size: var(--subtitle-font-size);
 }
 
+/* Adicionado para o .container dentro da section, se for o caso */
+.container {
+    overflow: visible !important; /* TESTE: Garante que o container não corte o conteúdo */
+    transform: none !important; /* TESTE: Remove qualquer transformação */
+    /* Mantenha as outras propriedades do seu .container aqui, como max-width, margin, padding etc. */
+}
+
+
 /*==== HEADER / NAVIGATION ======*/
 #header {
     border-bottom: 1px solid #e4e4e4;
     display: flex;
     width: 100%;
     position: fixed;
-    z-index: 100;
+    z-index: 100; /* Z-index do cabeçalho */
     background-color: rgb(255, 255, 255);
     top: 0;
     left: 0;
     align-items: center;
-    /* Removido o padding daqui, o padding da nav é suficiente */
+    /* Certifique-se de que não haja transform ou filter aqui se ele estiver afetando */
 }
 
 #header.scroll {
@@ -150,6 +163,8 @@ body {
 
 main {
     margin-top: var(--header-heigth);
+    overflow: visible !important; /* TESTE: Garante que o main não corte o conteúdo */
+    transform: none !important; /* TESTE: Remove qualquer transformação */
 }
 
 /*==== LOGO ======*/
@@ -162,9 +177,9 @@ nav {
     height: var(--header-heigth);
     align-items: center;
     display: flex;
-    justify-content: space-between; /* Mantém o logo à esquerda e o grupo de ícones à direita */
-    width: 100%; /* Garante que a nav ocupe toda a largura disponível no header */
-    padding: 0 1.5rem; /* Isso dá o espaçamento lateral aos elementos dentro da nav */
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 1.5rem;
     box-sizing: border-box;
 }
 
@@ -259,43 +274,43 @@ nav.show div.icon-close {
 
 /* NOVO CONTÊINER PARA OS ÍCONES DO MENU E CARRINHO */
 .menu-e-carrinho {
-    display: flex; /* Transforma este contêiner em um flexbox */
-    align-items: center; /* Alinha verticalmente os itens dentro dele */
-    gap: 1rem; /* Adiciona um espaço entre o ícone do menu e o do carrinho */
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 
 /* Estilos para o ícone do Carrinho */
 .cart-icon {
     position: relative;
-    font-size: 1.8rem; /* Tamanho do ícone do carrinho */
+    font-size: 1.8rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px; /* Largura para o círculo de fundo */
-    height: 40px; /* Altura para o círculo de fundo */
-    border-radius: 50%; /* Faz a borda circular */
-    background-color: #FFD700; /* Amarelo sólido como na imagem */
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #FFD700;
     transition: background-color 0.3s ease;
     z-index: 101; /* Garante que esteja acima de outros elementos */
 }
 
 .cart-icon i {
-    font-size: 1.3rem; /* Ajuste o tamanho do ícone real dentro do círculo */
-    color: #333; /* Cor preta ou cinza bem escuro para o ícone, para contrastar com o amarelo */
+    font-size: 1.3rem;
+    color: #333;
 }
 
 .cart-icon:hover {
-    background-color: var(--chama-color); /* Cor ao passar o mouse */
-    color: white; /* Cor do ícone ao passar o mouse */
+    background-color: var(--chama-color);
+    color: white;
 }
 
 /* Contador de itens no carrinho */
 .cart-count {
     position: absolute;
-    top: -5px; /* Ajuste a posição vertical */
-    right: -5px; /* Ajuste a posição horizontal */
-    background-color: var(--base-color); /* Cor de fundo do contador (vermelho/rosa) */
+    top: -5px;
+    right: -5px;
+    background-color: var(--base-color);
     color: white;
     font-size: 0.7rem;
     font-weight: 700;
@@ -306,14 +321,14 @@ nav.show div.icon-close {
     align-items: center;
     justify-content: center;
     line-height: 1;
-    border: 1px solid white; /* Borda branca para destacar */
+    border: 1px solid white;
 }
 
 /*==== PARTITURAS SECTION (GRID LAYOUT) ======*/
 .partituras-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem; /* Espaçamento entre os cards */
+    gap: 1.5rem;
     padding: 0 1.5rem;
     margin: 4rem auto;
     max-width: 1200px;
@@ -321,7 +336,7 @@ nav.show div.icon-close {
 
 /* ESTILOS PARA CADA CARD DE PARTITURA */
 .card {
-    position: relative;
+    position: relative; /* Já existente, mas importante que esteja aqui */
     display: flex;
     flex-direction: column;
     background-color: #fff;
@@ -342,9 +357,9 @@ nav.show div.icon-close {
 /* CONTAINER DA IMAGEM DENTRO DO CARD */
 .image-container {
     width: 100%;
-    height: 200px; /* Altura fixa para a imagem do card */
+    height: 200px;
     overflow: hidden;
-    display: flex; /* Para centralizar a imagem dentro do container */
+    display: flex;
     justify-content: center;
     align-items: center;
     border-bottom: 1px solid #f0f0f0;
@@ -353,14 +368,14 @@ nav.show div.icon-close {
 .image-container img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Ajusta a imagem para caber inteira no container, mantendo proporção */
-    padding: 5px; /* Adiciona um pequeno padding interno à imagem, como na referência */
-    background-color: #fff; /* Garante que o fundo da imagem seja branco, se a imagem for PNG transparente, para evitar "quadrados" de fundo. */
+    object-fit: contain;
+    padding: 5px;
+    background-color: #fff;
 }
 
 /* CONTEÚDO DO CARD (TEXTOS E BOTÃO) */
 .card-content {
-    padding: 0.8rem 1rem 1rem; /* Ajuste: Top, Right, Bottom, Left */
+    padding: 0.8rem 1rem 1rem;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -372,14 +387,14 @@ nav.show div.icon-close {
     font-size: 1.1rem;
     font-weight: 600;
     color: var(--title-color);
-    margin-bottom: 0.3rem; /* Espaçamento mais compacto */
+    margin-bottom: 0.3rem;
     line-height: 1.3;
 }
 
 .card-content .description {
     font-size: 0.8rem;
     color: var(--text-color);
-    margin-bottom: 0.6rem; /* Espaçamento mais compacto */
+    margin-bottom: 0.6rem;
     line-height: 1.3;
     text-align: center;
 }
@@ -387,10 +402,10 @@ nav.show div.icon-close {
 .card-content .price {
     font-size: 1rem;
     font-weight: bold;
-    color: var(--title-color); /* Cor do preço mais escura como na ref. */
+    color: var(--title-color);
     margin-top: auto;
     margin-bottom: 0.8rem;
-    text-align: center; /* Espaçamento do preço para o botão */
+    text-align: center;
 }
 
 /* BOTÃO ADICIONAR AO CARRINHO DENTRO DO CARD */
@@ -418,52 +433,58 @@ nav.show div.icon-close {
     left: 0;
     background-color: var(--base-color);
     color: #fff;
-    padding: 0.3rem 0.8rem 0.3rem 0.5rem; /* Ajuste: Top, Right, Bottom, Left para o efeito de bandeira */
+    padding: 0.3rem 0.8rem 0.3rem 0.5rem;
     font-size: 0.7rem;
     font-weight: bold;
     text-transform: uppercase;
     z-index: 10;
-    /* Para criar o efeito de "bandeira" como na imagem de referência */
-    clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%); /* Ajuste a porcentagem do meio para mudar o ângulo */
+    clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%);
 }
 
 /* Estilos para o Pop-up de Adição ao Carrinho */
 .add-to-cart-popup {
-    position: fixed; /* Fixa o pop-up na tela, mesmo com scroll */
-    bottom: 20px; /* 20px do rodapé */
-    right: 20px; /* 20px da lateral direita */
-    background-color: #4CAF50; /* Cor de fundo verde */
-    color: white; /* Cor do texto branca */
-    padding: 15px 25px; /* Preenchimento interno */
-    border-radius: 8px; /* Cantos arredondados */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
-    opacity: 0; /* Começa invisível */
-    visibility: hidden; /* Esconde completamente do layout */
-    transform: translateY(100%); /* Começa fora da tela, para baixo */
-    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out, visibility 0.5s; /* Transições suaves */
-    z-index: 1000; /* Garante que fique acima de outros elementos */
-    display: flex; /* Para centralizar o texto verticalmente se houver mais de uma linha */
-    align-items: center; /* Alinha o texto ao centro verticalmente */
-    justify-content: center; /* Alinha o texto ao centro horizontalmente */
-    text-align: center; /* Centraliza o texto */
-    font-size: 1rem; /* Tamanho da fonte */
-    font-weight: 500; /* Peso da fonte */
-    max-width: 300px; /* Largura máxima para o pop-up */
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(100%);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out, visibility 0.5s;
+    z-index: 1000; /* Z-index do pop-up */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 500;
+    max-width: 300px;
 }
 
 /* Estilo quando o pop-up está visível */
 .add-to-cart-popup.show {
-    opacity: 1; /* Torna visível */
-    visibility: visible; /* Torna visível para o layout */
-    transform: translateY(0); /* Desliza para a posição final */
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
-/* Add this to your partituras.css or style.css file */
+/* ----------------------------------------------------- */
+/* AJUSTES CHAVE PARA FILTRO E SUGESTÕES - Z-INDEX!    */
+/* ----------------------------------------------------- */
 .search-filter {
+    position: relative; /* CRÍTICO: Contexto de posicionamento para sugestões */
     display: flex;
     justify-content: center;
     margin-top: 20px;
     margin-bottom: 40px;
+    flex-wrap: wrap;
+    z-index: 200; /* AJUSTADO: Aumentado para garantir que fique acima de mais coisas */
+    /* Remove qualquer transformação que possa criar novo contexto de empilhamento */
+    transform: none !important;
 }
 
 .search-filter input[type="text"] {
@@ -478,7 +499,7 @@ nav.show div.icon-close {
 
 .search-filter button {
     padding: 10px 20px;
-    background-color: var(--base-color); /* Or your brand's primary color */
+    background-color: var(--base-color);
     color: white;
     border: none;
     border-radius: 5px;
@@ -488,43 +509,76 @@ nav.show div.icon-close {
 }
 
 .search-filter button:hover {
-    background-color: var(--chama-color); /* Darker shade on hover */
+    background-color: var(--chama-color);
 }
 
-/*====FOOTER======  */
+.suggestions-list {
+    position: absolute;
+    top: calc(100% + 5px); /* Posiciona 5px abaixo do elemento pai (.search-filter) */
+    left: 47.5%; /* Alinha o centro horizontalmente */
+    transform: translateX(-50%); /* Move 50% da própria largura para a esquerda, centralizando */
+    width: calc(60% - 10px); /* Tenta igualar a largura do input menos a margem */
+    max-width: 390px; /* Tenta igualar a max-width do input menos a margem */
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10000; /* Z-INDEX CRÍTICO: MUITO MAIS ALTO para garantir que apareça acima de tudo! */
+    display: none; /* Escondido por padrão, mostrado por JavaScript */
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.suggestion-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: var(--text-color);
+    border-bottom: 1px solid #eee;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background-color: #f0f0f0;
+    color: var(--base-color);
+}
+
+/*====FOOTER======  */
 footer {
     background: var(--base-color);
-    
-  }
-  
-  footer .logo {
+}
+
+footer .logo {
     display: inline-block;
     margin-bottom: 0rem;
-  }
-  
-  footer .brand p {
+}
+
+footer .brand p {
     color: var(--text-color-light);
     margin-bottom: 0.750rem;
-  }
-  
-  footer i {
+}
+
+footer i {
     font-size: 1.5rem;
     color: var(--text-color-light);
-  }
-  
-  footer .social a {
+}
+
+footer .social a {
     margin-right: 1rem;
     transition: 0.3s;
     display: inline-block;
     margin-bottom: 0.5rem;
     align-items: center;
-  }
-  
-  footer .social a:hover {
+}
+
+footer .social a:hover {
     transform: translateY(-8px);
-  }
-  
-  .back-to-top {
+}
+
+.back-to-top {
     background: var(--chama-color);
     color: var(--text-color-light);
     padding: 0.8rem;
@@ -537,32 +591,33 @@ footer {
     opacity: 0;
     transition: 0.3s;
     transform: translateY(100%);
-  }
-  
-  .back-to-top.show {
+}
+
+.back-to-top.show {
     visibility: visible;
     opacity: 1;
     transform: translateY(0);
-  }
-  
-  .social {
-    display: flex; /* Usando Flexbox para os links sociais */
-    justify-content: center; /* Centraliza os ícones */
-    gap: 0.5rem; /* Espaçamento entre os ícones */
-  }
+}
 
+.social {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
 
-
-  html, body {
+/* Garante que body e html tenham flex para o footer fixo na parte inferior */
+html, body {
     height: 100%;
     margin: 0;
     display: flex;
     flex-direction: column;
-  }
-  
-  .content {
+}
+
+/* Conteúdo principal para empurrar o footer para baixo */
+.content {
     flex: 1;
-  }
+}
+
 /*==== MEDIA QUERIES (RESPONSIVIDADE) ======*/
 
 @media (max-width: 1024px) {
@@ -627,9 +682,9 @@ footer {
 
     /* Ajustes para dispositivos menores */
     .menu-e-carrinho {
-        gap: 0.7rem; /* Reduz o espaço entre os ícones em telas menores */
+        gap: 0.7rem;
     }
-   .cart-icon {
+    .cart-icon {
         font-size: 1.6rem;
         width: 35px;
         height: 35px;
@@ -643,6 +698,14 @@ footer {
         font-size: 0.65rem;
         top: -4px;
         right: -4px;
+    }
+    /* AJUSTES DE RESPONSIVIDADE PARA SUGESTÕES DE PESQUISA */
+    .suggestions-list {
+        width: calc(100% - 30px); /* Ajustado: Considera o padding lateral do body/container principal. */
+        max-width: none; /* Remove a largura máxima para que ele possa se expandir */
+        left: 50%; /* Mantém a centralização */
+        transform: translateX(-50%); /* Mantém a centralização */
+        top: calc(100% + 10px); /* Ajusta a posição para baixo se o botão estiver abaixo do input */
     }
 }
 

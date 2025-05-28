@@ -48,7 +48,6 @@ const scrollReveal = ScrollReveal({
 scrollReveal.reveal(
     `#home .image-box,
     #services header,
-    #services .partituras-list .card, /* This will be re-applied after dynamic load */
     #testimonials header,
     #testimonials .testimonials,
     #contact .text,
@@ -77,6 +76,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const searchInput = document.getElementById('sheet-music-search');
     const searchButton = document.getElementById('search-button');
 
+    // Create the suggestions container dynamically
+    const suggestionsContainer = document.createElement("div");
+    suggestionsContainer.classList.add("suggestions-list");
+    // Insert the suggestions container right after the search input
+    searchInput.parentNode.insertBefore(suggestionsContainer, searchInput.nextSibling);
+
+    let allPartituras = []; // This will store all partituras fetched from Firestore
+
     function updateCartCount() {
         cartCountElement.textContent = cart.length;
     }
@@ -94,136 +101,183 @@ document.addEventListener('DOMContentLoaded', async () => {
         updateCartCount();
     }
 
-    // --- Search Filter Function ---
-    const filterSheetMusic = () => {
-        const searchTerm = searchInput.value.toLowerCase().trim();
-        // Get all cards currently in the DOM *after* they've been loaded
-        const currentCards = partiturasListContainer.querySelectorAll('.card');
+    /**
+     * Renders sheet music cards into the DOM.
+     * @param {Array} sheetMusicArray - An array of sheet music objects to display.
+     */
+    function renderSheetMusicCards(sheetMusicArray) {
+        partiturasListContainer.innerHTML = ''; // Clear existing cards
 
-        currentCards.forEach(card => {
-            const titleElement = card.querySelector('.title');
-            if (titleElement) { // Ensure title element exists
-                const title = titleElement.textContent.toLowerCase();
-                if (title.includes(searchTerm)) {
-                    card.style.display = 'block'; // Show the card
-                } else {
-                    card.style.display = 'none'; // Hide the card
-                }
-            }
+        if (sheetMusicArray.length === 0) {
+            partiturasListContainer.innerHTML = '<p style="text-align: center; width: 100%; margin-top: 20px;">Nenhuma partitura encontrada.</p>';
+            return;
+        }
+
+        sheetMusicArray.forEach(music => {
+            const card = document.createElement('div');
+            card.classList.add('card');
+            card.innerHTML = `
+                <span class="top-label">TOP</span>
+                <div class="image-container">
+                    <img src="${music.imagem_capa_url || 'assets/img/LOGO CHAMA.png'}" alt="Partitura ${music.titulo}">
+                </div>
+                <div class="card-content">
+                    <h3 class="title">${music.titulo}</h3>
+                    <p class="description">${music.descricao}</p>
+                    <p class="price">R$ ${music.preco.toFixed(2).replace('.', ',')}</p>
+                    <button class="add-to-cart-btn"
+                            data-id="${music.id}"
+                            data-name="${music.titulo}"
+                            data-price="${music.preco}"
+                            data-image-url="${music.imagem_capa_url || ''}">
+                        Adicionar ao Carrinho
+                    </button>
+                </div>
+            `;
+            partiturasListContainer.appendChild(card);
         });
+
+        // Re-attach event listeners for "Add to Cart" buttons after rendering
+        attachAddToCartListeners();
+
+        // Re-apply ScrollReveal to newly rendered cards
+        if (typeof ScrollReveal !== 'undefined' && scrollReveal) {
+            scrollReveal.reveal(`#services .partituras-list .card`, { interval: 100 });
+        }
+    }
+
+
+    // --- Search Filter Logic (with Suggestions) ---
+    const filterAndSuggest = () => {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        suggestionsContainer.innerHTML = ''; // Clear previous suggestions
+
+        if (searchTerm.length === 0) {
+            suggestionsContainer.style.display = 'none';
+            renderSheetMusicCards(allPartituras); // Show all partituras if search is empty
+            return;
+        }
+
+        const filteredResults = allPartituras.filter(music =>
+            music.titulo.toLowerCase().includes(searchTerm) ||
+            music.descricao.toLowerCase().includes(searchTerm)
+        );
+
+        const matchingSuggestions = allPartituras.filter(music =>
+            music.titulo.toLowerCase().includes(searchTerm)
+        );
+
+        if (matchingSuggestions.length > 0) {
+            suggestionsContainer.style.display = 'block';
+            matchingSuggestions.forEach(music => {
+                const suggestionItem = document.createElement("div");
+                suggestionItem.classList.add("suggestion-item");
+                suggestionItem.textContent = music.titulo;
+                suggestionItem.addEventListener("click", () => {
+                    searchInput.value = music.titulo; // Populate input with suggestion
+                    suggestionsContainer.innerHTML = '';
+                    suggestionsContainer.style.display = 'none';
+                    renderSheetMusicCards([music]); // Display only the selected partitura
+                });
+                suggestionsContainer.appendChild(suggestionItem);
+            });
+        } else {
+            suggestionsContainer.style.display = 'none';
+        }
+
+        // Always filter and render the main list based on the search term, even if no suggestions
+        renderSheetMusicCards(filteredResults);
     };
 
-    // --- Function to Attach Search Event Listeners ---
+    // --- Attach Search Event Listeners ---
     const attachSearchListeners = () => {
         if (searchInput && searchButton) { // Ensure elements exist
-            searchButton.removeEventListener('click', filterSheetMusic); // Prevent duplicate listeners
-            searchInput.removeEventListener('keyup', filterSheetMusic); // Prevent duplicate listeners
+            searchInput.addEventListener('input', filterAndSuggest); // Use 'input' for real-time suggestions
+            searchButton.addEventListener('click', filterAndSuggest);
 
-            searchButton.addEventListener('click', filterSheetMusic);
-            searchInput.addEventListener('keyup', filterSheetMusic);
+            // Optional: allow pressing Enter to trigger search
+            searchInput.addEventListener("keypress", function(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    filterAndSuggest();
+                    suggestionsContainer.style.display = 'none'; // Hide suggestions on Enter
+                }
+            });
         }
     };
 
+    // Hide suggestions when clicking outside
+    document.addEventListener("click", function(event) {
+        if (!searchInput.contains(event.target) && !suggestionsContainer.contains(event.target)) {
+            suggestionsContainer.style.display = 'none';
+        }
+    });
 
-    // --- Nova Função: Carregar Partituras do Firestore e Renderizar ---
+
+    // --- Load Partituras from Firestore and Render ---
     const loadAndRenderPartituras = async () => {
         partiturasListContainer.innerHTML = '<p>Carregando partituras...</p>';
         try {
             if (typeof db === 'undefined' || !db.collection) {
-                console.warn("Firestore 'db' não está definido. Carregando partituras estáticas.");
-                partiturasListContainer.innerHTML = '';
-                initializeStaticAddToCartButtons();
-                attachSearchListeners(); // Attach search listeners even for static cards
+                console.warn("Firestore 'db' não está definido. Verifique a configuração do Firebase.");
+                partiturasListContainer.innerHTML = '<p style="color: red;">Não foi possível conectar ao Firestore. Verifique a configuração do Firebase.</p>';
+                // In a production scenario, you might want to load static data here as a fallback
                 return;
             }
 
             const snapshot = await db.collection('partituras').orderBy('titulo').get();
 
-            partiturasListContainer.innerHTML = '';
-
+            allPartituras = []; // Clear previous data
             if (snapshot.empty) {
                 partiturasListContainer.innerHTML = '<p>Nenhuma partitura encontrada no momento no Firestore.</p>';
-                attachSearchListeners(); // Attach search listeners even if no results
-                return;
+            } else {
+                snapshot.forEach(doc => {
+                    allPartituras.push({ id: doc.id, ...doc.data() });
+                });
+                renderSheetMusicCards(allPartituras); // Render all fetched partituras
             }
 
-            snapshot.forEach(doc => {
-                const partitura = doc.data();
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `
-                    <span class="top-label">TOP</span>
-                    <div class="image-container">
-                        <img src="${partitura.imagem_capa_url}" alt="Partitura ${partitura.titulo}">
-                    </div>
-                    <div class="card-content">
-                        <h3 class="title">${partitura.titulo}</h3>
-                        <p class="description">${partitura.descricao}</p>
-                        <p class="price">R$ ${partitura.preco.toFixed(2).replace('.', ',')}</p>
-                        <button class="add-to-cart-btn"
-                                data-id="${doc.id}"
-                                data-name="${partitura.titulo}"
-                                data-price="${partitura.preco}"
-                                data-image-url="${partitura.imagem_capa_url || ''}">
-                            Adicionar ao Carrinho
-                        </button>
-                    </div>
-                `;
-                partiturasListContainer.appendChild(card);
-            });
-
-            attachAddToCartListeners();
-            attachSearchListeners(); // Crucial: Attach search listeners *after* dynamic cards are added
-
-            if (typeof ScrollReveal !== 'undefined' && scrollReveal) {
-                scrollReveal.reveal(`#services .partituras-list .card`, { interval: 100 });
-            }
+            attachSearchListeners(); // Crucial: Attach search listeners *after* dynamic cards are added and data is loaded
 
         } catch (error) {
             console.error("Erro ao carregar partituras do Firestore:", error.message);
             partiturasListContainer.innerHTML = '<p style="color: red;">Não foi possível carregar as partituras. Verifique sua configuração do Firestore ou tente novamente mais tarde.</p>';
-            initializeStaticAddToCartButtons();
-            attachSearchListeners(); // Attach search listeners even on error/fallback
+            // Even on error, ensure search listeners are attached so user can still type
+            attachSearchListeners();
         }
     };
 
     function attachAddToCartListeners() {
         document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-            button.addEventListener('click', (event) => {
-                const id = event.target.dataset.id;
-                const name = event.target.dataset.name;
-                const price = parseFloat(event.target.dataset.price);
-                const imageUrl = event.target.dataset.imageUrl;
-
-                const existingItem = cart.find(item => item.id === id);
-
-                if (existingItem) {
-                    existingItem.quantity++;
-                } else {
-                    cart.push({
-                        id: id,
-                        name: name,
-                        price: price,
-                        quantity: 1,
-                        imageUrl: imageUrl
-                    });
-                }
-                saveCart();
-                showPopup(`${name} adicionado ao carrinho!`);
-            });
+            button.removeEventListener('click', handleAddToCartClick); // Prevent duplicate listeners
+            button.addEventListener('click', handleAddToCartClick);
         });
     }
 
-    function initializeStaticAddToCartButtons() {
-        const staticCards = document.querySelectorAll('.partituras-list .card');
-        if (staticCards.length > 0) {
-            attachAddToCartListeners();
-            if (typeof ScrollReveal !== 'undefined' && scrollReveal) {
-                scrollReveal.reveal(`#services .partituras-list .card`, { interval: 100 });
-            }
+    function handleAddToCartClick(event) {
+        const id = event.target.dataset.id;
+        const name = event.target.dataset.name;
+        const price = parseFloat(event.target.dataset.price);
+        const imageUrl = event.target.dataset.imageUrl;
+
+        const existingItem = cart.find(item => item.id === id);
+
+        if (existingItem) {
+            existingItem.quantity++;
+        } else {
+            cart.push({
+                id: id,
+                name: name,
+                price: price,
+                quantity: 1,
+                imageUrl: imageUrl
+            });
         }
+        saveCart();
+        showPopup(`${name} adicionado ao carrinho!`);
     }
 
+    // Initial load and setup
     updateCartCount();
-    await loadAndRenderPartituras(); // This call now handles attaching search listeners
+    await loadAndRenderPartituras();
 });
