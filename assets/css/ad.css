@@ -1,4 +1,4 @@
-/* assets/css/admin.css */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
 
 body {
     font-family: 'Montserrat', sans-serif;
@@ -197,12 +197,6 @@ table tr:hover {background-color: #f1f1f1;}
         width: 100%;
         margin-bottom: 10px; /* Add space between buttons */
         margin-right: 0;
-    }
-
-    /* Table adjustments for smaller screens */
-    table {
-        /* The existing display: block and overflow-x: auto should handle this well.
-           We can add a subtle scrollbar style if desired. */
     }
 
     table th, table td {
