@@ -280,7 +280,7 @@ nav.show div.icon-close {
 }
 
 .cart-icon i {
-    font-size: 1.5rem; /* Ajuste o tamanho do ícone real dentro do círculo */
+    font-size: 1.3rem; /* Ajuste o tamanho do ícone real dentro do círculo */
     color: #333; /* Cor preta ou cinza bem escuro para o ícone, para contrastar com o amarelo */
 }
 
@@ -306,94 +306,6 @@ nav.show div.icon-close {
     justify-content: center;
     line-height: 1;
     border: 1px solid white; /* Borda branca para destacar */
-}
-
-/* No media query para telas menores (se for o caso) */
-@media (max-width: 768px) {
-    .cart-icon {
-        font-size: 1.6rem;
-        width: 35px;
-        height: 35px;
-    }
-    .cart-icon i {
-        font-size: 1.3rem;
-    }
-    .cart-count {
-        width: 16px;
-        height: 16px;
-        font-size: 0.65rem;
-        top: -4px;
-        right: -4px;
-    }
-}
-
-/*==== HOME SECTION (MODELS) ======*/
-#home {
-    display: flex;
-    justify-content: center;
-    padding-top: 6rem;
-    padding-bottom: 4rem;
-}
-
-#home .image {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 40px;
-    flex-wrap: wrap;
-    padding: 20px;
-    max-width: 100%;
-}
-
-#home .image-box {
-    text-align: center;
-    flex: 1 1 300px;
-}
-
-#home .image-box img {
-    max-width: 100%;
-    height: auto;
-    width: 500px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-}
-
-#home .image-box img:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-}
-
-#home .image-box p {
-    padding-top: 1.5rem;
-    margin-top: 10px;
-    font-size: 16px;
-    color: #333;
-    font-weight: 500;
-}
-
-.buy-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 18px;
-    background-color: var(--base-color);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.buy-button:hover {
-    background-color: var(--chama-color);
-}
-
-.price { /* Este .price é para outros contextos, não o dos cards de partitura */
-    font-size: 18px;
-    color: var(--base-color);
-    font-weight: bold;
-    margin-top: 5px;
 }
 
 /*==== PARTITURAS SECTION (GRID LAYOUT) ======*/
@@ -638,6 +550,21 @@ footer .social a:hover {
     /* Ajustes para dispositivos menores */
     .menu-e-carrinho {
         gap: 0.7rem; /* Reduz o espaço entre os ícones em telas menores */
+    }
+   .cart-icon {
+        font-size: 1.6rem;
+        width: 35px;
+        height: 35px;
+    }
+    .cart-icon i {
+        font-size: 1.3rem;
+    }
+    .cart-count {
+        width: 16px;
+        height: 16px;
+        font-size: 0.65rem;
+        top: -4px;
+        right: -4px;
     }
 }
 

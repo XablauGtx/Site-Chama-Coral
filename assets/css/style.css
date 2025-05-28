@@ -424,6 +424,47 @@ nav {
   margin-bottom: 2em;
 }
 
+/* Styles for the container holding the profiles */
+.profile-container {
+  display: flex; /* Makes children flex items (side-by-side) */
+  justify-content: center; /* Centers the profiles horizontally */
+  gap: 30px; /* Adds space between the profile cards */
+  margin-top: 20px; /* Adds some space above the profiles */
+  flex-wrap: wrap; /* Allows profiles to wrap to the next line on smaller screens */
+}
+
+/* Styles for each individual profile card */
+.profile-card {
+  text-align: center; /* Centers content within each card */
+  padding: 15px;
+  /* Optional: Add a subtle border or shadow if desired */
+  /* border: 1px solid #ddd; */
+  /* border-radius: 8px; */
+  /* box-shadow: 0 2px 5px rgba(0,0,0,0.1); */
+}
+
+.profile-card img {
+  width: 150px; /* Adjust image size as needed */
+  height: 150px; /* Keep height and width same for perfect circle */
+  border-radius: 50%; /* Makes the image circular */
+  object-fit: cover; /* Ensures the image covers the area without distortion */
+  margin-bottom: 10px; /* Space between image and text */
+}
+
+/* Style for the name "Eder Rios" */
+.profile-card .name {
+  font-size: 1.2em; /* Adjust font size */
+  font-weight: bold;
+  color: var(--chama-color); /* <--- Change this to your desired color! For example, 'red', '#ff0000', 'rgb(255, 0, 0)' */
+  margin-bottom: 5px; /* Space between name and role */
+}
+
+/* Style for the role "Maestro" */
+.profile-card .title-role {
+  font-size: 1em;
+  color: #555; /* Adjust color as needed */
+}
+
 /*====partituras======  */
 .cards.grid {
   gap: 1.5rem;
