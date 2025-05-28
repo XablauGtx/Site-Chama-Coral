@@ -152,21 +152,36 @@ function updateCartDisplay() {
     });
 }
 
+// NOVO: Função para construir a mensagem detalhada do WhatsApp
+function buildWhatsappOrderMessage(total) {
+    let message = "Olá! Gostaria de fazer o seguinte pedido:\n\n";
+    cart.forEach(item => {
+        message += `- ${item.name} (x${item.quantity}) - R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}\n`;
+    });
+    message += `\nTotal do Pedido: R$ ${total.toFixed(2).replace('.', ',')}`;
+    return encodeURIComponent(message);
+}
+
+
 // NEW: Função para exibir as opções de pagamento no modal
 function displayPaymentOptions(total) {
+    const encodedOrderMessage = buildWhatsappOrderMessage(total); // Constrói a mensagem do pedido
+
     paymentOptionsContent.innerHTML = `
         <h3>Total a Pagar: R$ ${total.toFixed(2).replace('.', ',')}</h3>
         <p>Por favor, escolha uma das opções de pagamento:</p>
         
         <div class="payment-option">
-            <img src="assets/img/pix.png" alt="Pix Logo">
+           <img src="assets/img/pix.png" alt="Pix Logo">
             <div>
                 <h4>Pagamento via Pix</h4>
                 <p>Chave Pix: <strong>seuchamacoral@email.com</strong> (e-mail)</p>
                 <p>Você pode copiar a chave Pix e fazer o pagamento diretamente no seu aplicativo bancário.</p>
-                <button class="copy-pix-btn" data-pix-key="seuchamacoral@email.com">Copiar Chave Pix</button>
-                <p>Após o pagamento, envie o comprovante para nosso WhatsApp: (41) 97402-3333</p>
-                <a href="https://wa.me/5541974023333?text=${encodeURIComponent('Olá! Acabei de fazer um pagamento via Pix e gostaria de enviar o comprovante para o meu pedido.')}" target="_blank" class="whatsapp-link">Enviar Comprovante (WhatsApp)</a>
+                <div class="button-group">
+                    <button class="copy-pix-btn" data-pix-key="seuchamacoral@email.com">Copiar Chave Pix</button>
+                </div>
+                <p>Após o pagamento, envie o comprovante para nosso WhatsApp.</p>
+                <a href="https://wa.me/5541974023333?text=${encodedOrderMessage + encodeURIComponent('\n\n(Comprovante de pagamento via Pix)')}" target="_blank" class="whatsapp-link">Enviar Comprovante e Pedido (WhatsApp)</a>
             </div>
         </div>
 
@@ -175,7 +190,9 @@ function displayPaymentOptions(total) {
             <div>
                 <h4>Boleto Bancário</h4>
                 <p>Para gerar o boleto, por favor, clique no botão abaixo.</p>
-                <button class="generate-boleto-btn">Gerar Boleto</button>
+                <div class="button-group">
+                    <button class="generate-boleto-btn" data-order-message="${encodedOrderMessage}">Gerar Boleto</button>
+                </div>
                 <p>O boleto pode levar até 3 dias úteis para ser compensado.</p>
                 <p>Após a compensação, você receberá a confirmação por e-mail.</p>
             </div>
@@ -186,7 +203,7 @@ function displayPaymentOptions(total) {
             <div>
                 <h4>Cartão de Crédito/Débito</h4>
                 <p>Para pagamentos com cartão, utilizaremos uma plataforma segura. Por favor, entre em contato via WhatsApp para receber o link de pagamento.</p>
-                <a href="https://wa.me/5541974023333?text=${encodeURIComponent('Olá! Gostaria de pagar meu pedido com cartão de crédito/débito. Poderia me enviar o link de pagamento?')}" target="_blank" class="whatsapp-link">Solicitar Link (WhatsApp)</a>
+                <a href="https://wa.me/5541974023333?text=${encodedOrderMessage + encodeURIComponent('\n\n(Solicitação de link de pagamento com Cartão)')}" target="_blank" class="whatsapp-link">Solicitar Link e Pedido (WhatsApp)</a>
             </div>
         </div>
     `;
@@ -205,11 +222,11 @@ function displayPaymentOptions(total) {
     });
 
     document.querySelectorAll('.generate-boleto-btn').forEach(button => {
-        button.addEventListener('click', () => {
-            // Replace with actual boleto generation logic or a prompt to contact you
+        button.addEventListener('click', (event) => {
+            const orderMessage = event.target.dataset.orderMessage; // Pega a mensagem do pedido
             alert('A geração de boleto é uma funcionalidade que requer integração com um gateway de pagamento. Por favor, entre em contato via WhatsApp para obter seu boleto.');
-            // Optionally, redirect to WhatsApp or a contact page
-            window.open(`https://wa.me/5541974023333?text=${encodeURIComponent('Olá! Gostaria de gerar um boleto para meu pedido.')}`, '_blank');
+            // Redireciona para o WhatsApp com a mensagem do pedido
+            window.open(`https://wa.me/5541974023333?text=${orderMessage + encodeURIComponent('\n\n(Solicitação de boleto)')}`, '_blank');
         });
     });
 }
@@ -232,7 +249,7 @@ checkoutButton.addEventListener('click', () => {
     displayPaymentOptions(totalOrderPrice);
 
     // Abre o modal
-    paymentModal.style.display = 'block';
+    paymentModal.style.display = 'flex'; // Usar 'flex' para centralização via CSS
 
     // Opcional: Limpar o carrinho após a exibição das opções, ou após a confirmação do pagamento
     // Para este exemplo, manteremos os itens no carrinho até que o usuário confirme o pagamento.
