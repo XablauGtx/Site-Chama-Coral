@@ -48,7 +48,7 @@ const scrollReveal = ScrollReveal({
 scrollReveal.reveal(
     `#home .image-box,
     #services header,
-    #services .partituras-list .card,
+    #services .partituras-list .card, /* This will be re-applied after dynamic load */
     #testimonials header,
     #testimonials .testimonials,
     #contact .text,
@@ -64,26 +64,29 @@ window.addEventListener("scroll", function() {
 });
 
 
-// ====== LÓGICA DO CARRINHO DE COMPRAS E CARREGAMENTO DINÂMICO ======
+// ====== LÓGICA DO CARRINHO DE COMPRAS E CARREGAMENTO DINÂMICO E FILTRO DE PESQUISA ======
 
 document.addEventListener('DOMContentLoaded', async () => {
     let cart = JSON.parse(localStorage.getItem('chamaCoralCart')) || [];
     const cartCountElement = document.getElementById('cart-count');
     const partiturasListContainer = document.querySelector('.partituras-list');
-    const popup = document.getElementById('add-to-cart-popup'); // Elemento do pop-up
-    const popupMessage = document.getElementById('popup-message'); // Mensagem dentro do pop-up
+    const popup = document.getElementById('add-to-cart-popup');
+    const popupMessage = document.getElementById('popup-message');
+
+    // --- Search Filter Elements ---
+    const searchInput = document.getElementById('sheet-music-search');
+    const searchButton = document.getElementById('search-button');
 
     function updateCartCount() {
         cartCountElement.textContent = cart.length;
     }
 
-    // Função para mostrar o pop-up
     function showPopup(message) {
         popupMessage.textContent = message;
         popup.classList.add('show');
         setTimeout(() => {
             popup.classList.remove('show');
-        }, 3000); // O pop-up some após 3 segundos
+        }, 3000);
     }
 
     function saveCart() {
@@ -91,33 +94,61 @@ document.addEventListener('DOMContentLoaded', async () => {
         updateCartCount();
     }
 
+    // --- Search Filter Function ---
+    const filterSheetMusic = () => {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        // Get all cards currently in the DOM *after* they've been loaded
+        const currentCards = partiturasListContainer.querySelectorAll('.card');
+
+        currentCards.forEach(card => {
+            const titleElement = card.querySelector('.title');
+            if (titleElement) { // Ensure title element exists
+                const title = titleElement.textContent.toLowerCase();
+                if (title.includes(searchTerm)) {
+                    card.style.display = 'block'; // Show the card
+                } else {
+                    card.style.display = 'none'; // Hide the card
+                }
+            }
+        });
+    };
+
+    // --- Function to Attach Search Event Listeners ---
+    const attachSearchListeners = () => {
+        if (searchInput && searchButton) { // Ensure elements exist
+            searchButton.removeEventListener('click', filterSheetMusic); // Prevent duplicate listeners
+            searchInput.removeEventListener('keyup', filterSheetMusic); // Prevent duplicate listeners
+
+            searchButton.addEventListener('click', filterSheetMusic);
+            searchInput.addEventListener('keyup', filterSheetMusic);
+        }
+    };
+
+
     // --- Nova Função: Carregar Partituras do Firestore e Renderizar ---
     const loadAndRenderPartituras = async () => {
         partiturasListContainer.innerHTML = '<p>Carregando partituras...</p>';
         try {
-            // Verifica se 'db' está definido (do firebase-config.js)
             if (typeof db === 'undefined' || !db.collection) {
                 console.warn("Firestore 'db' não está definido. Carregando partituras estáticas.");
-                // Se Firestore não estiver disponível, mantemos os cards estáticos no HTML
-                // e apenas adicionamos os listeners a eles.
-                partiturasListContainer.innerHTML = ''; // Limpa a mensagem de "carregando"
-                initializeStaticAddToCartButtons(); // Inicializa os botões dos cards estáticos
-                return; 
+                partiturasListContainer.innerHTML = '';
+                initializeStaticAddToCartButtons();
+                attachSearchListeners(); // Attach search listeners even for static cards
+                return;
             }
 
-            // Se 'db' estiver definido, tenta carregar do Firestore
             const snapshot = await db.collection('partituras').orderBy('titulo').get();
 
-            partiturasListContainer.innerHTML = ''; // Limpa os cards estáticos para carregar dinâmicos
+            partiturasListContainer.innerHTML = '';
 
             if (snapshot.empty) {
                 partiturasListContainer.innerHTML = '<p>Nenhuma partitura encontrada no momento no Firestore.</p>';
+                attachSearchListeners(); // Attach search listeners even if no results
                 return;
             }
 
             snapshot.forEach(doc => {
                 const partitura = doc.data();
-                // Cria o elemento do card dinamicamente
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
@@ -141,10 +172,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 partiturasListContainer.appendChild(card);
             });
 
-            // Adiciona event listeners aos botões dos cards carregados do Firestore
             attachAddToCartListeners();
+            attachSearchListeners(); // Crucial: Attach search listeners *after* dynamic cards are added
 
-            // Aplica ScrollReveal aos cards dinâmicos, se a biblioteca estiver carregada
             if (typeof ScrollReveal !== 'undefined' && scrollReveal) {
                 scrollReveal.reveal(`#services .partituras-list .card`, { interval: 100 });
             }
@@ -152,12 +182,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         } catch (error) {
             console.error("Erro ao carregar partituras do Firestore:", error.message);
             partiturasListContainer.innerHTML = '<p style="color: red;">Não foi possível carregar as partituras. Verifique sua configuração do Firestore ou tente novamente mais tarde.</p>';
-            // Em caso de erro, talvez seja útil inicializar os botões estáticos como fallback
             initializeStaticAddToCartButtons();
+            attachSearchListeners(); // Attach search listeners even on error/fallback
         }
     };
 
-    // Função auxiliar para adicionar listeners aos botões "Adicionar ao Carrinho"
     function attachAddToCartListeners() {
         document.querySelectorAll('.add-to-cart-btn').forEach(button => {
             button.addEventListener('click', (event) => {
@@ -180,26 +209,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                     });
                 }
                 saveCart();
-                showPopup(`${name} adicionado ao carrinho!`); // CHAMADA PARA MOSTRAR O POP-UP
+                showPopup(`${name} adicionado ao carrinho!`);
             });
         });
     }
 
-    // Função para inicializar botões de cards estáticos (se o Firestore não carregar)
     function initializeStaticAddToCartButtons() {
         const staticCards = document.querySelectorAll('.partituras-list .card');
         if (staticCards.length > 0) {
-            // Se houver cards estáticos, adiciona os listeners a eles
             attachAddToCartListeners();
-            // Aplica ScrollReveal também aos estáticos, se a biblioteca estiver carregada
             if (typeof ScrollReveal !== 'undefined' && scrollReveal) {
                 scrollReveal.reveal(`#services .partituras-list .card`, { interval: 100 });
             }
         }
     }
 
-
-    // Inicializa o contador do carrinho e carrega as partituras (ou usa os estáticos)
     updateCartCount();
-    await loadAndRenderPartituras();
+    await loadAndRenderPartituras(); // This call now handles attaching search listeners
 });
