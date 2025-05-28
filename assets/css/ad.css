@@ -1,0 +1,235 @@
+/* assets/css/admin.css */
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 1rem 0;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    flex-wrap: wrap; /* Allows items to wrap on smaller screens */
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8rem; /* Adjust font size for responsiveness */
+}
+
+.container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2, h3 {
+    color: #4CAF50;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="number"],
+form input[type="url"],
+form textarea {
+    width: calc(100% - 22px); /* Considerando padding e border */
+    padding: 10px;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Inclui padding e border no width */
+}
+
+form button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-right: 10px;
+}
+
+form button:hover {
+    background-color: #45a049;
+}
+
+#cancel-edit-btn {
+    background-color: #f44336;
+}
+
+#cancel-edit-btn:hover {
+    background-color: #da190b;
+}
+
+#logout-btn {
+    background-color: #f44336;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#logout-btn:hover {
+    background-color: #da190b;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #eee;
+    margin: 2rem 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+    display: block; /* Allows table to scroll on smaller screens */
+    overflow-x: auto; /* Adds horizontal scroll if content overflows */
+    white-space: nowrap; /* Prevents content from wrapping inside cells */
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    white-space: normal; /* Allows text to wrap within table cells */
+}
+
+table th {
+    background-color: #f2f2f2;
+}
+
+table tr:nth-child(even){background-color: #f9f9f9;}
+
+table tr:hover {background-color: #f1f1f1;}
+
+.edit-btn, .delete-btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-right: 5px;
+}
+
+.edit-btn {
+    background-color: #008CBA;
+    color: white;
+}
+
+.edit-btn:hover {
+    background-color: #007bb5;
+}
+
+.delete-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #da190b;
+}
+
+#login-error-message, #form-message {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* --- Media Queries --- */
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column; /* Stack header items vertically */
+        padding: 1rem;
+        text-align: center;
+    }
+
+    header h1 {
+        margin-bottom: 1rem; /* Add space below title when stacked */
+        font-size: 1.5rem;
+    }
+
+    #logout-btn {
+        margin-top: 1rem; /* Add space above logout button */
+    }
+
+    .container {
+        margin: 1rem; /* Smaller margin on smaller screens */
+        padding: 1rem;
+    }
+
+    form input[type="text"],
+    form input[type="email"],
+    form input[type="password"],
+    form input[type="number"],
+    form input[type="url"],
+    form textarea {
+        width: calc(100% - 20px); /* Adjust width for smaller padding */
+        padding: 8px;
+    }
+
+    form button {
+        display: block; /* Make buttons full width */
+        width: 100%;
+        margin-bottom: 10px; /* Add space between buttons */
+        margin-right: 0;
+    }
+
+    /* Table adjustments for smaller screens */
+    table {
+        /* The existing display: block and overflow-x: auto should handle this well.
+           We can add a subtle scrollbar style if desired. */
+    }
+
+    table th, table td {
+        font-size: 0.9em; /* Slightly smaller font for table content */
+        padding: 6px;
+    }
+
+    .edit-btn, .delete-btn {
+        display: block; /* Make action buttons full width */
+        width: calc(100% - 10px); /* Adjust width for padding */
+        margin-bottom: 5px;
+        margin-right: 0;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.2rem;
+    }
+
+    .container {
+        padding: 0.8rem;
+        margin: 0.5rem;
+    }
+
+    h2, h3 {
+        font-size: 1.2rem;
+    }
+}

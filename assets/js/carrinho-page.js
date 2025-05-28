@@ -1,30 +1,32 @@
-const nav = document.querySelector("#header nav")
-const toggle = document.querySelectorAll ("nav .toggle")
+// assets/js/carrinho-page.js
 
-for(const element of toggle){
-  element.addEventListener("click", function(){
-    nav.classList.toggle("show")
-  })
+const nav = document.querySelector("#header nav");
+const toggle = document.querySelectorAll("nav .toggle");
+
+for (const element of toggle) {
+    element.addEventListener("click", function() {
+        nav.classList.toggle("show");
+    });
 }
 /*----Menu esconder quando clicar nos itens */
-const links = document.querySelectorAll("nav ul li a")
+const links = document.querySelectorAll("nav ul li a");
 
-for(const link of links){
-link.addEventListener("click",function(){
-  nav.classList.remove("show")
-})
+for (const link of links) {
+    link.addEventListener("click", function() {
+        nav.classList.remove("show");
+    });
 }
 
-const header = document.querySelector("#header")
-const navHeight = header.offsetHeight
+const header = document.querySelector("#header");
+const navHeight = header.offsetHeight;
 
-window.addEventListener("scroll", function(){
-  if(window.scrollY >= navHeight){
-header.classList.add("scroll")
-  } else{
-    header.classList.remove("scroll")
-  }
-})
+window.addEventListener("scroll", function() {
+    if (window.scrollY >= navHeight) {
+        header.classList.add("scroll");
+    } else {
+        header.classList.remove("scroll");
+    }
+});
 
 // ====== LÓGICA DO CARRINHO DE COMPRAS PARA CARRINHO.HTML ======
 
@@ -81,7 +83,7 @@ function updateCartDisplay() {
 
     if (cart.length === 0) {
         cartItemsContainer.innerHTML = '<p style="text-align: center; padding: 2rem;">Seu carrinho está vazio.</p>';
-        cartTotalPriceSpan.textContent = '0.00';
+        cartTotalPriceSpan.textContent = '0,00';
         checkoutButton.disabled = true; // Desabilita o botão se o carrinho estiver vazio
         return;
     }
@@ -92,12 +94,12 @@ function updateCartDisplay() {
     cart.forEach(item => {
         const itemElement = document.createElement('div');
         itemElement.classList.add('cart-item');
-        // Caminho da imagem, assumindo que as imagens são nomeadas como o ID do produto
+        
         itemElement.innerHTML = `
-            <img src="assets/images/${item.id}.jpg" alt="${item.name}">
+            <img src="${item.imageUrl}" alt="${item.name}" class="cart-item-image">
             <div class="cart-item-details">
                 <h4>${item.name}</h4>
-                <p>Preço: R$ ${item.price.toFixed(2)}</p>
+                <p>Preço: R$ ${item.price.toFixed(2).replace('.', ',')}</p>
                 <div class="cart-item-quantity">
                     <button class="decrease-quantity" data-id="${item.id}">-</button>
                     <span>${item.quantity}</span>
@@ -111,7 +113,7 @@ function updateCartDisplay() {
         total += item.price * item.quantity;
     });
 
-    cartTotalPriceSpan.textContent = total.toFixed(2);
+    cartTotalPriceSpan.textContent = total.toFixed(2).replace('.', ',');
 
     // Adiciona event listeners aos botões de quantidade e remover
     // Usamos delegation para evitar recriar listeners a cada renderização
@@ -156,21 +158,18 @@ checkoutButton.addEventListener('click', () => {
     let totalOrderPrice = 0;
 
     cart.forEach(item => {
-        whatsappMessage += `- ${item.name} (x${item.quantity}) - R$ ${(item.price * item.quantity).toFixed(2)}\n`;
+        whatsappMessage += `- ${item.name} (x${item.quantity}) - R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}\n`;
         totalOrderPrice += item.price * item.quantity;
     });
 
-    whatsappMessage += `\nTotal do Pedido: R$ ${totalOrderPrice.toFixed(2)}`;
+    whatsappMessage += `\nTotal do Pedido: R$ ${totalOrderPrice.toFixed(2).replace('.', ',')}`;
 
-    // Codifica a mensagem para a URL do WhatsApp
     const encodedMessage = encodeURIComponent(whatsappMessage);
-    // Substitua '5541974023333' pelo seu número de WhatsApp com código do país (sem + ou espaços)
     const whatsappUrl = `https://wa.me/5541974023333?text=${encodedMessage}`;
 
-    window.open(whatsappUrl, '_blank'); // Abre em nova aba
+    window.open(whatsappUrl, '_blank');
     alert('Seu pedido foi enviado para o WhatsApp! Entraremos em contato em breve.');
 
-    // Opcional: Esvaziar o carrinho após a finalização da compra
     cart = [];
     saveCart();
     updateCartDisplay();

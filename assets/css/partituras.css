@@ -61,6 +61,7 @@ body {
     font: 700 var(--title-font-size) 'Montserrat', sans-serif;
     color: var(--title-color);
     text-align: center;
+    padding-top: 1rem;
 }
 
 .button {
@@ -380,6 +381,7 @@ nav.show div.icon-close {
     color: var(--text-color);
     margin-bottom: 0.6rem; /* Espaçamento mais compacto */
     line-height: 1.3;
+    text-align: center;
 }
 
 .card-content .price {
@@ -387,7 +389,8 @@ nav.show div.icon-close {
     font-weight: bold;
     color: var(--title-color); /* Cor do preço mais escura como na ref. */
     margin-top: auto;
-    margin-bottom: 0.8rem; /* Espaçamento do preço para o botão */
+    margin-bottom: 0.8rem;
+    text-align: center; /* Espaçamento do preço para o botão */
 }
 
 /* BOTÃO ADICIONAR AO CARRINHO DENTRO DO CARD */
@@ -424,66 +427,113 @@ nav.show div.icon-close {
     clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%); /* Ajuste a porcentagem do meio para mudar o ângulo */
 }
 
-/*==== FOOTER ======*/
+/* Estilos para o Pop-up de Adição ao Carrinho */
+.add-to-cart-popup {
+    position: fixed; /* Fixa o pop-up na tela, mesmo com scroll */
+    bottom: 20px; /* 20px do rodapé */
+    right: 20px; /* 20px da lateral direita */
+    background-color: #4CAF50; /* Cor de fundo verde */
+    color: white; /* Cor do texto branca */
+    padding: 15px 25px; /* Preenchimento interno */
+    border-radius: 8px; /* Cantos arredondados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    opacity: 0; /* Começa invisível */
+    visibility: hidden; /* Esconde completamente do layout */
+    transform: translateY(100%); /* Começa fora da tela, para baixo */
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out, visibility 0.5s; /* Transições suaves */
+    z-index: 1000; /* Garante que fique acima de outros elementos */
+    display: flex; /* Para centralizar o texto verticalmente se houver mais de uma linha */
+    align-items: center; /* Alinha o texto ao centro verticalmente */
+    justify-content: center; /* Alinha o texto ao centro horizontalmente */
+    text-align: center; /* Centraliza o texto */
+    font-size: 1rem; /* Tamanho da fonte */
+    font-weight: 500; /* Peso da fonte */
+    max-width: 300px; /* Largura máxima para o pop-up */
+}
+
+/* Estilo quando o pop-up está visível */
+.add-to-cart-popup.show {
+    opacity: 1; /* Torna visível */
+    visibility: visible; /* Torna visível para o layout */
+    transform: translateY(0); /* Desliza para a posição final */
+}
+
+
+
+/*====FOOTER======  */
 footer {
     background: var(--base-color);
-    padding: 2rem 1.5rem;
-    text-align: center;
-    margin-top: auto;
-}
-
-footer .logo {
+    
+  }
+  
+  footer .logo {
     display: inline-block;
-    margin-bottom: 0.5rem;
-}
-
-footer .brand p {
+    margin-bottom: 0rem;
+  }
+  
+  footer .brand p {
     color: var(--text-color-light);
-    margin-bottom: 1rem;
-}
-
-footer i {
+    margin-bottom: 0.750rem;
+  }
+  
+  footer i {
     font-size: 1.5rem;
     color: var(--text-color-light);
-}
-
-footer .social {
-    display: flex;
-    justify-content: center;
-    gap: 0.8rem;
+  }
+  
+  footer .social a {
+    margin-right: 1rem;
+    transition: 0.3s;
+    display: inline-block;
     margin-bottom: 0.5rem;
-}
-
-footer .social a {
-    transition: transform 0.3s;
-}
-
-footer .social a:hover {
-    transform: translateY(-5px);
-}
-
-/*==== BACK-TO-TOP BUTTON ======*/
-.back-to-top {
+    align-items: center;
+  }
+  
+  footer .social a:hover {
+    transform: translateY(-8px);
+  }
+  
+  .back-to-top {
     background: var(--chama-color);
     color: var(--text-color-light);
     padding: 0.8rem;
     position: fixed;
-    right: 1.5rem;
-    bottom: 1.5rem;
+    right: 1rem;
+    bottom: 0.5rem;
     clip-path: circle();
     line-height: 0;
     visibility: hidden;
     opacity: 0;
     transition: 0.3s;
     transform: translateY(100%);
-    z-index: 100;
-}
-
-.back-to-top.show {
+  }
+  
+  .back-to-top.show {
     visibility: visible;
     opacity: 1;
     transform: translateY(0);
-}
+  }
+  
+  .social {
+    display: flex; /* Usando Flexbox para os links sociais */
+    justify-content: center; /* Centraliza os ícones */
+    gap: 0.5rem; /* Espaçamento entre os ícones */
+  }
+
+
+
+  html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .content {
+    flex: 1;
+  }
+
+  
 
 /*==== MEDIA QUERIES (RESPONSIVIDADE) ======*/
 
