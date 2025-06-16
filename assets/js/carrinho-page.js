@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const paymentModal = document.getElementById('payment-modal');
     const closeModalButton = document.getElementById('close-modal');
     const paymentOptionsContent = document.getElementById('payment-options-content');
+    const limparCartButton = document.getElementById('limpar-carrinho-btn'); // NOVO: Referência ao botão
 
     const WHATSAPP_NUMBER = '5541974023333';
     const PIX_KEY = 'seuchamacoral@email.com';
@@ -13,6 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
     async function renderCartPage() {
         const cart = loadCart();
         cartItemsContainer.innerHTML = '<p style="text-align: center; padding: 2rem;">Carregando seu carrinho...</p>';
+
+        // Oculta o botão de limpar se o carrinho estiver vazio
+        if (limparCartButton) {
+            limparCartButton.style.display = cart.length > 0 ? 'inline-block' : 'none';
+        }
 
         if (cart.length === 0) {
             cartItemsContainer.innerHTML = '<p style="text-align: center; padding: 2rem;">Seu carrinho está vazio.</p>';
@@ -24,23 +30,16 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const productIds = cart.map(item => item.id);
             if (productIds.length === 0) {
-                 renderCartPage(); // Re-renderiza para mostrar carrinho vazio
-                 return;
+                renderCartPage();
+                return;
             }
 
-            // Busca os produtos das coleções 'partituras' e 'produtos' (para moda)
-            // NOTA: Firestore não suporta query 'in' em múltiplas coleções. Faremos duas buscas.
             const productsSnapshot = await db.collection('produtos').where(firebase.firestore.FieldPath.documentId(), 'in', productIds).get();
-            // Assumindo que os itens de moda estarão em uma coleção 'produtos'
-            // const modaSnapshot = await db.collection('produtos').where(firebase.firestore.FieldPath.documentId(), 'in', productIds).get();
 
             const productsData = {};
-            partiturasSnapshot.forEach(doc => {
+            productsSnapshot.forEach(doc => {
                 productsData[doc.id] = doc.data();
             });
-            // modaSnapshot.forEach(doc => {
-            //     productsData[doc.id] = doc.data();
-            // });
 
             cartItemsContainer.innerHTML = '';
             let totalSeguro = 0;
@@ -53,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     const preco = typeof product.preco === 'number' ? product.preco : 0;
                     const quantidade = itemInCart.quantity;
-                    const titulo = product.titulo || product.name; // Usa 'titulo' ou 'name'
+                    const titulo = product.titulo || product.name;
                     const imagem = product.imagem_capa_url || product.imageUrl;
 
                     itemElement.innerHTML = `
@@ -74,12 +73,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
+            if (totalSeguro === 0 && cart.length > 0) {
+                 cartItemsContainer.innerHTML = '<p style="text-align: center; padding: 2rem;">Não foi possível encontrar os detalhes dos produtos. Tente limpar o carrinho e adicionar os itens novamente.</p>';
+            }
+
             cartTotalPriceSpan.textContent = `R$ ${totalSeguro.toFixed(2).replace('.', ',')}`;
-            if (checkoutButton) checkoutButton.disabled = false;
+            if (checkoutButton) checkoutButton.disabled = totalSeguro === 0;
 
         } catch (error) {
             console.error("Erro ao buscar dados dos produtos:", error);
-            cartItemsContainer.innerHTML = '<p style="color: red;">Erro ao carregar os itens do carrinho. Tente novamente.</p>';
+            cartItemsContainer.innerHTML = '<p style="color: red;">Erro ao carregar os itens do carrinho. Verifique o console para mais detalhes.</p>';
         }
     }
 
@@ -102,10 +105,9 @@ document.addEventListener('DOMContentLoaded', () => {
         renderCartPage();
     });
     
-    // Lógica do Modal de Pagamento
     if (checkoutButton) {
         checkoutButton.addEventListener('click', () => {
-            renderCartPage().then(() => { // Garante que o total está atualizado
+            renderCartPage().then(() => {
                 const totalText = cartTotalPriceSpan.textContent;
                 displayPaymentOptions(totalText);
                 if(paymentModal) paymentModal.style.display = 'flex';
@@ -125,10 +127,31 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // NOVO: Listener para o botão de limpar carrinho
+    if (limparCartButton) {
+        limparCartButton.addEventListener('click', () => {
+            // Chama a função global do cart-logic.js
+            if (clearCart()) {
+                // Se o usuário confirmou, re-renderiza a página para mostrar que está vazia
+                renderCartPage();
+            }
+        });
+    }
+
     function displayPaymentOptions(totalText) {
         if (!paymentOptionsContent) return;
         
-        // ... (código para montar a mensagem do WhatsApp e o HTML do modal) ...
+        // Monta a mensagem para o WhatsApp com base nos itens do carrinho
+        const cart = loadCart();
+        let message = "Olá! Gostaria de fazer o seguinte pedido:\n\n";
+        cart.forEach(itemInCart => {
+            // Precisamos buscar os detalhes novamente ou tê-los disponíveis
+            // Para simplificar, vamos apenas enviar o total no link do Pix
+            // Uma versão mais avançada buscaria os nomes dos produtos aqui também.
+        });
+        message += `Total do Pedido: ${totalText}`;
+        const encodedOrderMessage = encodeURIComponent(message);
+
         paymentOptionsContent.innerHTML = `
             <h3>Total a Pagar: ${totalText}</h3>
             <p>Por favor, escolha uma das opções de pagamento:</p>
@@ -139,12 +162,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h4>Pagamento via Pix</h4>
                     <p>Chave Pix (E-mail): <strong>${PIX_KEY}</strong></p>
                     <p>Após o pagamento, envie o comprovante para nosso WhatsApp.</p>
-                    <a href="https://wa.me/${WHATSAPP_NUMBER}" target="_blank" class="button">Enviar Comprovante</a>
+                    <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodedOrderMessage}" target="_blank" class="button">Enviar Pedido e Comprovante</a>
+                </div>
+            </div>
+
+            <div class="payment-option">
+                <img src="assets/img/Cartao.png" alt="Cartão de Crédito Logo" style="width: 50px; height: 50px;">
+                <div>
+                    <h4>Cartão de Crédito/Débito</h4>
+                    <p>Para pagamentos com cartão, entre em contato via WhatsApp para receber o link de pagamento seguro.</p>
+                    <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodedOrderMessage + encodeURIComponent('\n\n(Solicito link de pagamento com Cartão)')}" target="_blank" class="button">Solicitar Link no WhatsApp</a>
                 </div>
             </div>
         `;
     }
 
-    // Chama a função principal para renderizar o carrinho ao carregar a página
     renderCartPage();
 });

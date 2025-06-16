@@ -60,3 +60,12 @@ const updateGlobalCartCount = (cart) => {
         cartCountElement.style.display = totalItems > 0 ? 'flex' : 'none';
     }
 };
+const clearCart = () => {
+    // Pede confirmação ao usuário para evitar cliques acidentais
+    if (confirm('Tem certeza de que deseja esvaziar seu carrinho?')) {
+        const emptyCart = [];
+        saveCart(emptyCart); // Salva um carrinho vazio, o que também atualiza o contador global
+        return true; // Retorna true para indicar que a limpeza foi confirmada
+    }
+    return false; // Retorna false se o usuário cancelar
+};
