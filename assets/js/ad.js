@@ -1,7 +1,6 @@
-// admin.js
-
+// assets/js/ad.js
 document.addEventListener('DOMContentLoaded', () => {
-    // Elementos da UI
+    // --- Referências aos Elementos ---
     const authSection = document.getElementById('auth-section');
     const adminContent = document.getElementById('admin-content');
     const loginForm = document.getElementById('login-form');
@@ -12,179 +11,171 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const partituraForm = document.getElementById('partitura-form');
     const partituraIdInput = document.getElementById('partitura-id');
+    const tipoInput = document.getElementById('tipo');
     const tituloInput = document.getElementById('titulo');
     const compositorInput = document.getElementById('compositor');
     const instrumentoInput = document.getElementById('instrumento');
     const generoInput = document.getElementById('genero');
     const descricaoInput = document.getElementById('descricao');
     const precoInput = document.getElementById('preco');
-    const linkCarrinhoInput = document.getElementById('link_carrinho');
     const imagemCapaUrlInput = document.getElementById('imagem_capa_url');
+    const camposPartituraDiv = document.getElementById('campos-partitura');
+
     const savePartituraBtn = document.getElementById('save-partitura-btn');
     const cancelEditBtn = document.getElementById('cancel-edit-btn');
     const formMessage = document.getElementById('form-message');
     const partiturasTableBody = document.querySelector('#partituras-table tbody');
 
-    let editingPartituraId = null; // Para controlar se estamos editando ou adicionando
+    let editingPartituraId = null;
+
+    // --- Lógica do Formulário Dinâmico ---
+    function togglePartituraFields() {
+        if (tipoInput.value === 'partitura') {
+            camposPartituraDiv.style.display = 'block';
+        } else {
+            camposPartituraDiv.style.display = 'none';
+        }
+    }
+    tipoInput.addEventListener('change', togglePartituraFields);
 
     // --- Autenticação ---
-    // Verifica o estado da autenticação ao carregar a página
     auth.onAuthStateChanged(user => {
         if (user) {
-            // Usuário logado
             authSection.style.display = 'none';
             adminContent.style.display = 'block';
-            loadPartituras(); // Carrega as partituras após o login
+            loadProdutos();
         } else {
-            // Usuário não logado
             authSection.style.display = 'block';
             adminContent.style.display = 'none';
         }
     });
 
-    // Evento de login
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const email = emailInput.value;
-        const password = passwordInput.value;
-
         try {
-            await auth.signInWithEmailAndPassword(email, password);
-            loginErrorMessage.textContent = ''; // Limpa mensagem de erro
+            await auth.signInWithEmailAndPassword(emailInput.value, passwordInput.value);
+            loginErrorMessage.textContent = '';
         } catch (error) {
-            console.error("Erro no login:", error.message);
             loginErrorMessage.textContent = `Erro no login: ${error.message}`;
         }
     });
 
-    // Evento de logout
     logoutBtn.addEventListener('click', async () => {
-        try {
-            await auth.signOut();
-        } catch (error) {
-            console.error("Erro ao fazer logout:", error.message);
-        }
+        await auth.signOut();
     });
 
-    // --- Funções CRUD do Firestore ---
+    // --- Funções CRUD (Agora para "Produtos") ---
 
-    // Carregar Partituras
-    const loadPartituras = async () => {
-        partiturasTableBody.innerHTML = '<tr><td colspan="5">Carregando partituras...</td></tr>';
+    const loadProdutos = async () => {
+        partiturasTableBody.innerHTML = '<tr><td colspan="4">Carregando produtos...</td></tr>';
         try {
-            const snapshot = await db.collection('partituras').orderBy('titulo').get();
-            partiturasTableBody.innerHTML = ''; // Limpa a tabela antes de adicionar novos dados
+            // ALTERAÇÃO: Busca na coleção "produtos"
+            const snapshot = await db.collection('produtos').orderBy('titulo').get();
+            partiturasTableBody.innerHTML = '';
             snapshot.forEach(doc => {
-                const partitura = doc.data();
+                const produto = doc.data();
                 const row = partiturasTableBody.insertRow();
-                row.insertCell(0).textContent = partitura.titulo;
-                row.insertCell(1).textContent = partitura.compositor || 'N/A';
-                row.insertCell(2).textContent = `R$ ${partitura.preco.toFixed(2)}`;
+                row.insertCell(0).textContent = produto.titulo;
+                row.insertCell(1).textContent = produto.tipo; // NOVO: exibe o tipo
+                row.insertCell(2).textContent = `R$ ${parseFloat(produto.preco).toFixed(2)}`;
                 
-                const linkCell = row.insertCell(3);
-                const linkAnchor = document.createElement('a');
-                linkAnchor.href = partitura.link_carrinho;
-                linkAnchor.textContent = partitura.link_carrinho;
-                linkAnchor.target = '_blank';
-                linkCell.appendChild(linkAnchor);
-
-
-                const actionsCell = row.insertCell(4);
+                const actionsCell = row.insertCell(3);
                 const editButton = document.createElement('button');
                 editButton.textContent = 'Editar';
                 editButton.className = 'edit-btn';
-                editButton.addEventListener('click', () => editPartitura(doc.id, partitura));
+                editButton.addEventListener('click', () => editProduto(doc.id, produto));
 
                 const deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Excluir';
                 deleteButton.className = 'delete-btn';
-                deleteButton.addEventListener('click', () => deletePartitura(doc.id));
+                deleteButton.addEventListener('click', () => deleteProduto(doc.id));
 
                 actionsCell.appendChild(editButton);
                 actionsCell.appendChild(deleteButton);
             });
         } catch (error) {
-            console.error("Erro ao carregar partituras:", error.message);
-            partiturasTableBody.innerHTML = '<tr><td colspan="5" style="color: red;">Erro ao carregar partituras.</td></tr>';
+            partiturasTableBody.innerHTML = '<tr><td colspan="4" style="color: red;">Erro ao carregar produtos.</td></tr>';
         }
     };
 
-    // Adicionar/Atualizar Partitura
     partituraForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-
-        const partituraData = {
+        
+        const produtoData = {
+            tipo: tipoInput.value,
             titulo: tituloInput.value,
-            compositor: compositorInput.value || '',
-            instrumento: instrumentoInput.value || '',
-            genero: generoInput.value || '',
             descricao: descricaoInput.value,
             preco: parseFloat(precoInput.value),
             imagem_capa_url: imagemCapaUrlInput.value
         };
 
+        if (produtoData.tipo === 'partitura') {
+            produtoData.compositor = compositorInput.value || '';
+            produtoData.instrumento = instrumentoInput.value || '';
+            produtoData.genero = generoInput.value || '';
+        }
+
         try {
             if (editingPartituraId) {
-                // Atualizar
-                await db.collection('partituras').doc(editingPartituraId).update(partituraData);
-                formMessage.textContent = 'Partitura atualizada com sucesso!';
+                // ALTERAÇÃO: Atualiza na coleção "produtos"
+                await db.collection('produtos').doc(editingPartituraId).update(produtoData);
+                formMessage.textContent = 'Produto atualizado com sucesso!';
             } else {
-                // Adicionar
-                await db.collection('partituras').add(partituraData);
-                formMessage.textContent = 'Partitura adicionada com sucesso!';
+                // ALTERAÇÃO: Adiciona na coleção "produtos"
+                await db.collection('produtos').add(produtoData);
+                formMessage.textContent = 'Produto adicionado com sucesso!';
             }
-            partituraForm.reset(); // Limpa o formulário
-            editingPartituraId = null; // Reseta o estado de edição
-            savePartituraBtn.textContent = 'Adicionar Partitura';
+            partituraForm.reset();
+            editingPartituraId = null;
+            savePartituraBtn.textContent = 'Adicionar Produto';
             cancelEditBtn.style.display = 'none';
-            loadPartituras(); // Recarrega a lista
+            togglePartituraFields(); // Reseta a visibilidade dos campos
+            loadProdutos();
         } catch (error) {
-            console.error("Erro ao salvar partitura:", error.message);
-            formMessage.textContent = `Erro ao salvar partitura: ${error.message}`;
+            formMessage.textContent = `Erro ao salvar produto: ${error.message}`;
             formMessage.style.color = 'red';
         }
-        setTimeout(() => formMessage.textContent = '', 3000); // Limpa a mensagem após 3 segundos
+        setTimeout(() => formMessage.textContent = '', 3000);
     });
 
-    // Função para preencher o formulário para edição
-    const editPartitura = (id, partitura) => {
+    const editProduto = (id, produto) => {
         editingPartituraId = id;
-        tituloInput.value = partitura.titulo;
-        compositorInput.value = partitura.compositor || '';
-        instrumentoInput.value = partitura.instrumento || '';
-        generoInput.value = partitura.genero || '';
-        descricaoInput.value = partitura.descricao;
-        precoInput.value = partitura.preco;
-        imagemCapaUrlInput.value = partitura.imagem_capa_url;
+        tipoInput.value = produto.tipo;
+        tituloInput.value = produto.titulo;
+        descricaoInput.value = produto.descricao;
+        precoInput.value = produto.preco;
+        imagemCapaUrlInput.value = produto.imagem_capa_url;
 
-        savePartituraBtn.textContent = 'Atualizar Partitura';
+        if (produto.tipo === 'partitura') {
+            compositorInput.value = produto.compositor || '';
+            instrumentoInput.value = produto.instrumento || '';
+            generoInput.value = produto.genero || '';
+        }
+        togglePartituraFields(); // Mostra/esconde campos conforme o tipo
+        
+        savePartituraBtn.textContent = 'Atualizar Produto';
         cancelEditBtn.style.display = 'inline-block';
-        window.scrollTo({ top: 0, behavior: 'smooth' }); // Rola para o topo do formulário
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    // Cancela a edição
     cancelEditBtn.addEventListener('click', () => {
         partituraForm.reset();
         editingPartituraId = null;
-        savePartituraBtn.textContent = 'Adicionar Partitura';
+        savePartituraBtn.textContent = 'Adicionar Produto';
         cancelEditBtn.style.display = 'none';
-        formMessage.textContent = '';
+        togglePartituraFields();
     });
 
-    // Deletar Partitura
-    const deletePartitura = async (id) => {
-        if (confirm('Tem certeza que deseja excluir esta partitura?')) {
+    const deleteProduto = async (id) => {
+        if (confirm('Tem certeza que deseja excluir este produto?')) {
             try {
-                await db.collection('partituras').doc(id).delete();
-                alert('Partitura excluída com sucesso!');
-                loadPartituras(); // Recarrega a lista
+                // ALTERAÇÃO: Deleta da coleção "produtos"
+                await db.collection('produtos').doc(id).delete();
+                alert('Produto excluído com sucesso!');
+                loadProdutos();
             } catch (error) {
-                console.error("Erro ao excluir partitura:", error.message);
-                alert(`Erro ao excluir partitura: ${error.message}`);
+                alert(`Erro ao excluir produto: ${error.message}`);
             }
         }
     };
-
-    // Chamada inicial para carregar partituras (se já estiver logado)
-    // A chamada está dentro de onAuthStateChanged agora.
 });

@@ -142,7 +142,62 @@
   .logo {
     width: 80px;
   }
+
   
+/* =============================================== */
+/* ESTILOS GLOBAIS PARA O ÍCONE DO CARRINHO */
+/* =============================================== */
+/* NOVO CONTÊINER PARA OS ÍCONES DO MENU E CARRINHO */
+.menu-e-carrinho {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+
+/* Estilos para o ícone do Carrinho */
+.cart-icon {
+  position: relative;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #FFD700;
+  transition: background-color 0.3s ease;
+  z-index: 101; /* Garante que esteja acima de outros elementos */
+}
+
+.cart-icon i {
+  font-size: 1.3rem;
+  color: #333;
+}
+
+.cart-icon:hover {
+  background-color: var(--chama-color);
+  color: white;
+}
+
+/* Contador de itens no carrinho */
+.cart-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: var(--base-color);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  border: 1px solid white;
+}
   
   /*====  NAVIGATION ============================ */
   

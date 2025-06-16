@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moda Chama - Admin Partituras</title>
-    <link rel="stylesheet" href="assets/css/ad.css"> <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Chama Coral - Admin de Produtos</title>
+    <link rel="stylesheet" href="assets/css/ad.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
-        <h1>Admin de Partituras</h1>
+        <h1>Admin de Produtos</h1>
         <button id="logout-btn">Sair</button>
     </header>
 
@@ -28,22 +27,31 @@
         </section>
 
         <section id="admin-content" style="display: none;">
-            <h2>Gerenciar Partituras</h2>
+            <h2>Gerenciar Produtos</h2>
 
-            <h3>Adicionar Nova Partitura</h3>
+            <h3>Adicionar/Editar Produto</h3>
             <form id="partitura-form">
                 <input type="hidden" id="partitura-id">
+
+                <label for="tipo">Tipo de Produto:</label>
+                <select id="tipo" required>
+                    <option value="partitura">Partitura</option>
+                    <option value="moda">Moda</option>
+                </select><br><br>
+
                 <label for="titulo">Título:</label>
                 <input type="text" id="titulo" required><br><br>
                 
-                <label for="compositor">Compositor (Opcional):</label>
-                <input type="text" id="compositor"><br><br>
+                <div id="campos-partitura">
+                    <label for="compositor">Compositor (Opcional):</label>
+                    <input type="text" id="compositor"><br><br>
 
-                <label for="instrumento">Instrumento (Opcional):</label>
-                <input type="text" id="instrumento"><br><br>
+                    <label for="instrumento">Instrumento (Opcional):</label>
+                    <input type="text" id="instrumento"><br><br>
 
-                <label for="genero">Gênero (Opcional):</label>
-                <input type="text" id="genero"><br><br>
+                    <label for="genero">Gênero (Opcional):</label>
+                    <input type="text" id="genero"><br><br>
+                </div>
                 
                 <label for="descricao">Descrição:</label>
                 <textarea id="descricao" rows="3" required></textarea><br><br>
@@ -54,33 +62,33 @@
                 <label for="imagem_capa_url">URL da Imagem de Capa:</label>
                 <input type="url" id="imagem_capa_url" required><br><br>
                 
-                <button type="submit" id="save-partitura-btn">Adicionar Partitura</button>
+                <button type="submit" id="save-partitura-btn">Adicionar Produto</button>
                 <button type="button" id="cancel-edit-btn" style="display: none;">Cancelar Edição</button>
             </form>
             <p id="form-message" style="color: green;"></p>
 
             <hr>
 
-            <h3>Partituras Cadastradas</h3>
+            <h3>Produtos Cadastrados</h3>
             <table id="partituras-table">
                 <thead>
                     <tr>
                         <th>Título</th>
-                        <th>Compositor</th>
+                        <th>Tipo</th>
                         <th>Preço</th>
-                        <th>Link</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    </tbody>
+                </tbody>
             </table>
         </section>
     </main>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    
     <script src="assets/js/fibase-config.js"></script>
     <script src="assets/js/ad.js"></script> 
 </body>
