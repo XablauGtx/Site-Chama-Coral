@@ -1,229 +1,191 @@
+/* assets/css/ad.css */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
+
+:root {
+    --primary-color: #2d3748;
+    --secondary-color: #1a202c;
+    --background-color: #f7fafc;
+    --text-color: #4a5568;
+    --text-light: #edf2f7;
+    --accent-color: hsl(0, 88%, 68%);
+    --border-color: #e2e8f0;
+}
 
 body {
     font-family: 'Montserrat', sans-serif;
     margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-    color: #333;
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
 
-header {
-    background-color: #4CAF50;
-    color: white;
-    padding: 1rem 0;
-    text-align: center;
+.admin-container {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    flex-wrap: wrap; /* Allows items to wrap on smaller screens */
+    min-height: 100vh;
 }
 
-header h1 {
+/* --- Sidebar (Menu Lateral) --- */
+.sidebar {
+    width: 250px;
+    background-color: var(--secondary-color);
+    color: var(--text-light);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100%;
+    flex-shrink: 0;
+}
+
+.sidebar-header {
+    padding: 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid var(--primary-color);
+}
+.sidebar-header h2 {
     margin: 0;
-    font-size: 1.8rem; /* Adjust font size for responsiveness */
+    color: #fff;
 }
 
-.container {
-    max-width: 900px;
-    margin: 2rem auto;
+.sidebar-nav {
+    flex-grow: 1;
+}
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+.sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    color: var(--text-light);
+    text-decoration: none;
+    transition: background-color 0.2s;
+    border-left: 3px solid transparent;
+}
+.sidebar-nav a:hover {
+    background-color: var(--primary-color);
+}
+.sidebar-nav a.active {
+    background-color: #000;
+    border-left: 3px solid var(--accent-color);
+    font-weight: bold;
+}
+.sidebar-nav i {
+    font-size: 1.2rem;
+}
+
+.sidebar-footer {
+    padding: 1.5rem;
+}
+.sidebar-footer button {
+    width: 100%;
+    background-color: transparent;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    padding: 0.8rem;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: background-color 0.2s, color 0.2s;
+}
+.sidebar-footer button:hover {
+    background-color: var(--accent-color);
+    color: #fff;
+}
+
+/* --- Conteúdo Principal --- */
+.main-content {
+    flex-grow: 1;
+    margin-left: 250px;
     padding: 2rem;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-h2, h3 {
-    color: #4CAF50;
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
+.content-section {
+    display: none;
 }
+.content-section.active {
+    display: block;
+}
+
+/* --- Cards e Formulários --- */
+.form-card, .table-card, .login-card {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    margin-bottom: 2rem;
+}
+
+h2 { color: var(--secondary-color); }
+h3 { margin-top: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; }
 
 form label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: bold;
+    font-size: 0.9rem;
 }
-
-form input[type="text"],
-form input[type="email"],
-form input[type="password"],
-form input[type="number"],
-form input[type="url"],
-form textarea {
-    width: calc(100% - 22px); /* Considerando padding e border */
+form input, form select, form textarea {
+    width: 100%;
     padding: 10px;
     margin-bottom: 1rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
-    box-sizing: border-box; /* Inclui padding e border no width */
+    box-sizing: border-box;
 }
-
 form button {
-    background-color: #4CAF50;
+    background-color: var(--accent-color);
     color: white;
     padding: 10px 15px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 1rem;
+}
+#cancel-edit-btn { background-color: var(--text-color); }
+
+/* Destaques Checkbox */
+#destaques-options div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+#destaques-options input {
+    width: auto;
     margin-right: 10px;
 }
 
-form button:hover {
-    background-color: #45a049;
-}
-
-#cancel-edit-btn {
-    background-color: #f44336;
-}
-
-#cancel-edit-btn:hover {
-    background-color: #da190b;
-}
-
-#logout-btn {
-    background-color: #f44336;
-    color: white;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#logout-btn:hover {
-    background-color: #da190b;
-}
-
-hr {
-    border: 0;
-    height: 1px;
-    background: #eee;
-    margin: 2rem 0;
-}
-
+/* Tabela */
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 1.5rem;
-    display: block; /* Allows table to scroll on smaller screens */
-    overflow-x: auto; /* Adds horizontal scroll if content overflows */
-    white-space: nowrap; /* Prevents content from wrapping inside cells */
 }
-
 table th, table td {
-    border: 1px solid #ddd;
-    padding: 8px;
+    border-bottom: 1px solid var(--border-color);
+    padding: 12px 8px;
     text-align: left;
-    white-space: normal; /* Allows text to wrap within table cells */
 }
-
 table th {
-    background-color: #f2f2f2;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #718096;
 }
-
-table tr:nth-child(even){background-color: #f9f9f9;}
-
-table tr:hover {background-color: #f1f1f1;}
-
-.edit-btn, .delete-btn {
+table .edit-btn, table .delete-btn {
     padding: 5px 10px;
     border: none;
     border-radius: 3px;
     cursor: pointer;
-    font-size: 0.9rem;
     margin-right: 5px;
-}
-
-.edit-btn {
-    background-color: #008CBA;
     color: white;
 }
+.edit-btn { background-color: #3182ce; }
+.delete-btn { background-color: #e53e3e; }
 
-.edit-btn:hover {
-    background-color: #007bb5;
-}
-
-.delete-btn {
-    background-color: #f44336;
-    color: white;
-}
-
-.delete-btn:hover {
-    background-color: #da190b;
-}
-
-#login-error-message, #form-message {
-    margin-top: 10px;
-    font-weight: bold;
-}
-
-/* --- Media Queries --- */
-
-@media (max-width: 768px) {
-    header {
-        flex-direction: column; /* Stack header items vertically */
-        padding: 1rem;
-        text-align: center;
-    }
-
-    header h1 {
-        margin-bottom: 1rem; /* Add space below title when stacked */
-        font-size: 1.5rem;
-    }
-
-    #logout-btn {
-        margin-top: 1rem; /* Add space above logout button */
-    }
-
-    .container {
-        margin: 1rem; /* Smaller margin on smaller screens */
-        padding: 1rem;
-    }
-
-    form input[type="text"],
-    form input[type="email"],
-    form input[type="password"],
-    form input[type="number"],
-    form input[type="url"],
-    form textarea {
-        width: calc(100% - 20px); /* Adjust width for smaller padding */
-        padding: 8px;
-    }
-
-    form button {
-        display: block; /* Make buttons full width */
-        width: 100%;
-        margin-bottom: 10px; /* Add space between buttons */
-        margin-right: 0;
-    }
-
-    table th, table td {
-        font-size: 0.9em; /* Slightly smaller font for table content */
-        padding: 6px;
-    }
-
-    .edit-btn, .delete-btn {
-        display: block; /* Make action buttons full width */
-        width: calc(100% - 10px); /* Adjust width for padding */
-        margin-bottom: 5px;
-        margin-right: 0;
-        text-align: center;
-    }
-}
-
-@media (max-width: 480px) {
-    header h1 {
-        font-size: 1.2rem;
-    }
-
-    .container {
-        padding: 0.8rem;
-        margin: 0.5rem;
-    }
-
-    h2, h3 {
-        font-size: 1.2rem;
-    }
-}
+/* Login */
+#auth-section { display: flex; justify-content: center; align-items: center; min-height: 80vh; }
+.login-card { max-width: 400px; width: 100%; }

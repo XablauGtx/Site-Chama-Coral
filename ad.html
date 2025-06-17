@@ -3,92 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chama Coral - Admin de Produtos</title>
+    <title>Chama Coral - Painel de Admin</title>
     <link rel="stylesheet" href="assets/css/ad.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
 </head>
 <body>
-    <header>
-        <h1>Admin de Produtos</h1>
-        <button id="logout-btn">Sair</button>
-    </header>
+    <div class="admin-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Chama Coral</h2>
+                <p>Admin</p>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#" class="nav-link active" data-target="produtos"><i class="ri-shopping-bag-3-line"></i> Produtos</a></li>
+                    <li><a href="#" class="nav-link" data-target="homepage"><i class="ri-home-4-line"></i> Conteúdo da Home</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logout-btn"><i class="ri-logout-box-r-line"></i> Sair</button>
+            </div>
+        </aside>
 
-    <main class="container">
-        <section id="auth-section">
-            <h2>Login de Administrador</h2>
-            <form id="login-form">
-                <label for="email">Email:</label>
-                <input type="email" id="email" required><br><br>
-                <label for="password">Senha:</label>
-                <input type="password" id="password" required><br><br>
-                <button type="submit">Entrar</button>
-                <p id="login-error-message" style="color: red;"></p>
-            </form>
-        </section>
-
-        <section id="admin-content" style="display: none;">
-            <h2>Gerenciar Produtos</h2>
-
-            <h3>Adicionar/Editar Produto</h3>
-            <form id="partitura-form">
-                <input type="hidden" id="partitura-id">
-
-                <label for="tipo">Tipo de Produto:</label>
-                <select id="tipo" required>
-                    <option value="partitura">Partitura</option>
-                    <option value="moda">Moda</option>
-                </select><br><br>
-
-                <label for="titulo">Título:</label>
-                <input type="text" id="titulo" required><br><br>
-                
-                <div id="campos-partitura">
-                    <label for="compositor">Compositor (Opcional):</label>
-                    <input type="text" id="compositor"><br><br>
-
-                    <label for="instrumento">Instrumento (Opcional):</label>
-                    <input type="text" id="instrumento"><br><br>
-
-                    <label for="genero">Gênero (Opcional):</label>
-                    <input type="text" id="genero"><br><br>
+        <main class="main-content">
+            <section id="auth-section" class="content-section active">
+                <div class="login-card">
+                    <h2>Login de Administrador</h2>
+                    <form id="login-form">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" required>
+                        <label for="password">Senha:</label>
+                        <input type="password" id="password" required>
+                        <button type="submit">Entrar</button>
+                        <p id="login-error-message" style="color: red;"></p>
+                    </form>
                 </div>
-                
-                <label for="descricao">Descrição:</label>
-                <textarea id="descricao" rows="3" required></textarea><br><br>
-                
-                <label for="preco">Preço (R$):</label>
-                <input type="number" id="preco" step="0.01" required><br><br>
-                
-                <label for="imagem_capa_url">URL da Imagem de Capa:</label>
-                <input type="url" id="imagem_capa_url" required><br><br>
-                
-                <button type="submit" id="save-partitura-btn">Adicionar Produto</button>
-                <button type="button" id="cancel-edit-btn" style="display: none;">Cancelar Edição</button>
-            </form>
-            <p id="form-message" style="color: green;"></p>
+            </section>
 
-            <hr>
+            <div id="admin-panel" style="display: none;">
+                <section id="produtos-section" class="content-section active">
+                    <h2>Gerenciar Produtos</h2>
+                    <div class="form-card">
+                        <h3>Adicionar/Editar Produto</h3>
+                        <form id="produto-form">
+                            <input type="hidden" id="produto-id">
+                            <label for="tipo">Tipo de Produto:</label>
+                            <select id="tipo" required>
+                                <option value="partitura">Partitura</option>
+                                <option value="moda">Moda</option>
+                            </select>
+                            <label for="titulo">Título:</label>
+                            <input type="text" id="titulo" required>
+                            <div id="campos-partitura">
+                                <label for="compositor">Compositor:</label>
+                                <input type="text" id="compositor">
+                                <label for="instrumento">Instrumento:</label>
+                                <input type="text" id="instrumento">
+                                <label for="genero">Gênero:</label>
+                                <input type="text" id="genero">
+                            </div>
+                            <label for="descricao">Descrição:</label>
+                            <textarea id="descricao" rows="3" required></textarea>
+                            <label for="preco">Preço (R$):</label>
+                            <input type="number" id="preco" step="0.01" required>
+                            <label for="imagem_capa_url">URL da Imagem de Capa:</label>
+                            <input type="url" id="imagem_capa_url" required>
+                            <button type="submit" id="save-produto-btn">Salvar Produto</button>
+                            <button type="button" id="cancel-edit-btn" style="display: none;">Cancelar Edição</button>
+                        </form>
+                        <p id="form-message" style="color: green;"></p>
+                    </div>
+                    <div class="table-card">
+                        <h3>Produtos Cadastrados</h3>
+                        <table id="produtos-table">
+                            <thead><tr><th>Título</th><th>Tipo</th><th>Preço</th><th>Ações</th></tr></thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
 
-            <h3>Produtos Cadastrados</h3>
-            <table id="partituras-table">
-                <thead>
-                    <tr>
-                        <th>Título</th>
-                        <th>Tipo</th>
-                        <th>Preço</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </section>
-    </main>
+                <section id="homepage-section" class="content-section">
+                    <h2>Gerenciar Conteúdo da Página Inicial</h2>
+                    <div class="form-card">
+                        <h3>Produtos em Destaque no Carrossel</h3>
+                        <p>Selecione até 5 produtos para aparecerem na página inicial.</p>
+                        <form id="destaques-form">
+                            <div id="destaques-options"><p>Carregando produtos...</p></div>
+                            <button type="submit">Salvar Destaques</button>
+                        </form>
+                    </div>
+                    <div class="form-card">
+                        <h3>Gerenciar Depoimentos</h3>
+                        <form id="depoimento-form">
+                            <input type="hidden" id="depoimento-id">
+                            <label for="depoimento-texto">Texto do Depoimento:</label>
+                            <textarea id="depoimento-texto" rows="4" required></textarea>
+                            <label for="depoimento-autor">Nome do Autor:</label>
+                            <input type="text" id="depoimento-autor" required>
+                            <label for="depoimento-imagem-url">URL da Imagem do Autor (opcional):</label>
+                            <input type="url" id="depoimento-imagem-url">
+                            <button type="submit">Salvar Depoimento</button>
+                        </form>
+                    </div>
+                    <div class="table-card">
+                        <h3>Depoimentos Cadastrados</h3>
+                        <table id="depoimentos-table">
+                            <thead><tr><th>Autor</th><th>Texto</th><th>Ações</th></tr></thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    
     <script src="assets/js/fibase-config.js"></script>
     <script src="assets/js/ad.js"></script> 
 </body>
